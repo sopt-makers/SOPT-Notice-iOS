@@ -12,5 +12,10 @@ let project = Project.makeModule(
     name: "ThirdPartyLib",
     product: .framework,
     packages: [],
-    dependencies: []
+    dependencies: [
+        .external(name: "SnapKit"),
+        .external(name: "Then"),
+        .external(name: "Kingfisher"),
+        .external(name: "Moya")
+    ]
 )
