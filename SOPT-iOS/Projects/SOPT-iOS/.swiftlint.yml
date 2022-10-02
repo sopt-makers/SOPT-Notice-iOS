@@ -1,0 +1,8 @@
+disabled_rules:
+ - trailing_whitespace
+ - identifier_name
+ - type_name
+
+excluded:
+ - Sources/Application/AppDelegate.swift
+ - Sources/Application/SceneDelegate.swift

@@ -15,4 +15,3 @@ let project = Project.makeModule(
         .Project.Domain
     ]
 )
-
