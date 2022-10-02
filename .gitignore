@@ -127,6 +127,8 @@ fastlane/test_output
 iOSInjectionProject/
 
 ### Xcode ###
+*.xcodeproj
+*.xcworkspace
 
 ## Xcode 8 and earlier
 
