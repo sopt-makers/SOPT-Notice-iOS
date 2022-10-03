@@ -13,9 +13,9 @@ let project = Project.makeModule(
     product: .framework,
     packages: [],
     dependencies: [
-        .external(name: "SnapKit"),
-        .external(name: "Then"),
-        .external(name: "Kingfisher"),
-        .external(name: "Moya")
+        .SPM.SnapKit,
+        .SPM.Kingfisher,
+        .SPM.Then,
+        .SPM.Moya
     ]
 )
