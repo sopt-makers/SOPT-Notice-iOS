@@ -72,8 +72,6 @@ public extension Project {
             "CFBundleVersion": "1",
             "CFBundleIdentifier": "com.sopt-makers.release",
             "UILaunchStoryboardName": "LaunchScreen",
-            "LSApplicationQueriesSchemes": ["kakaokompassauth", "kakaolink"],
-            "CFBundleURLTypes": ["CFBundleURLSchemes": ["kakao$(KAKAO_APP_KEY)"]],
             "UIApplicationSceneManifest": [
                 "UIApplicationSupportsMultipleScenes": false,
                 "UISceneConfigurations": [
