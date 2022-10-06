@@ -7,15 +7,19 @@
 //
 
 import Combine
+import Domain
+import Network
 
-final class SampleRepository {
-//    private let networkService: SampleServiceType
-//
-//    init(service: SampleServiceType) {
-//        self.networkService = service
-//    }
+open class SampleRepository {
+    
+    private let networkService: SampleServiceType
+    private let cancelBag = Set<AnyCancellable>()
+
+    public init(service: SampleServiceType) {
+        self.networkService = service
+    }
 }
 
-//extension SampleRepository: SampleRepositoryInterface {
-//    
-//}
+extension SampleRepository: SampleRepositoryInterface {
+    
+}

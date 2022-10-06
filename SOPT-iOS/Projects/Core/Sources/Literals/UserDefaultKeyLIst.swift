@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct UserDefaultKeyList{
-    struct Sample {
-        static let sample = "sample"
+public struct UserDefaultKeyList{
+    public struct Sample {
+        public static let sample = "sample"
     }
 }

@@ -9,7 +9,7 @@
 import UIKit
 
 extension UILabel {
-    func setTextWithLineHeight(text: String?, lineHeightMultiple: CGFloat) {
+    public func setTextWithLineHeight(text: String?, lineHeightMultiple: CGFloat) {
         if let text = text {
             let style = NSMutableParagraphStyle()
             style.lineHeightMultiple = lineHeightMultiple
@@ -26,7 +26,7 @@ extension UILabel {
 }
 
 extension UITextView {
-    func setTextWithLineHeight(text: String?, lineHeightMultiple: CGFloat) {
+    public func setTextWithLineHeight(text: String?, lineHeightMultiple: CGFloat) {
         if let text = text {
             let style = NSMutableParagraphStyle()
             style.lineHeightMultiple = lineHeightMultiple

@@ -8,7 +8,7 @@
 
 import Combine
 
-protocol SampleServiceType {
+public protocol SampleServiceType {
     
 }
 

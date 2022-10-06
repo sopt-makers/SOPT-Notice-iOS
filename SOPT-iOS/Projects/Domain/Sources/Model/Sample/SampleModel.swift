@@ -8,6 +8,10 @@
 
 import Foundation
 
-struct SampleModel {
+public struct SampleModel {
+    let title: String
     
+    public init(title: String) {
+        self.title = title
+    }
 }

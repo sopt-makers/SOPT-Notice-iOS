@@ -8,18 +8,18 @@
 
 import UIKit
 
-protocol UICollectionViewRegisterable {
+public protocol UICollectionViewRegisterable {
     static var isFromNib: Bool { get }
     static func register(target: UICollectionView)
 }
 
-protocol UIICollectionReusableViewRegisterable {
+public protocol UIICollectionReusableViewRegisterable {
     static var isFromNib: Bool { get }
     static func register(target: UICollectionView, isHeader: Bool)
 }
 
 extension UICollectionViewRegisterable where Self: UICollectionViewCell {
-    static func register(target: UICollectionView) {
+    public static func register(target: UICollectionView) {
         if self.isFromNib {
             target.register(UINib(nibName: Self.className, bundle: nil), forCellWithReuseIdentifier: Self.className)
         } else {
@@ -29,7 +29,7 @@ extension UICollectionViewRegisterable where Self: UICollectionViewCell {
 }
 
 extension UIICollectionReusableViewRegisterable where Self: UICollectionReusableView {
-    static func register(target: UICollectionView, isHeader: Bool) {
+    public static func register(target: UICollectionView, isHeader: Bool) {
         if self.isFromNib {
             if isHeader {
                 target.register(UINib(nibName: Self.className, bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: Self.className)

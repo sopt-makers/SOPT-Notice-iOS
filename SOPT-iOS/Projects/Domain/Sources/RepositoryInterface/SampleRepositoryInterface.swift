@@ -8,6 +8,6 @@
 
 import Combine
 
-protocol SampleRepositoryInterface {
+public protocol SampleRepositoryInterface {
     
 }

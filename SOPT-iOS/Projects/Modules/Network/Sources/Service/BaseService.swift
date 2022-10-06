@@ -11,8 +11,10 @@ import Moya
 import Combine
 import Foundation
 
-// 수정해서 넣어둘게요 ..
+// FIXME: - 수정
 
-class BaseService {
-    
+open class BaseService {
+    static let `default` = BaseService()
+    var cancelBag = Set<AnyCancellable>()
+    private init() {}
 }

@@ -8,9 +8,9 @@
 
 import Foundation
 
-struct I18N {
-    struct Sample {
-        static let error = "에러"
-        static let networkError = "네트워크 오류가 발생했습니다."
+public struct I18N {
+    public struct Sample {
+        public static let error = "에러"
+        public static let networkError = "네트워크 오류가 발생했습니다."
     }
 }

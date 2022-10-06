@@ -8,16 +8,16 @@
 
 import Combine
 
-protocol SampleUseCase {
+public protocol SampleUseCase {
     
 }
 
-final class DefaultSampleUseCase {
+open class DefaultSampleUseCase {
     
     private let repository: SampleRepositoryInterface
     private var cancelBag = Set<AnyCancellable>()
     
-    init(repository: SampleRepositoryInterface) {
+    public init(repository: SampleRepositoryInterface) {
         self.repository = repository
     }
 }
