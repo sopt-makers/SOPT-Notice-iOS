@@ -8,25 +8,22 @@
 
 import UIKit
 
-open class SampleVC: UIViewController {
+import Combine
+
+public class SampleVC: UIViewController {
     
     public var viewModel: SampleViewModel!
+    private var cancelBag = Set<AnyCancellable>()
 
     open override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        self.bindViewModels()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func bindViewModels() {
+        let input = SampleViewModel.Input()
+        let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
     }
-    */
 
 }

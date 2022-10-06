@@ -7,13 +7,14 @@
 //
 
 import Combine
+
 import Core
 import Domain
 
-open class SampleViewModel: ViewModelType {
+public class SampleViewModel: ViewModelType {
 
     private let useCase: SampleUseCase
-    private let cancelBag = Set<AnyCancellable>()
+    private var cancelBag = Set<AnyCancellable>()
 
     // MARK: - Inputs
     public struct Input {
@@ -31,15 +32,15 @@ open class SampleViewModel: ViewModelType {
 }
 
 extension SampleViewModel {
-    public func transform(from input: Input) -> Output {
+    public func transform(from input: Input, cancelBag: Set<AnyCancellable>) -> Output {
         let output = Output()
-        self.bindOutput(output: output)
+        self.bindOutput(output: output, cancelBag: cancelBag)
         // input,output 상관관계 작성
 
         return output
     }
 
-    private func bindOutput(output: Output) {
+    private func bindOutput(output: Output, cancelBag: Set<AnyCancellable>) {
 
     }
 }

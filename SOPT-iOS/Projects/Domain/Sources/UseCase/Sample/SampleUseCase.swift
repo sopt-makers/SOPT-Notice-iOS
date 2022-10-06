@@ -12,7 +12,7 @@ public protocol SampleUseCase {
     
 }
 
-open class DefaultSampleUseCase {
+public class DefaultSampleUseCase {
     
     private let repository: SampleRepositoryInterface
     private var cancelBag = Set<AnyCancellable>()

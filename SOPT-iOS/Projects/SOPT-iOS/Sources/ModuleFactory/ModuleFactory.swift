@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 import Presentation
 import Network
 import Domain
@@ -16,11 +17,11 @@ protocol ModuleFactoryProtocol {
     func makeSampleVC() -> SampleVC
 }
 
-final class ModuleFactory: ModuleFactoryProtocol {
+open class ModuleFactory: ModuleFactoryProtocol {
   static let shared = ModuleFactory()
   private init() { }
 
-  func makeSampleVC() -> SampleVC {
+  public func makeSampleVC() -> SampleVC {
       let repository = SampleRepository(service: BaseService.self as! SampleServiceType)
       let useCase = DefaultSampleUseCase(repository: repository)
     let viewModel = SampleViewModel(useCase: useCase)

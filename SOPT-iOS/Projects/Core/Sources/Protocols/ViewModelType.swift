@@ -8,10 +8,12 @@
 
 import Foundation
 
+import Combine
+
 public protocol ViewModelType{
-  associatedtype Input
-  associatedtype Output
-  
-  func transform(from input: Input) -> Output
+    associatedtype Input
+    associatedtype Output
+    
+    func transform(from input: Input, cancelBag: Set<AnyCancellable>) -> Output
 }
 

@@ -7,12 +7,13 @@
 //
 
 import Foundation
+
 import Domain
 
-struct SampleEntity: Codable {
+public struct SampleEntity: Codable {
     let titleEntity: String
     
-    func toDomain() -> SampleModel {
+    public func toDomain() -> SampleModel {
         return SampleModel.init(title: titleEntity)
     }
 }
