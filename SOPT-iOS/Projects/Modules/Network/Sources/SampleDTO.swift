@@ -11,6 +11,6 @@ import Foundation
 struct SampleDTO: Codable {
     
 //    func toDomain() -> SampleModel {
-//        
+//
 //    }
 }
