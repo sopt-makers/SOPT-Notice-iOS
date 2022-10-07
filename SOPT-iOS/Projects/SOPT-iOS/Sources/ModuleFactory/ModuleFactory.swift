@@ -13,20 +13,20 @@ import Network
 import Domain
 import Data
 
-protocol ModuleFactoryProtocol {
-    func makeSampleVC() -> SampleVC
+public class ModuleFactory {
+    static let shared = ModuleFactory()
+    private init() { }
+    
 }
 
-open class ModuleFactory: ModuleFactoryProtocol {
-  static let shared = ModuleFactory()
-  private init() { }
-
-  public func makeSampleVC() -> SampleVC {
-      let repository = SampleRepository(service: BaseService.self as! SampleServiceType)
-      let useCase = DefaultSampleUseCase(repository: repository)
-    let viewModel = SampleViewModel(useCase: useCase)
-    let sampleVC = SampleVC.controllerFromStoryboard(.sample)
-    sampleVC.viewModel = viewModel
-    return sampleVC
-  }
+extension ModuleFactory: ModuleFactoryInterface {
+    public func makeSampleVC() -> Presentation.SampleVC {
+        let repository = SampleRepository(service: BaseService.default)
+        let useCase = DefaultSampleUseCase(repository: repository)
+        let viewModel = SampleViewModel(useCase: useCase)
+        let sampleVC = SampleVC.controllerFromStoryboard(.sample)
+        sampleVC.viewModel = viewModel
+        sampleVC.factory = self
+        return sampleVC
+    }
 }

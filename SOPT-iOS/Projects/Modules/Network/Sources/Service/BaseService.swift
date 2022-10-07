@@ -14,7 +14,7 @@ import Foundation
 // FIXME: - 수정
 
 open class BaseService {
-    static let `default` = BaseService()
+    public static let `default` = BaseService()
     var cancelBag = Set<AnyCancellable>()
     private init() {}
 }

@@ -28,15 +28,15 @@ extension UIViewController {
         return storyboard.instantiateViewController(withIdentifier: identifier) as! T
     }
     
-    class func controllerInStoryboard(_ storyboard: UIStoryboard, identifier: String) -> Self {
+    public class func controllerInStoryboard(_ storyboard: UIStoryboard, identifier: String) -> Self {
         return instantiateControllerInStoryboard(storyboard, identifier: identifier)
     }
     
-    class func controllerInStoryboard(_ storyboard: UIStoryboard) -> Self {
+    public class func controllerInStoryboard(_ storyboard: UIStoryboard) -> Self {
         return controllerInStoryboard(storyboard, identifier: className)
     }
 
-    class func controllerFromStoryboard(_ storyboard: Storyboards) -> Self {
+    public class func controllerFromStoryboard(_ storyboard: Storyboards) -> Self {
         return controllerInStoryboard(UIStoryboard(name: storyboard.rawValue, bundle: nil), identifier: className)
     }
 }
