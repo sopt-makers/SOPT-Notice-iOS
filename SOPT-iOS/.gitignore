@@ -61,6 +61,7 @@ DerivedData/
 ### Projects ###
 *.xcodeproj
 *.xcworkspace
+/Projects/Modules/Network/Sources/Config.swift
 
 ### Tuist derived files ###
 graph.dot
