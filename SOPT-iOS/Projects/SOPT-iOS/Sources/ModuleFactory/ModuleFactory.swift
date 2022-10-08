@@ -24,7 +24,8 @@ extension ModuleFactory: ModuleFactoryInterface {
         let repository = SampleRepository(service: BaseService.default)
         let useCase = DefaultSampleUseCase(repository: repository)
         let viewModel = SampleViewModel(useCase: useCase)
-        let sampleVC = SampleVC.controllerFromStoryboard(.sample)
+//        let sampleVC = SampleVC.controllerFromStoryboard(.sample)
+        let sampleVC = SampleVC()
         sampleVC.viewModel = viewModel
         sampleVC.factory = self
         return sampleVC

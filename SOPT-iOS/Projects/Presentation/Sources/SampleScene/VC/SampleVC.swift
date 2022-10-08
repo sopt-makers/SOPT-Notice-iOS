@@ -8,6 +8,7 @@
 
 import UIKit
 
+import SnapKit
 import Combine
 
 //public protocol SampleModuleFactory {
@@ -16,18 +17,20 @@ import Combine
 
 public class SampleVC: UIViewController {
     
+    public var factory: ModuleFactoryInterface!
     public var viewModel: SampleViewModel!
     private var cancelBag = Set<AnyCancellable>()
-    public var factory: ModuleFactoryInterface!
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     open override func viewDidLoad() {
         super.viewDidLoad()
 
         self.bindViewModels()
+    }
+    
+    @objc
+    func presentSampleVC() {
+        let sampleVC = factory.makeSampleVC()
+        self.present(sampleVC, animated: true)
     }
     
     private func bindViewModels() {
