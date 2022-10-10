@@ -29,23 +29,19 @@ extension PostDetailVC {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: size, subitem: item, count: 1)
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 0, leading: 16.adjusted, bottom: 0, trailing: 16.adjusted)
+        section.contentInsets = .init(top: 0, leading: 16.adjusted, bottom: 16.adjustedH, trailing: 16.adjusted)
         section.orthogonalScrollingBehavior = .none
         return section
     }
     
     private func createImagesSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(32/375), heightDimension: .fractionalHeight(1))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(UIScreen.main.bounds.width), heightDimension: .absolute(52.adjusted))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 5)
-        group.interItemSpacing = .fixed(40)
-        group.contentInsets = .init(top: 0, leading: 28, bottom: 0, trailing: 28)
+        let size = NSCollectionLayoutSize(widthDimension: .absolute(PostDetailVC.standardWidth), heightDimension: .fractionalWidth(1))
+        let item = NSCollectionLayoutItem(layoutSize: size)
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: size, subitem: item, count: 1)
         
         let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(top: 0, leading: 16.adjusted, bottom: 0, trailing: 16.adjusted)
         section.orthogonalScrollingBehavior = .none
-        section.contentInsets = .init(top: 18, leading: 0, bottom: 14, trailing: 0)
         return section
     }
     
@@ -55,7 +51,7 @@ extension PostDetailVC {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: size, subitem: item, count: 1)
         
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = .init(top: 0, leading: 16.adjusted, bottom: 0, trailing: 16.adjusted)
+        section.contentInsets = .init(top: 24.adjustedH, leading: 16.adjusted, bottom: 0, trailing: 16.adjusted)
         section.orthogonalScrollingBehavior = .none
         return section
     }

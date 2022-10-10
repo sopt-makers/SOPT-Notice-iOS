@@ -102,12 +102,10 @@ extension PostDetailVC {
                 
             case .images:
                 guard let imagesCell = collectionView.dequeueReusableCell(withReuseIdentifier: PostDetailImagesCVC.className, for: indexPath) as? PostDetailImagesCVC else { return UICollectionViewCell() }
-                imagesCell.backgroundColor = .darkGray
                 return imagesCell
                 
             case .content:
                 guard let contentCell = collectionView.dequeueReusableCell(withReuseIdentifier: PostDetailContentCVC.className, for: indexPath) as? PostDetailContentCVC else { return UICollectionViewCell() }
-                contentCell.backgroundColor = .green
                 return contentCell
             }
         })
