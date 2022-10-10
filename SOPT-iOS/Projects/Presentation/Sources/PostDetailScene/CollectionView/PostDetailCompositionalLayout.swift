@@ -11,6 +11,8 @@ import UIKit
 import Core
 
 extension PostDetailVC {
+    static let standardWidth = UIScreen.main.bounds.width - 32.adjusted
+    
     func createLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
             switch Section.type(sectionIndex) {
@@ -22,13 +24,14 @@ extension PostDetailVC {
     }
     
     private func createTitleSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(559))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(97))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(559))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(PostDetailVC.standardWidth), heightDimension: .estimated(97))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 1)
         
         let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(top: 0, leading: 16.adjusted, bottom: 0, trailing: 16.adjusted)
         section.orthogonalScrollingBehavior = .none
         return section
     }

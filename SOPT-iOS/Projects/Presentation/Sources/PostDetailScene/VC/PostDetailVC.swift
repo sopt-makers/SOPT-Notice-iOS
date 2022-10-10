@@ -98,7 +98,6 @@ extension PostDetailVC {
             switch Section.type(indexPath.section) {
             case .title:
                 guard let titleCell = collectionView.dequeueReusableCell(withReuseIdentifier: PostDetailTitleCVC.className, for: indexPath) as? PostDetailTitleCVC else { return UICollectionViewCell() }
-                titleCell.backgroundColor = .purple
                 return titleCell
                 
             case .images:
