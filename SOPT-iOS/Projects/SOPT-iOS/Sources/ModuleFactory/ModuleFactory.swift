@@ -20,6 +20,7 @@ public class ModuleFactory {
 }
 
 extension ModuleFactory: ModuleFactoryInterface {
+    
     public func makeSampleVC() -> Presentation.SampleVC {
         let repository = SampleRepository(service: BaseService.default)
         let useCase = DefaultSampleUseCase(repository: repository)
@@ -29,5 +30,14 @@ extension ModuleFactory: ModuleFactoryInterface {
         sampleVC.viewModel = viewModel
         sampleVC.factory = self
         return sampleVC
+    }
+    
+    public func makePostDetailVC() -> Presentation.PostDetailVC {
+        let repository = PostDetailRepository(service: BaseService.default)
+        let useCase = DefaultPostDetailUseCase(repository: repository)
+        let viewModel = PostDetailViewModel(useCase: useCase)
+        let PostDetailVC = PostDetailVC()
+        PostDetailVC.viewModel = viewModel
+        return PostDetailVC
     }
 }

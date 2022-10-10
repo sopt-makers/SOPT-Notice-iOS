@@ -15,3 +15,11 @@ public protocol SampleServiceType {
 extension BaseService: SampleServiceType {
     
 }
+
+public protocol PostDetailServiceType {
+    
+}
+
+extension BaseService: PostDetailServiceType {
+    
+}
