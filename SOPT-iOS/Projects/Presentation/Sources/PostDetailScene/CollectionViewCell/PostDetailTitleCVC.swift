@@ -29,7 +29,6 @@ final class PostDetailTitleCVC: UICollectionViewCell, UICollectionViewRegisterab
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "제목입니다"
-        label.sizeToFit()
         label.font = .systemFont(ofSize: 18)
         label.textColor = UIColor(red: 0.082, green: 0.086, blue: 0.09, alpha: 1)
         label.numberOfLines = 2
@@ -43,6 +42,7 @@ final class PostDetailTitleCVC: UICollectionViewCell, UICollectionViewRegisterab
         label.sizeToFit()
         label.font = .systemFont(ofSize: 12)
         label.textColor = UIColor(red: 0.682, green: 0.686, blue: 0.69, alpha: 1)
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     

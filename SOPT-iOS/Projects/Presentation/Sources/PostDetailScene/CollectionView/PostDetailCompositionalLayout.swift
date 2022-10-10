@@ -24,11 +24,9 @@ extension PostDetailVC {
     }
     
     private func createTitleSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(97))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(PostDetailVC.standardWidth), heightDimension: .estimated(97))
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 1)
+        let size = NSCollectionLayoutSize(widthDimension: .absolute(PostDetailVC.standardWidth), heightDimension: .estimated(97))
+        let item = NSCollectionLayoutItem(layoutSize: size)
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: size, subitem: item, count: 1)
         
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = .init(top: 0, leading: 16.adjusted, bottom: 0, trailing: 16.adjusted)
@@ -52,17 +50,13 @@ extension PostDetailVC {
     }
     
     private func createContentSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(60), heightDimension: .absolute(30))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(UIScreen.main.bounds.height * 52 / 812))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.interItemSpacing = .fixed(12)
+        let size = NSCollectionLayoutSize(widthDimension: .absolute(PostDetailVC.standardWidth), heightDimension: .estimated(97))
+        let item = NSCollectionLayoutItem(layoutSize: size)
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: size, subitem: item, count: 1)
         
         let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = .init(top: 0, leading: 16.adjusted, bottom: 0, trailing: 16.adjusted)
         section.orthogonalScrollingBehavior = .none
-        section.interGroupSpacing = 12
-        section.contentInsets = .init(top: 18, leading: 25, bottom: 9, trailing: 25)
         return section
     }
 }
