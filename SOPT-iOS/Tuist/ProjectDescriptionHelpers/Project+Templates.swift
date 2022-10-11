@@ -29,7 +29,7 @@ public extension Project {
         /// Targets
         /// - test 용으로 TestTarget 정의 후, appTarget에 대한 dependency 설정
         ///
-        let bundleId = (name == "SOPT-iOS") ? "com.sopt-makers.release" : "\(organizationName).\(name)"
+        let bundleId = (name == "SOPT-iOS") ? "com.sopt-iOS.release" : "\(organizationName).\(name)"
         
         let appTarget = Target(
             name: name,
@@ -71,7 +71,7 @@ public extension Project {
     static let baseinfoPlist: [String: InfoPlist.Value] = [
             "CFBundleShortVersionString": "1.0",
             "CFBundleVersion": "1",
-            "CFBundleIdentifier": "com.sopt-makers.release",
+            "CFBundleIdentifier": "com.sopt-iOS.release",
             "UILaunchStoryboardName": "LaunchScreen",
             "UIApplicationSceneManifest": [
                 "UIApplicationSupportsMultipleScenes": false,
