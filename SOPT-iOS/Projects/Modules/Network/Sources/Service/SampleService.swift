@@ -8,14 +8,6 @@
 
 import Combine
 
-public protocol SampleServiceType {
-    
-}
-
-extension BaseService: SampleServiceType {
-    
-}
-
 public protocol PostDetailServiceType {
     
 }
