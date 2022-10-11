@@ -9,6 +9,5 @@
 import Foundation
 
 public protocol ModuleFactoryInterface {
-    func makeSampleVC() -> SampleVC
     func makePostDetailVC() -> PostDetailVC
 }
