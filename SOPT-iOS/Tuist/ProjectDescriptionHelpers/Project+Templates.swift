@@ -74,6 +74,7 @@ public extension Project {
             "CFBundleShortVersionString": "1.0.0",
             "CFBundleVersion": "1",
             "CFBundleIdentifier": "com.sopt-iOS.release",
+            "CFBundleDisplayName": "SOPT",
             "UILaunchStoryboardName": "LaunchScreen",
             "UIApplicationSceneManifest": [
                 "UIApplicationSupportsMultipleScenes": false,
@@ -99,7 +100,8 @@ public extension Project {
 //                "Item 8": "Pretendard-Thin.otf"
             ],
             "App Transport Security Settings": ["Allow Arbitrary Loads": true],
-            "NSAppTransportSecurity": ["NSAllowsArbitraryLoads": true]
+            "NSAppTransportSecurity": ["NSAllowsArbitraryLoads": true],
+            "ITSAppUsesNonExemptEncryption": false
         ]
 }
 
