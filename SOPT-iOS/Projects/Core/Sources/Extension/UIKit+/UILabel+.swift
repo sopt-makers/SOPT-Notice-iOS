@@ -10,15 +10,15 @@ import UIKit
 public extension UILabel {
     
     /// 행간 조정 메서드
-      func setLineSpacing(lineSpacing: CGFloat) {
-          if let text = self.text {
-              let attributedStr = NSMutableAttributedString(string: text)
-              let style = NSMutableParagraphStyle()
-              style.lineSpacing = lineSpacing
-              attributedStr.addAttribute(NSAttributedString.Key.paragraphStyle, value: style, range: NSMakeRange(0, attributedStr.length))
-              self.attributedText = attributedStr
-          }
-      }
+    func setLineSpacing(lineSpacing: CGFloat) {
+        if let text = self.text {
+            let attributedStr = NSMutableAttributedString(string: text)
+            let style = NSMutableParagraphStyle()
+            style.lineSpacing = lineSpacing
+            attributedStr.addAttribute(NSAttributedString.Key.paragraphStyle, value: style, range: NSMakeRange(0, attributedStr.length))
+            self.attributedText = attributedStr
+        }
+    }
     
     func setLineSpacingWithChaining(lineSpacing: CGFloat) -> UILabel {
         let label = self
@@ -26,31 +26,31 @@ public extension UILabel {
             let style = NSMutableParagraphStyle()
             style.lineSpacing = lineSpacing
             let attributes: [NSAttributedString.Key: Any] = [
-              .paragraphStyle: style
-          ]
-        label.attributedText = NSAttributedString(string: text, attributes: attributes)
+                .paragraphStyle: style
+            ]
+            label.attributedText = NSAttributedString(string: text, attributes: attributes)
         }
         return label
     }
-
-      /// 자간 설정 메서드
-      func setCharacterSpacing(_ spacing: CGFloat) {
-          let attributedStr = NSMutableAttributedString(string: self.text ?? "")
-          attributedStr.addAttribute(NSAttributedString.Key.kern, value: spacing, range: NSMakeRange(0, attributedStr.length))
-          self.attributedText = attributedStr
-      }
-
-      /// 자간과 행간을 모두 조정하는 메서드
-      func setLineAndCharacterSpacing(lineSpacing: CGFloat, characterSpacing: CGFloat) {
-          if let text = self.text {
-              let attributedStr = NSMutableAttributedString(string: text)
-              let style = NSMutableParagraphStyle()
-              style.lineSpacing = lineSpacing
-              attributedStr.addAttribute(NSAttributedString.Key.paragraphStyle, value: style, range: NSMakeRange(0, attributedStr.length))
-              attributedStr.addAttribute(NSAttributedString.Key.kern, value: characterSpacing, range: NSMakeRange(0, attributedStr.length))
-              self.attributedText = attributedStr
-          }
-      }
+    
+    /// 자간 설정 메서드
+    func setCharacterSpacing(_ spacing: CGFloat) {
+        let attributedStr = NSMutableAttributedString(string: self.text ?? "")
+        attributedStr.addAttribute(NSAttributedString.Key.kern, value: spacing, range: NSMakeRange(0, attributedStr.length))
+        self.attributedText = attributedStr
+    }
+    
+    /// 자간과 행간을 모두 조정하는 메서드
+    func setLineAndCharacterSpacing(lineSpacing: CGFloat, characterSpacing: CGFloat) {
+        if let text = self.text {
+            let attributedStr = NSMutableAttributedString(string: text)
+            let style = NSMutableParagraphStyle()
+            style.lineSpacing = lineSpacing
+            attributedStr.addAttribute(NSAttributedString.Key.paragraphStyle, value: style, range: NSMakeRange(0, attributedStr.length))
+            attributedStr.addAttribute(NSAttributedString.Key.kern, value: characterSpacing, range: NSMakeRange(0, attributedStr.length))
+            self.attributedText = attributedStr
+        }
+    }
     
     /// 라벨 일부 font 변경해주는 함수
     /// - targerString에는 바꾸고자 하는 특정 문자열을 넣어주세요
@@ -85,10 +85,10 @@ public extension UILabel {
                                           options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding:String.Encoding.utf8.rawValue],
                                           documentAttributes: nil)
         } catch {
-          return NSAttributedString()
+            return NSAttributedString()
         }
     }
-
+    
     
     func setAttributedText(targetFontList: [String: UIFont],
                            targetColorList: [String: UIColor]) {
