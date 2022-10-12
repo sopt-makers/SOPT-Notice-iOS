@@ -13,7 +13,7 @@ import Domain
 
 public class SampleViewModel: ViewModelType {
 
-    private let useCase: SampleUseCase
+//    private let useCase: SampleUseCase
     private var cancelBag = Set<AnyCancellable>()
 
     // MARK: - Inputs
@@ -26,8 +26,8 @@ public class SampleViewModel: ViewModelType {
 
     }
 
-    public init(useCase: SampleUseCase) {
-        self.useCase = useCase
+    public init() {
+//        self.useCase = useCase
     }
 }
 

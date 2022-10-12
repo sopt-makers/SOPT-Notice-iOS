@@ -29,8 +29,8 @@ public class SampleVC: UIViewController {
     
     @objc
     func presentSampleVC() {
-        let sampleVC = factory.makeSampleVC()
-        self.present(sampleVC, animated: true)
+//        let sampleVC = factory.makeSampleVC()
+//        self.present(sampleVC, animated: true)
     }
     
     private func bindViewModels() {
