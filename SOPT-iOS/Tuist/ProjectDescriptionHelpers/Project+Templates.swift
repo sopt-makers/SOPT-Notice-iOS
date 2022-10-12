@@ -20,11 +20,13 @@ public extension Project {
         /// - configurations: project의 configurations 설정
         /// - defaultSettings: xcconfig 사용하는 경우 .none으로 하는게 편함
         let settings: Settings = .settings(
-            base: [:],
-            configurations: [
-                .debug(name: .debug),
-                .release(name: .release)
-            ], defaultSettings: .recommended)
+            base: .init()
+                .setCodeSignManual(),
+            debug: .init()
+                .setProvisioningDevelopment(),
+            release: .init()
+                .setProvisioningAppstore(),
+            defaultSettings: .recommended)
         
         /// Targets
         /// - test 용으로 TestTarget 정의 후, appTarget에 대한 dependency 설정
@@ -69,7 +71,7 @@ public extension Project {
     }
     
     static let baseinfoPlist: [String: InfoPlist.Value] = [
-            "CFBundleShortVersionString": "1.0",
+            "CFBundleShortVersionString": "1.0.0",
             "CFBundleVersion": "1",
             "CFBundleIdentifier": "com.sopt-iOS.release",
             "UILaunchStoryboardName": "LaunchScreen",
