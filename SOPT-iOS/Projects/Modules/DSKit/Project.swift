@@ -2,18 +2,17 @@
 //  Project.swift
 //  ProjectDescriptionHelpers
 //
-//  Created by sejin on 2022/10/02.
+//  Created by 양수빈 on 2022/10/13.
 //
 
 import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.makeModule(
-    name: "Presentation",
+    name: "DSKit",
     product: .staticFramework,
     dependencies: [
-        .Project.Domain,
-        .Project.DSKit
+        .Project.Core
     ],
     resources: ["Resources/**"]
 )

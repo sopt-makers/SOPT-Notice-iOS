@@ -9,6 +9,7 @@
 import UIKit
 
 import Core
+import DSKit
 
 import SnapKit
 
@@ -23,8 +24,10 @@ final class PostDetailContentCVC: UICollectionViewCell, UICollectionViewRegister
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = PostDetailContentCVC.sampleString
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = UIColor(red: 0.082, green: 0.086, blue: 0.09, alpha: 1)
+        label.setTypoStyle(.body2)
+//        label.font = .systemFont(ofSize: 14)
+        label.textColor = DSKitAsset.Colors.gray900.color
+        // UIColor(red: 0.082, green: 0.086, blue: 0.09, alpha: 1)
         label.numberOfLines = 0
         label.lineBreakMode = .byCharWrapping
         return label
