@@ -7,3 +7,13 @@
 //
 
 import Foundation
+
+public typealias DefaultAuthService = BaseService<AuthAPI>
+
+public protocol AuthService {
+    
+}
+
+extension DefaultAuthService: AuthService {
+    
+}

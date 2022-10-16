@@ -7,3 +7,16 @@
 //
 
 import Foundation
+
+import Alamofire
+import Moya
+
+public typealias DefaultNoticeService = BaseService<NoticeAPI>
+
+public protocol NoticeService {
+    
+}
+
+extension DefaultAlertService: NoticeService {
+    
+}
