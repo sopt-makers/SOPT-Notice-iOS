@@ -10,18 +10,18 @@ import Alamofire
 import Moya
 import Foundation
 
-enum APIType {
+public enum APIType {
     case notice
     case auth
     case alert
 }
 
-protocol BaseAPI: TargetType {
+public protocol BaseAPI: TargetType {
     static var apiType: APIType { get set }
 }
 
 extension BaseAPI {
-    var baseURL: URL {
+    public var baseURL: URL {
         var base = Config.Network.baseURL
         
         switch Self.apiType {
@@ -39,7 +39,7 @@ extension BaseAPI {
         return url
     }
     
-    var headers: [String : String]? {
+    public var headers: [String : String]? {
         return ["Content-Type": "application/json"]
     }
 }
