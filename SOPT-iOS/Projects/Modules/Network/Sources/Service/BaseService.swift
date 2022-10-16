@@ -18,7 +18,7 @@ open class BaseService<Target: TargetType> {
     typealias API = Target
     
     var cancelBag = Set<AnyCancellable>()
-    private init() {}
+    
     public init() {}
     
     private lazy var provider: MoyaProvider<API> = {
@@ -31,6 +31,28 @@ open class BaseService<Target: TargetType> {
         var endpoint: Endpoint = Endpoint(url: url, sampleResponseClosure: {.networkResponse(200, target.sampleData)}, method: target.method, task: target.task, httpHeaderFields: target.headers)
         return endpoint
     }
+    
+    func requestObjectInCombine<T: Decodable>(_ target: API) -> AnyPublisher<T?, Error> {
+        return Future { promise in
+            self.provider.request(target) { response in
+                switch response {
+                case .success(let value):
+                    do {
+                        let decoder = JSONDecoder()
+                        let body = try decoder.decode(ResponseObject<T>.self, from: value.data)
+                        promise(.success(body.data))
+                    } catch let error {
+                        dump(error)
+                        promise(.failure(error))
+                    }
+                case .failure(let error):
+                    dump(error)
+                    promise(.failure(error))
+                }
+            }
+        }.eraseToAnyPublisher()
+    }
+    
     func requestObject<T: Decodable>(_ target: API, completion: @escaping (Result<T?, Error>) -> Void) {
         provider.request(target) { response in
             switch response {

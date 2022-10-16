@@ -7,3 +7,14 @@
 //
 
 import Foundation
+
+public struct MainMapEntity: Codable {
+    public let id, name: String
+    public let longitude, latitude: Double
+    public let isDietRestaurant: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case id = "_id"
+        case name, longitude, latitude, isDietRestaurant
+    }
+}
