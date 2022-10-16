@@ -11,27 +11,32 @@ import Foundation
 import Alamofire
 import Moya
 
-enum AlertAPI {
+public enum AlertAPI {
     case sample(provider: String)
+    case restaurant
 }
 
 extension AlertAPI: BaseAPI {
     
-    static var apiType: APIType = .notice
+    public static var apiType: APIType = .alert
     
     // MARK: - Path
-    var path: String {
+    public var path: String {
         switch self {
         case .sample:
+            return ""
+        case .restaurant:
             return ""
         }
     }
     
     // MARK: - Method
-    var method: Moya.Method {
+    public var method: Moya.Method {
         switch self {
         case .sample:
             return .post
+        case .restaurant:
+            return .get
         }
     }
     
@@ -47,6 +52,12 @@ extension AlertAPI: BaseAPI {
         switch self {
         case .sample(let provider):
             params["platform"] = provider
+        case .restaurant:
+            params["category"] = ""
+            params["longitude"] = 126.95153705076048
+            params["zoom"] = 10000000.0
+            params["latitude"] = 37.504551862886466
+        default: return nil
         }
         return params
     }
@@ -57,11 +68,10 @@ extension AlertAPI: BaseAPI {
     ///
     private var parameterEncoding : ParameterEncoding{
         switch self {
-        case .sample:
+        case .sample, .restaurant:
             return URLEncoding.init(destination: .queryString, arrayEncoding: .noBrackets, boolEncoding: .literal)
-//        default :
-//            return JSONEncoding.default
-            
+        default :
+            return JSONEncoding.default
         }
     }
     
@@ -69,12 +79,14 @@ extension AlertAPI: BaseAPI {
     ///  body Parameters가 있는 경우 requestParameters  case 처리.
     ///  일반적인 처리는 모두 requestPlain으로 사용.
     ///
-    var task: Task {
+    public var task: Task {
         switch self {
         case .sample:
             return .requestParameters(parameters: bodyParameters ?? [:], encoding: parameterEncoding)
-//        default:
-//            return .requestPlain
+        case .restaurant:
+            return .requestParameters(parameters: bodyParameters ?? [:], encoding: parameterEncoding)
+        default:
+            return .requestPlain
         }
     }
 }
