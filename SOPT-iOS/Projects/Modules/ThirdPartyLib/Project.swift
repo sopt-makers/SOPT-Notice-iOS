@@ -16,6 +16,7 @@ let project = Project.makeModule(
         .SPM.SnapKit,
         .SPM.Kingfisher,
         .SPM.Then,
-        .SPM.Moya
+        .SPM.Moya,
+        .SPM.CombineMoya
     ]
 )

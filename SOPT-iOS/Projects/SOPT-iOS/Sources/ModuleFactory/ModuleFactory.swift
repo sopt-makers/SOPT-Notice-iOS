@@ -17,12 +17,15 @@ public class ModuleFactory {
     static let shared = ModuleFactory()
     private init() { }
     
+    lazy var alertService = DefaultAlertService()
+    lazy var noticeService = DefaultNoticeService()
+    lazy var authService = DefaultAuthService()
 }
 
 extension ModuleFactory: ModuleFactoryInterface {
     
     public func makePostDetailVC() -> Presentation.PostDetailVC {
-        let repository = PostDetailRepository(service: BaseService.default)
+        let repository = PostDetailRepository(service: alertService)
         let useCase = DefaultPostDetailUseCase(repository: repository)
         let viewModel = PostDetailViewModel(useCase: useCase)
         let PostDetailVC = PostDetailVC()
