@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import Combine
 
 import Core
 
-import Combine
+import ImageSlideShow
 import SnapKit
 import Then
 
@@ -102,6 +103,14 @@ extension PostDetailVC {
                 
             case .images:
                 guard let imagesCell = collectionView.dequeueReusableCell(withReuseIdentifier: PostDetailImagesCVC.className, for: indexPath) as? PostDetailImagesCVC else { return UICollectionViewCell() }
+                imagesCell.imageViewTapped
+                    .sink { error in
+                        print(error)
+                    } receiveValue: { [weak self] in
+                        guard let self = self else { return }
+                        self.presentImageSlide()
+                    }.store(in: &self.cancelBag)
+
                 return imagesCell
                 
             case .content:
