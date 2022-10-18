@@ -26,11 +26,7 @@ public class PostListVC: UIViewController {
         let viewPager = ViewPager(tabSizeConfiguration: .fixed(width: 72, height: 32))
         
         let tabs = partList.map { TabItemView(title: $0) }
-        let pages = partList.map { _ in
-            let view = UIView()
-            view.backgroundColor = .white
-            return view
-        }
+        let pages = partList.map { _ in PostListPageView() }
  
         viewPager.tabbedView.tabs = tabs
         
