@@ -46,6 +46,7 @@ public class PostDetailVC: UIViewController {
         self.bindViewModels()
         self.setDataSource()
         self.applySnapshot()
+        self.generateImages()
     }
 }
 
