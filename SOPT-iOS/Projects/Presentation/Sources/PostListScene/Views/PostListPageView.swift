@@ -20,6 +20,7 @@ final class PostListPageView: UIView {
        let tableView = UITableView()
         tableView.backgroundColor = .white
         tableView.showsVerticalScrollIndicator = false
+        tableView.separatorStyle = .none
         return tableView
     }()
     
@@ -62,7 +63,7 @@ extension PostListPageView {
     }
     
     private func registerCells() {
-        self.postListTableView.register(UITableViewCell.self, forCellReuseIdentifier: "myCell")
+        self.postListTableView.register(PostListTableViewCell.self, forCellReuseIdentifier: PostListTableViewCell.className)
     }
 }
 
@@ -71,9 +72,8 @@ extension PostListPageView {
 extension PostListPageView {
     private func setDataSource() {
         self.dataSource = UITableViewDiffableDataSource(tableView: postListTableView, cellProvider: { tableView, indexPath, itemIdentifier in
-            let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath)
-            cell.backgroundColor = .blue
-
+            let cell = tableView.dequeueReusableCell(withIdentifier: PostListTableViewCell.className, for: indexPath)
+            cell.selectionStyle = .none
             return cell
         })
         
@@ -83,7 +83,7 @@ extension PostListPageView {
     func applySnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<Int, UUID>()
         snapshot.appendSections([0])
-        snapshot.appendItems([UUID(), UUID(), UUID()])
+        snapshot.appendItems([UUID(), UUID(), UUID(), UUID()])
         self.dataSource.apply(snapshot)
     }
 }
@@ -93,5 +93,9 @@ extension PostListPageView {
 extension PostListPageView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 73
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath.item)
     }
 }
