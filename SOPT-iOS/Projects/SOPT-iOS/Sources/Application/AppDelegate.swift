@@ -6,9 +6,15 @@
 //
 
 import UIKit
+import UserNotifications
+
+import AWSSNS
+import AWSCore
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    let SNSPlatformApplicationArn = ""
     
     func application( _ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // APNS 설정
