@@ -17,7 +17,6 @@ let project = Project.makeModule(
         .SPM.Kingfisher,
         .SPM.Then,
         .SPM.Moya,
-        .SPM.CombineMoya,
-        .SPM.ImageSlideShow
+        .SPM.CombineMoya
     ]
 )
