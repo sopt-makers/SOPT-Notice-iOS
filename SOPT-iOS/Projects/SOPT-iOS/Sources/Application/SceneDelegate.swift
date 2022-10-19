@@ -20,14 +20,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(frame: scene.coordinateSpace.bounds)
         window?.windowScene = scene
-        let rootViewController = ModuleFactory.shared.makePostDetailVC()
+        let rootViewController = ModuleFactory.shared.makePostListVC()
         window?.rootViewController = rootViewController
         window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {}
 
-    func sceneDidBecomeActive(_ scene: UIScene) {}
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        UIApplication.shared.applicationIconBadgeNumber = 0
+    }
 
     func sceneWillResignActive(_ scene: UIScene) {}
 

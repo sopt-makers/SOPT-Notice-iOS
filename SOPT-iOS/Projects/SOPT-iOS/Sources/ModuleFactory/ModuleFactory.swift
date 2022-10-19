@@ -23,6 +23,14 @@ public class ModuleFactory {
 }
 
 extension ModuleFactory: ModuleFactoryInterface {
+    public func makePostListVC() -> Presentation.PostListVC {
+        let repository = PostListRepository(service: alertService)
+        let useCase = DefaultPostListUseCase(repository: repository)
+        let viewModel = PostListViewModel(useCase: useCase)
+        let postListVC = PostListVC()
+        postListVC.viewModel = viewModel
+        return postListVC
+    }
     
     public func makePostDetailVC() -> Presentation.PostDetailVC {
         let repository = PostDetailRepository(service: alertService)
