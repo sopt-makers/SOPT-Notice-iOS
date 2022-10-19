@@ -20,8 +20,8 @@ public extension Project {
         /// - configurations: project의 configurations 설정
         /// - defaultSettings: xcconfig 사용하는 경우 .none으로 하는게 편함
         let settings: Settings = .settings(
-            base: .init()
-                .setCodeSignManual(),
+            base:
+                product == .app ? .init().setCodeSignManualForApp() : .init().setCodeSignManual(),
             debug: .init()
                 .setProvisioningDevelopment(),
             release: .init()
