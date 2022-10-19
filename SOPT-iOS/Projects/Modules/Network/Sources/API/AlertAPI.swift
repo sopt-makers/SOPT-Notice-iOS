@@ -1,47 +1,42 @@
 //
-//  BaseAPI.swift
+//  AlertAPI.swift
 //  Network
 //
-//  Created by 양수빈 on 2022/10/06.
+//  Created by Junho Lee on 2022/10/16.
 //  Copyright © 2022 SOPT-iOS. All rights reserved.
 //
 
-import Alamofire
-import Moya
 import Foundation
 
-enum BaseAPI {
-    case sample(platform: String)
+import Alamofire
+import Moya
+
+public enum AlertAPI {
+    case sample(provider: String)
+    case restaurant
 }
 
-extension BaseAPI: TargetType {
-    var baseURL: URL {
-        var base = Config.Network.baseURL
-        
-        switch self {
-        case .sample:
-            base += ""
-        }
-        
-        guard let url = URL(string: base) else {
-            fatalError("baseURL could not be configured")
-        }
-        return url
-    }
+extension AlertAPI: BaseAPI {
+    
+    public static var apiType: APIType = .alert
     
     // MARK: - Path
-    var path: String {
+    public var path: String {
         switch self {
         case .sample:
+            return ""
+        case .restaurant:
             return ""
         }
     }
     
     // MARK: - Method
-    var method: Moya.Method {
+    public var method: Moya.Method {
         switch self {
         case .sample:
             return .post
+        case .restaurant:
+            return .get
         }
     }
     
@@ -57,6 +52,12 @@ extension BaseAPI: TargetType {
         switch self {
         case .sample(let provider):
             params["platform"] = provider
+        case .restaurant:
+            params["category"] = ""
+            params["longitude"] = 126.95153705076048
+            params["zoom"] = 10000000.0
+            params["latitude"] = 37.504551862886466
+        default: return nil
         }
         return params
     }
@@ -67,11 +68,10 @@ extension BaseAPI: TargetType {
     ///
     private var parameterEncoding : ParameterEncoding{
         switch self {
-        case .sample:
+        case .sample, .restaurant:
             return URLEncoding.init(destination: .queryString, arrayEncoding: .noBrackets, boolEncoding: .literal)
-//        default :
-//            return JSONEncoding.default
-            
+        default :
+            return JSONEncoding.default
         }
     }
     
@@ -79,16 +79,14 @@ extension BaseAPI: TargetType {
     ///  body Parameters가 있는 경우 requestParameters  case 처리.
     ///  일반적인 처리는 모두 requestPlain으로 사용.
     ///
-    var task: Task {
+    public var task: Task {
         switch self {
         case .sample:
             return .requestParameters(parameters: bodyParameters ?? [:], encoding: parameterEncoding)
-//        default:
-//            return .requestPlain
+        case .restaurant:
+            return .requestParameters(parameters: bodyParameters ?? [:], encoding: parameterEncoding)
+        default:
+            return .requestPlain
         }
-    }
-    
-    var headers: [String : String]? {
-        return ["Content-Type": "application/json"]
     }
 }
