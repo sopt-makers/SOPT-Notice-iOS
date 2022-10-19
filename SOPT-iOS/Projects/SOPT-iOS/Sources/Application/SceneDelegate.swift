@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(frame: scene.coordinateSpace.bounds)
         window?.windowScene = scene
-        let rootViewController = ModuleFactory.shared.makePostDetailVC()
+        let rootViewController = ModuleFactory.shared.makePostListVC()
         window?.rootViewController = rootViewController
         window?.makeKeyAndVisible()
     }
