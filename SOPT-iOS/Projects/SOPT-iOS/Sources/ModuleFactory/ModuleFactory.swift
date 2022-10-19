@@ -32,4 +32,13 @@ extension ModuleFactory: ModuleFactoryInterface {
         PostDetailVC.viewModel = viewModel
         return PostDetailVC
     }
+    
+    public func makeSettingVC() -> Presentation.SettingVC {
+        let repository = SettingRepository(service: alertService)
+        let useCase = DefaultSettingUseCase(repository: repository)
+        let viewModel = SettingViewModel(useCase: useCase)
+        let settingVC = SettingVC()
+        settingVC.viewModel = viewModel
+        return settingVC
+    }
 }
