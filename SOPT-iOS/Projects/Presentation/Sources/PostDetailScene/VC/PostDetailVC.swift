@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import Combine
 
 import Core
 
-import Combine
+import ImageSlideShow
 import SnapKit
 import Then
 
@@ -22,6 +23,7 @@ public class PostDetailVC: UIViewController {
     private var cancelBag = Set<AnyCancellable>()
     
     lazy var dataSource: UICollectionViewDiffableDataSource<Section, Int>! = nil
+    var sampleImages:[Image] = []
   
     // MARK: - UI Components
     
@@ -44,6 +46,7 @@ public class PostDetailVC: UIViewController {
         self.bindViewModels()
         self.setDataSource()
         self.applySnapshot()
+        self.generateImages()
     }
 }
 
@@ -88,6 +91,27 @@ extension PostDetailVC {
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
     }
 
+    private func presentImageSlide() {
+        ImageSlideShowViewController.presentByCustomTransitionFrom(self){ [weak self] controller in
+            controller.dismissOnPanGesture = false
+            controller.slides = self?.sampleImages
+            controller.enableZoom = true
+            controller.controllerDidDismiss = {
+                debugPrint("Controller Dismissed")
+
+                debugPrint("last index viewed: \(controller.currentIndex)")
+            }
+            controller.slideShowViewDidLoad = {
+                debugPrint("Did Load")
+            }
+            controller.slideShowViewWillAppear = { animated in
+                debugPrint("Will Appear Animated: \(animated)")
+            }
+            controller.slideShowViewDidAppear = { animated in
+                debugPrint("Did Appear Animated: \(animated)")
+            }
+        }
+    }
 }
 
 // MARK: - DiffableDataSource
@@ -102,6 +126,14 @@ extension PostDetailVC {
                 
             case .images:
                 guard let imagesCell = collectionView.dequeueReusableCell(withReuseIdentifier: PostDetailImagesCVC.className, for: indexPath) as? PostDetailImagesCVC else { return UICollectionViewCell() }
+                imagesCell.imageViewTapped
+                    .sink { error in
+                        print(error)
+                    } receiveValue: { [weak self] in
+                        guard let self = self else { return }
+                        self.presentImageSlide()
+                    }.store(in: &self.cancelBag)
+
                 return imagesCell
                 
             case .content:
@@ -128,4 +160,61 @@ extension PostDetailVC {
 
 extension PostDetailVC: UICollectionViewDelegate {
 
+}
+
+extension PostDetailVC: UIViewControllerTransitioningDelegate {
+    
+    public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return ImageSlideShowViewController.presentLikePush
+    }
+    
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return ImageSlideShowViewController.dismissLikePush
+    }
+}
+
+extension PostDetailVC {
+    fileprivate func generateImages()
+    {
+        let scale:Int = Int(UIScreen.main.scale)
+        let height:Int = Int(view.frame.size.height) * scale
+        let width:Int = Int(view.frame.size.width) * scale
+        
+        sampleImages = [
+            Image(title: "Image 1", url: URL(string: "https://dummyimage.com/\(width)x\(height)/09a/fff.png&text=Image+1")!),
+            Image(title: "Image 2", url: URL(string: "https://dummyimage.com/\(600)x\(600)/09b/fff.png&text=Image+2")!),
+            Image(title: "Image 3", url: URL(string: "https://dummyimage.com/\(width)x\(height)/09c/fff.png&text=Image+3")!),
+            Image(title: "Image 4", url: URL(string: "https://dummyimage.com/\(600)x\(600)/09d/fff.png&text=Image+4")!),
+            Image(title: "Image 5", url: URL(string: "https://dummyimage.com/\(width)x\(height)/09e/fff.png&text=Image+5")!),
+            Image(title: "Image 6", url: URL(string: "https://dummyimage.com/\(width)x\(height)/09f/fff.png&text=Image+6")!),
+        ]
+    }
+}
+
+class Image: NSObject, ImageSlideShowProtocol
+{
+    private let url: URL
+    let title: String?
+    
+    init(title: String, url: URL) {
+        self.title = title
+        self.url = url
+    }
+    
+    func slideIdentifier() -> String {
+        return String(describing: url)
+    }
+    
+    func image(completion: @escaping (_ image: UIImage?, _ error: Error?) -> Void) {
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+        session.dataTask(with: self.url) { data, response, error in
+            if let data = data,
+               error == nil {
+                let image = UIImage(data: data)
+                completion(image, nil)
+            } else {
+                completion(nil, error)
+            }
+        }.resume()
+    }
 }

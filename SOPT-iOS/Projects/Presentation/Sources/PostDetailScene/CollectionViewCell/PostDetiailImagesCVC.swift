@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Combine
 
 import Core
 
@@ -18,12 +19,15 @@ final class PostDetailImagesCVC: UICollectionViewCell, UICollectionViewRegistera
     
     static var isFromNib: Bool = false
     
+    var imageViewTapped = PassthroughSubject<Void, Error>()
+    
     // MARK: - UI Components
     
     private let contentImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
         iv.backgroundColor = .gray
+        iv.isUserInteractionEnabled = true
         return iv
     }()
     
@@ -48,12 +52,16 @@ final class PostDetailImagesCVC: UICollectionViewCell, UICollectionViewRegistera
         super.init(frame: frame)
         self.setUI()
         self.setLayout()
+        self.setGesture()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+
+// MARK: - UI Components
 
 extension PostDetailImagesCVC {
     
@@ -79,5 +87,19 @@ extension PostDetailImagesCVC {
         imageNumberLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
+    }
+}
+
+// MARK: - Methods
+
+extension PostDetailImagesCVC {
+    private func setGesture() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(imageViewSender))
+        self.contentImageView.addGestureRecognizer(tap)
+    }
+    
+    @objc
+    private func imageViewSender() {
+        self.imageViewTapped.send()
     }
 }
