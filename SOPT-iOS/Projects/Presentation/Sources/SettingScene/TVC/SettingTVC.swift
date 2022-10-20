@@ -16,10 +16,6 @@ class SettingTVC: UITableViewCell {
     
     // MARK: - Properties
     
-    enum SettingCellType: CaseIterable {
-        case pushAlarm, termsOfService, privacyPolicy
-    }
-    
     // MARK: - UI Components
     
     let titleLabel = UILabel().then {

@@ -16,10 +16,6 @@ class PushAlarmPartTVC: UITableViewCell {
     
     // MARK: - Properties
     
-    enum PartList: CaseIterable {
-        case FullNotice, PM, Design, iOS, Android, Server, Web
-    }
-    
     // MARK: - UI Components
     
     let titleLabel = UILabel().then {

@@ -79,7 +79,7 @@ extension SettingVC: UITableViewDelegate {
 extension SettingVC: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return SettingTVC.SettingCellType.allCases.count
+        return viewModel.getSettingCellCount()
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -89,7 +89,7 @@ extension SettingVC: UITableViewDataSource {
                 as? SettingTVC else { return UITableViewCell() }
         cell.selectionStyle = .none
         
-        let cellType = SettingTVC.SettingCellType.allCases[indexPath.item]
+        let cellType = SettingViewModel.SettingCellType.allCases[indexPath.item]
         cell.titleLabel.text = viewModel.getSettingCellTitle(cellType: cellType)
         cell.detailVCButton.isHidden = viewModel.setButtonState(cellType: cellType)
         return cell

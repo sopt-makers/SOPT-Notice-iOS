@@ -110,7 +110,7 @@ extension PushAlarmSettingVC: UITableViewDelegate {
 extension PushAlarmSettingVC: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return PushAlarmPartTVC.PartList.allCases.count
+        return viewModel.getPartListCount()
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -120,24 +120,8 @@ extension PushAlarmSettingVC: UITableViewDataSource {
                 as? PushAlarmPartTVC else { return UITableViewCell() }
         cell.selectionStyle = .none
         
-        let cellType = PushAlarmPartTVC.PartList.allCases[indexPath.item]
-        
-        switch cellType {
-        case .FullNotice:
-            cell.titleLabel.text = "전체"
-        case .PM:
-            cell.titleLabel.text = "기획"
-        case .Design:
-            cell.titleLabel.text = "디자인"
-        case .iOS:
-            cell.titleLabel.text = "iOS"
-        case .Android:
-            cell.titleLabel.text = "Android"
-        case .Server:
-            cell.titleLabel.text = "Server"
-        case .Web:
-            cell.titleLabel.text = "Web"
-        }
+        let cellType = PushAlarmSettingViewModel.PartList.allCases[indexPath.item]
+        cell.titleLabel.text = cellType.title
         return cell
     }
 }

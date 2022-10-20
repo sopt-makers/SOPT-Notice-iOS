@@ -13,6 +13,31 @@ import Domain
 
 public class PushAlarmSettingViewModel: ViewModelType {
 
+    // MARK: - Properties
+
+    enum PartList: CaseIterable {
+        case FullNotice, PM, Design, iOS, Android, Server, Web
+        
+        var title: String {
+            switch self {
+            case .FullNotice:
+                return "전체"
+            case .PM:
+                return "기획"
+            case .Design:
+                return "디자인"
+            case .iOS:
+                return "iOS"
+            case .Android:
+                return "Android"
+            case .Server:
+                return "Server"
+            case .Web:
+                return "Web"
+            }
+        }
+    }
+    
     private let useCase: PushAlarmSettingUseCase
     private var cancelBag = Set<AnyCancellable>()
   
@@ -46,5 +71,11 @@ extension PushAlarmSettingViewModel {
   
     private func bindOutput(output: Output, cancelBag: Set<AnyCancellable>) {
     
+    }
+}
+
+extension PushAlarmSettingViewModel {
+    func getPartListCount() -> Int {
+        return PartList.allCases.count
     }
 }
