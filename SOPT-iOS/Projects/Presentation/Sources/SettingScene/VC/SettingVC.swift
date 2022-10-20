@@ -90,17 +90,8 @@ extension SettingVC: UITableViewDataSource {
         cell.selectionStyle = .none
         
         let cellType = SettingTVC.SettingCellType.allCases[indexPath.item]
-        
-        switch cellType {
-        case .pushAlarm:
-            cell.titleLabel.text = "푸시 알림 설정"
-        case .termsOfService:
-            cell.titleLabel.text = "서비스 이용약관"
-            cell.detailVCButton.isHidden = true
-        case .privacyPolicy:
-            cell.titleLabel.text = "개인정보 처리방침"
-            cell.detailVCButton.isHidden = true
-        }
+        cell.titleLabel.text = viewModel.getSettingCellTitle(cellType: cellType)
+        cell.detailVCButton.isHidden = viewModel.setButtonState(cellType: cellType)
         return cell
     }
     

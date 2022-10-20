@@ -43,7 +43,9 @@ extension ModuleFactory: ModuleFactoryInterface {
     
     public func makeSettingVC() -> Presentation.SettingVC {
         let settingVC = SettingVC()
+        let viewModel = SettingViewModel()
         settingVC.factory = self
+        settingVC.viewModel = viewModel
         return settingVC
     }
     
