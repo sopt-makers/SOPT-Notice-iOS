@@ -40,4 +40,21 @@ extension ModuleFactory: ModuleFactoryInterface {
         PostDetailVC.viewModel = viewModel
         return PostDetailVC
     }
+    
+    public func makeSettingVC() -> Presentation.SettingVC {
+        let settingVC = SettingVC()
+        let viewModel = SettingViewModel()
+        settingVC.factory = self
+        settingVC.viewModel = viewModel
+        return settingVC
+    }
+    
+    public func makePushAlarmSettingVC() -> Presentation.PushAlarmSettingVC {
+        let repository = PushAlarmSettingRepository(service: alertService)
+        let useCase = DefaultPushAlarmSettingUseCase(repository: repository)
+        let viewModel = PushAlarmSettingViewModel(useCase: useCase)
+        let pushAlarmSettingVC = PushAlarmSettingVC()
+        pushAlarmSettingVC.viewModel = viewModel
+        return pushAlarmSettingVC
+    }
 }

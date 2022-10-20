@@ -11,4 +11,6 @@ import Foundation
 public protocol ModuleFactoryInterface {
     func makePostListVC() -> PostListVC
     func makePostDetailVC() -> PostDetailVC
+    func makeSettingVC() -> SettingVC
+    func makePushAlarmSettingVC() -> PushAlarmSettingVC
 }
