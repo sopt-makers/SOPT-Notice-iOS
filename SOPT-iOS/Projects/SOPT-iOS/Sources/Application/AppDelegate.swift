@@ -8,13 +8,16 @@
 import UIKit
 import UserNotifications
 
+import Core
+
 import AWSSNS
 import AWSCore
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    let SNSPlatformApplicationArn = ""
+    // TODO: - 서버한테 받아서 넣기
+    private let SNSPlatformApplicationArn = ""
     
     func application( _ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // APNS 설정
@@ -26,6 +29,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // APNS 권한 성공
                 print("permission granted: \(granted)")
         }
+        
+        // AWSServiceConfiguration setting
+        let defaultServiceConfiguration = AWSServiceConfiguration(region: .APNortheast2, credentialsProvider: nil)
+        AWSServiceManager.default().defaultServiceConfiguration = defaultServiceConfiguration
         
         // APNS 등록
         application.registerForRemoteNotifications()
@@ -42,6 +49,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tokenPart = deviceToken.map { data in String(format: "%02.2hhx", data) }
         let token = tokenPart.joined()
         print("Device Token:", token)
+        
+        UserDefaultKeyList.Auth.deviceToken = token
+        
+        // create platform endpoint (= device endpoint ARN)
+        let sns = AWSSNS.default()
+        let request = AWSSNSCreatePlatformEndpointInput()
+        request?.token = token
+        request?.platformApplicationArn = SNSPlatformApplicationArn
+        sns.createPlatformEndpoint(request!).continueWith(executor: AWSExecutor.mainThread(), block: { (task: AWSTask!) -> AnyObject? in
+            if task.error != nil {
+                print("Error: \(String(describing: task.error))")
+            } else {
+                let createEndpointResponse = task.result! as AWSSNSCreateEndpointResponse
+                
+                if let endpointArnForSNS = createEndpointResponse.endpointArn {
+                    print("endpointArn: \(endpointArnForSNS)")
+                    UserDefaultKeyList.Auth.endpointArnForSNS = endpointArnForSNS
+                }
+            }
+            
+            return nil
+        })
     }
     
     // MARK: UISceneSession Lifecycle
