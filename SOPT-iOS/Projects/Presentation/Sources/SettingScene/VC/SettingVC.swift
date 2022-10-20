@@ -8,7 +8,6 @@
 
 import UIKit
 
-import Combine
 import SnapKit
 import Then
 
@@ -17,7 +16,6 @@ public class SettingVC: UIViewController {
     // MARK: - Properties
     
     public var viewModel: SettingViewModel!
-    private var cancelBag = Set<AnyCancellable>()
   
     // MARK: - UI Components
     
@@ -33,7 +31,6 @@ public class SettingVC: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        self.bindViewModels()
         self.setUI()
         self.setLayout()
         self.setDelegate()
@@ -67,14 +64,6 @@ extension SettingVC {
 }
 
 // MARK: - Methods
-
-extension SettingVC {
-  
-    private func bindViewModels() {
-        let input = SettingViewModel.Input()
-        let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
-    }
-}
 
 // MARK: - UITableViewDelegate
 
