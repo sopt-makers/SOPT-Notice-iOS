@@ -25,21 +25,16 @@ class SettingTVC: UITableViewCell {
     let titleLabel = UILabel().then {
         $0.setTypoStyle(.body1)
         $0.textColor = DSKitAsset.Colors.gray900.color
-        $0.numberOfLines = 1
-        $0.lineBreakMode = .byTruncatingTail
         $0.textAlignment = .left
     }
     
     lazy var detailVCButton = UIButton(type: .system).then {
-        $0.setImage(DSKitAsset.Assets.icRight.image, for: .normal)
-        $0.tintColor = DSKitAsset.Colors.black.color
+        $0.setImage(DSKitAsset.Assets.icRight.image.withTintColor(DSKitAsset.Colors.black.color, renderingMode: .alwaysOriginal), for: .normal)
     }
     
-    private let dividerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = DSKitAsset.Colors.gray200.color
-        return view
-    }()
+    private let dividerView = UIView().then {
+        $0.backgroundColor = DSKitAsset.Colors.gray200.color
+    }
     
     // MARK: - Initialization
     

@@ -36,11 +36,9 @@ class PushAlarmPartTVC: UITableViewCell {
 
     }
     
-    private let dividerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = DSKitAsset.Colors.gray200.color
-        return view
-    }()
+    private let dividerView = UIView().then {
+        $0.backgroundColor = DSKitAsset.Colors.gray200.color
+    }
     
     // MARK: - Initialization
     
