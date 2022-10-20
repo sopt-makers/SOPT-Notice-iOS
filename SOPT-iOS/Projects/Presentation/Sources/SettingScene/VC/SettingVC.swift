@@ -14,7 +14,7 @@ import Then
 public class SettingVC: UIViewController {
     
     // MARK: - Properties
-    
+    public var factory: ModuleFactoryInterface!
     public var viewModel: SettingViewModel!
   
     // MARK: - UI Components
@@ -107,7 +107,8 @@ extension SettingVC: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.item {
         case 0:
-            print("dddd")
+            let pushAlarmSettingVC = factory.makePushAlarmSettingVC()
+            navigationController?.pushViewController(pushAlarmSettingVC, animated: true)
         default:
             break
         }
