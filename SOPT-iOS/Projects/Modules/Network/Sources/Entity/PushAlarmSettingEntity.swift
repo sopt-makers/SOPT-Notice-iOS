@@ -1,5 +1,5 @@
 //
-//  SettingEntity.swift
+//  PushAlarmSettingEntity.swift
 //  Presentation
 //
 //  Created by devxsby on 2022/10/17.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-public struct SettingEntity {
+public struct PushAlarmSettingEntity {
     
 }

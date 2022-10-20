@@ -1,5 +1,5 @@
 //
-//  SettingTransform.swift
+//  PushAlarmSettingTransform.swift
 //  Data
 //
 //  Created by devxsby on 2022/10/19.
@@ -11,10 +11,9 @@ import Foundation
 import Domain
 import Network
 
-extension SettingEntity {
+extension PushAlarmSettingEntity {
     
-    public func toDomain() -> SettingModel {
-        return SettingModel.init()
+    public func toDomain() -> PushAlarmSettingModel {
+        return PushAlarmSettingModel.init()
     }
 }
-

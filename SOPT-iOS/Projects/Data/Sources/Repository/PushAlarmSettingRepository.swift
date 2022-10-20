@@ -1,5 +1,5 @@
 //
-//  SettingRepository.swift
+//  PushAlarmSettingRepository.swift
 //  Presentation
 //
 //  Created by devxsby on 2022/10/17.
@@ -11,16 +11,16 @@ import Combine
 import Domain
 import Network
 
-public class SettingRepository {
+public class PushAlarmSettingRepository {
     
-    private let networkService: SettingServiceType
+    private let networkService: PushAlarmSettingServiceType
     private let cancelBag = Set<AnyCancellable>()
     
-    public init(service: SettingServiceType) {
+    public init(service: PushAlarmSettingServiceType) {
         self.networkService = service
     }
 }
 
-extension SettingRepository: SettingRepositoryInterface {
+extension PushAlarmSettingRepository: PushAlarmSettingRepositoryInterface {
     
 }

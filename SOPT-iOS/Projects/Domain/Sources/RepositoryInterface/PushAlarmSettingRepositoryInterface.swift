@@ -1,5 +1,5 @@
 //
-//  SettingRepositoryInterface.swift
+//  PushAlarmSettingRepositoryInterface.swift
 //  Presentation
 //
 //  Created by devxsby on 2022/10/17.
@@ -8,6 +8,6 @@
 
 import Combine
 
-public protocol SettingRepositoryInterface {
+public protocol PushAlarmSettingRepositoryInterface {
   
 }

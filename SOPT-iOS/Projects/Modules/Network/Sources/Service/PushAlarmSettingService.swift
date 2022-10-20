@@ -1,5 +1,5 @@
 //
-//  SettingService.swift
+//  PushAlarmSettingService.swift
 //  Network
 //
 //  Created by devxsby on 2022/10/19.
@@ -9,8 +9,8 @@
 import Foundation
 import Combine
 
-public protocol SettingServiceType {
+public protocol PushAlarmSettingServiceType {
 }
 
-extension BaseService: SettingServiceType {
+extension BaseService: PushAlarmSettingServiceType {
 }

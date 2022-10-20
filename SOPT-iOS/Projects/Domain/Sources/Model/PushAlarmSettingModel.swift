@@ -1,5 +1,5 @@
 //
-//  SettingModel.swift
+//  PushAlarmSettingModel.swift
 //  Presentation
 //
 //  Created by devxsby on 2022/10/17.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SettingModel {
+public struct PushAlarmSettingModel {
 
     public init() {
         
