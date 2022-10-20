@@ -81,9 +81,11 @@ extension CustomNavigationBar {
         self.otherRightButton.addTarget(self, action: #selector(touchupOtherRightButton), for: .touchUpInside)
         return self
     }
-    
-    // MARK: - @objc
-    
+}
+
+// MARK: - @objc
+
+extension CustomNavigationBar {
     @objc
     private func popToPreviousVC() {
         self.vc?.navigationController?.popViewController(animated: true)
