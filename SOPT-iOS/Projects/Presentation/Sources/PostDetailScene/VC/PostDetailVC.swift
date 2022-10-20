@@ -27,6 +27,9 @@ public class PostDetailVC: UIViewController {
   
     // MARK: - UI Components
     
+    private lazy var naviBar = CustomNavigationBar(self, type: .leftTitleWithLeftButton)
+        .setTitle("전체")
+    
     private lazy var postDetailCollectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: self.createLayout())
         cv.showsVerticalScrollIndicator = true
@@ -59,10 +62,15 @@ extension PostDetailVC {
     }
     
     private func setLayout() {
-        self.view.addSubviews(postDetailCollectionView)
+        self.view.addSubviews(naviBar, postDetailCollectionView)
+        
+        naviBar.snp.makeConstraints { make in
+            make.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
         
         postDetailCollectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(naviBar.snp.bottom)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
