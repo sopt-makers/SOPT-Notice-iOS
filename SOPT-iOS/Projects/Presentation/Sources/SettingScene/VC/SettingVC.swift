@@ -105,16 +105,22 @@ extension SettingVC: UITableViewDataSource {
         switch cellType {
         case .pushAlarm:
             cell.titleLabel.text = "푸시 알림 설정"
-            cell.detailVCButton.isEnabled = true
         case .termsOfService:
             cell.titleLabel.text = "서비스 이용약관"
-            cell.detailVCButton.tintColor = .white
-            cell.detailVCButton.isEnabled = false
+            cell.detailVCButton.isHidden = true
         case .privacyPolicy:
             cell.titleLabel.text = "개인정보 처리방침"
-            cell.detailVCButton.tintColor = .white
-            cell.detailVCButton.isEnabled = false
+            cell.detailVCButton.isHidden = true
         }
         return cell
+    }
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.item {
+        case 0:
+            print("dddd")
+        default:
+            break
+        }
     }
 }

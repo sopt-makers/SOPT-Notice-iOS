@@ -33,7 +33,6 @@ class SettingTVC: UITableViewCell {
     lazy var detailVCButton = UIButton(type: .system).then {
         $0.setImage(DSKitAsset.Assets.icRight.image, for: .normal)
         $0.tintColor = DSKitAsset.Colors.black.color
-        $0.addTarget(self, action: #selector(goToDetailVC), for: .touchUpInside)
     }
     
     private let dividerView: UIView = {
@@ -64,8 +63,7 @@ extension SettingTVC {
     }
     
     private func setLayout() {
-        addSubviews(titleLabel, dividerView)
-        contentView.addSubview(detailVCButton)
+        addSubviews(titleLabel, detailVCButton, dividerView)
         
         titleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(16)
@@ -82,9 +80,5 @@ extension SettingTVC {
             make.bottom.equalToSuperview().offset(1)
             make.height.equalTo(1)
         }
-    }
-    
-    @objc private func goToDetailVC() {
-        print("goToDetailVC")
     }
 }
