@@ -1,5 +1,5 @@
 //
-//  Dependency+SPM.swift
+//  SettingsDictionary+.swift
 //  ProjectDescriptionHelpers
 //
 //  Created by Junho Lee on 2022/09/27.
