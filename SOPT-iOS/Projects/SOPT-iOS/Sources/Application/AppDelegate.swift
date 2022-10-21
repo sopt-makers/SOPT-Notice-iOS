@@ -9,6 +9,7 @@ import UIKit
 import UserNotifications
 
 import Core
+import Network
 
 import AWSSNS
 import AWSCore
@@ -16,8 +17,7 @@ import AWSCore
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    // TODO: - 서버한테 받아서 넣기
-    private let SNSPlatformApplicationArn = ""
+    private let SNSPlatformApplicationArn = Config.Network.ARN
     
     func application( _ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // APNS 설정
