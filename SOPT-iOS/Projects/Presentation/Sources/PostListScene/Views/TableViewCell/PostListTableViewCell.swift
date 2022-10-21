@@ -8,11 +8,14 @@
 
 import UIKit
 
+import Core
 import DSKit
 
-class PostListTableViewCell: UITableViewCell {
+class PostListTableViewCell: UITableViewCell, UITableViewRegisterable {
     
     // MARK: - Properties
+    
+    static var isFromNib: Bool = false
     
     // MARK: - UI Components
     
@@ -57,6 +60,11 @@ class PostListTableViewCell: UITableViewCell {
 // MARK: - Methods
 
 extension PostListTableViewCell {
+    func initCell(isNew: Bool, title: String, writer: String, date: String) {
+        self.titleLabel.text = title
+        self.writerAndDateLabel.text = "\(writer) · \(date)"
+    }
+    
     private func setUI() {
         self.backgroundColor = .white
     }
@@ -66,17 +74,17 @@ extension PostListTableViewCell {
         
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(16)
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
         }
         
         writerAndDateLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(8)
-            make.leading.equalToSuperview()
+            make.leading.equalToSuperview().inset(16)
         }
         
         dividerView.snp.makeConstraints { make in
             make.top.equalTo(writerAndDateLabel.snp.bottom).offset(14)
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(1)
         }
     }

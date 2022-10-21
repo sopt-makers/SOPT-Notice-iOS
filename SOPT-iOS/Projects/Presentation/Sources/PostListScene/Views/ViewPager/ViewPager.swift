@@ -69,7 +69,7 @@ class ViewPager: UIView {
         }
         
         pagedView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(16)
+            make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
             make.top.equalTo(tabbedView.snp.bottom)
         }
