@@ -52,6 +52,22 @@ class CustomNavigationBar: UIView {
 // MARK: - Method
 
 extension CustomNavigationBar {
+    func hideNaviBar(_ isHidden: Bool) {
+        if isHidden {
+            UIView.animate(withDuration: 0.2,
+                           delay: 0,
+                           options: .curveEaseInOut) {
+                [self.titleLabel, self.leftButton, self.rightButton, self.otherRightButton].forEach { $0.alpha = 0 }
+            }
+        } else {
+            UIView.animate(withDuration: 0.4,
+                           delay: 0,
+                           options: .curveEaseInOut) {
+                [self.titleLabel, self.leftButton, self.rightButton, self.otherRightButton].forEach { $0.alpha = 1 }
+            }
+        }
+    }
+    
     private func setAddTarget() {
         self.leftButton.addTarget(self, action: #selector(popToPreviousVC), for: .touchUpInside)
     }
