@@ -8,9 +8,14 @@
 
 import Foundation
 
-public struct PostListModel {
-
-    public init() {
-        
+public struct PostListModel: Hashable {
+    public let isNew: Bool
+    public let title, writer, date: String
+    
+    public init(isNew: Bool, title: String, writer: String, date: String) {
+        self.isNew = isNew
+        self.title = title
+        self.writer = writer
+        self.date = date
     }
 }

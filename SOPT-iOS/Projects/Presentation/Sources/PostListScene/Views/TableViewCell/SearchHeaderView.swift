@@ -52,16 +52,17 @@ extension SearchHeaderView {
     }
     
     private func setLayout() {
-        self.addSubviews(countLabel, bottomLineView)
+        self.addSubviews(bottomLineView, countLabel)
+        
+        bottomLineView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().inset(4)
+            make.height.equalTo(1)
+        }
         
         countLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(16)
-            make.bottom.equalToSuperview().inset(5)
-        }
-        
-        bottomLineView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-            make.height.equalTo(1)
+            make.bottom.equalTo(bottomLineView.snp.bottom).inset(5)
         }
     }
 }
