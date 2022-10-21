@@ -22,6 +22,15 @@ public class PostListVC: UIViewController {
   
     // MARK: - UI Components
     
+    private lazy var naviBar = CustomNavigationBar(self, type: .leftTitle)
+        .setTitle("공지")
+        .rightButtonAction {
+            print("rightButtonAction")
+        }
+        .otherRightButtonAction {
+            print("otherRightButtonAction")
+        }
+    
     private lazy var postListViewPager: ViewPager = {
         let viewPager = ViewPager(tabSizeConfiguration: .fixed(width: 72, height: 32))
         
@@ -54,9 +63,15 @@ extension PostListVC {
     }
     
     private func setLayout() {
-        self.view.addSubviews(postListViewPager)
+        self.view.addSubviews(naviBar, postListViewPager)
+        
+        naviBar.snp.makeConstraints { make in
+            make.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
+        
         postListViewPager.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(naviBar.snp.bottom)
+            make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
 }

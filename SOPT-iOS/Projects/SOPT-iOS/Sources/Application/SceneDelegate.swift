@@ -20,8 +20,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(frame: scene.coordinateSpace.bounds)
         window?.windowScene = scene
-        let rootViewController = ModuleFactory.shared.makePostListVC()
-        window?.rootViewController = rootViewController
+        let rootViewController = ModuleFactory.shared.makeSettingVC()
+        window?.rootViewController = UINavigationController(rootViewController: rootViewController)
         window?.makeKeyAndVisible()
     }
 
