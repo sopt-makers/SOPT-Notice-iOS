@@ -23,6 +23,13 @@ public class ModuleFactory {
 }
 
 extension ModuleFactory: ModuleFactoryInterface {
+    
+    public func makeSplashVC() -> Presentation.SplashVC {
+        let splashVC = SplashVC()
+        splashVC.factory = self
+        return splashVC
+    }
+    
     public func makePostListVC() -> Presentation.PostListVC {
         let repository = PostListRepository(service: alertService)
         let useCase = DefaultPostListUseCase(repository: repository)
