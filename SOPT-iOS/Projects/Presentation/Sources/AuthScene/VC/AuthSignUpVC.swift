@@ -78,6 +78,7 @@ public class AuthSignUpVC: UIViewController {
         self.bindViewModels()
         self.setUI()
         self.setLayout()
+        self.setNaviAction()
     }
 }
 
@@ -139,6 +140,13 @@ extension AuthSignUpVC {
     private func bindViewModels() {
         let input = AuthSignUpViewModel.Input()
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
+    }
+    
+    private func setNaviAction() {
+        naviBar.rightButtonAction {
+            let authPushAlarmVC = self.factory.makeAuthPushAlarmVC()
+            self.navigationController?.pushViewController(authPushAlarmVC, animated: true)
+        }
     }
     
     @objc private func guestButtonDidTap() {
