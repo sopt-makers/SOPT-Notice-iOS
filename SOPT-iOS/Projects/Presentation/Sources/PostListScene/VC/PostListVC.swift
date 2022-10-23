@@ -29,7 +29,7 @@ public class PostListVC: UIViewController {
         PostListModel(isNew: false, title: "안녕4", writer: "관리", date: "2000-1-1")
     ]
     let partList = ["전체", "기획", "디자인", "iOS", "Android", "Server", "Web"]
-  
+    
     // MARK: - UI Components
     
     private lazy var naviBar = CustomNavigationBar(self, type: .leftTitle)
@@ -46,14 +46,16 @@ public class PostListVC: UIViewController {
     private let searchTextField = UITextField()
     private let bottomLineView = UIView()
     private let cancelButton = UIButton()
+    private let searchImageView = UIImageView()
+    private let searchEmptyLabel = UILabel()
     private var diffableDataSource: UITableViewDiffableDataSource<Int, PostListModel>?
     
     private lazy var searchTableView: UITableView = {
         let tableView = UITableView()
-         tableView.backgroundColor = .white
-         tableView.showsVerticalScrollIndicator = false
-         tableView.separatorStyle = .none
-         return tableView
+        tableView.backgroundColor = .white
+        tableView.showsVerticalScrollIndicator = false
+        tableView.separatorStyle = .none
+        return tableView
     }()
     
     private lazy var postListViewPager: ViewPager = {
@@ -61,14 +63,14 @@ public class PostListVC: UIViewController {
         
         let tabs = partList.map { TabItemView(title: $0) }
         let pages = partList.map { _ in PostListPageView() }
- 
+        
         viewPager.tabbedView.tabs = tabs
         
         viewPager.pagedView.pages = pages
         
         return viewPager
     }()
-  
+    
     // MARK: - View Life Cycle
     
     public override func viewDidLoad() {
@@ -92,13 +94,18 @@ extension PostListVC {
         self.view.backgroundColor = .white
         self.navigationController?.isNavigationBarHidden = true
         
-        self.searchView.alpha = 0
-        self.searchTableView.alpha = 0
+        [self.searchView, self.searchTableView, self.searchImageView, self.searchEmptyLabel].forEach { $0.alpha = 0 }
         
         searchButton.setImage(UIImage(asset: DSKitAsset.Assets.icSearch), for: .normal)
+        searchImageView.image = UIImage(asset: DSKitAsset.Assets.icInfo)
+        
         searchTextField.attributedPlaceholder = NSAttributedString(string: I18N.Search.placeholder, attributes: [NSAttributedString.Key.foregroundColor : DSKitAsset.Colors.gray300.color, NSAttributedString.Key.font : UIFont.body1])
         searchTextField.textColor = DSKitAsset.Colors.gray900.color
         searchTextField.font = .body1
+        
+        searchEmptyLabel.text = I18N.Search.enterSearch
+        searchEmptyLabel.setTypoStyle(.body2)
+        searchEmptyLabel.textColor = DSKitAsset.Colors.gray500.color
         
         bottomLineView.backgroundColor = DSKitAsset.Colors.gray900.color
         
@@ -121,7 +128,8 @@ extension PostListVC {
     }
     
     private func setSearchLayout() {
-        self.view.addSubviews(searchView, searchTableView)
+        self.view.addSubviews(searchView, searchTableView,
+                              searchEmptyLabel, searchImageView)
         
         searchView.snp.makeConstraints { make in
             make.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
@@ -131,6 +139,17 @@ extension PostListVC {
         searchTableView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
             make.top.equalTo(searchView.snp.bottom)
+        }
+        
+        searchEmptyLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-110)
+        }
+        
+        searchImageView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(searchEmptyLabel.snp.top).offset(-8)
+            make.width.height.equalTo(24)
         }
         
         searchView.addSubviews(searchButton, searchTextField,
@@ -169,7 +188,6 @@ extension PostListVC {
     private func bindViewModels() {
         let input = PostListViewModel.Input()
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
-        self.applySnapshot()
     }
     
     private func setDelegate() {
@@ -212,20 +230,25 @@ extension PostListVC {
         self.diffableDataSource?.apply(snapshot, animatingDifferences: true)
     }
     
+    private func setSearchEmpty(_ empty: Bool) {
+        self.searchTableView.isHidden = empty
+        self.searchImageView.isHidden = !empty
+        self.searchEmptyLabel.isHidden = !empty
+    }
+    
     private func hideSearchView(_ isHidden: Bool) {
         self.searchTextField.text = .none
-        self.searchTableView.isHidden = isHidden
         self.naviBar.hideNaviBar(!isHidden)
-        UIView.animate(withDuration: 0.3,
-                       delay: 0.6,
+        
+        UIView.animate(withDuration: 0.1,
+                       delay: isHidden ? 0 : 0.2,
                        options: .curveEaseInOut) {
-            self.searchView.alpha = !isHidden ? 0 : 1
-        } completion: { _ in
+            [self.searchView, self.searchEmptyLabel, self.searchTableView].forEach { $0.alpha = isHidden ? 0 : 1 }
+            self.postListViewPager.isHidden = !isHidden
+            
             if isHidden {
-                self.searchView.alpha = 0
                 self.view.endEditing(true)
             } else {
-                self.searchView.alpha = 1
                 self.searchTextField.becomeFirstResponder()
             }
         }
@@ -242,10 +265,17 @@ extension PostListVC {
     
     @objc
     private func textFieldChanged() {
+        applySnapshot()
         if self.searchTextField.hasText {
-            self.searchTableView.alpha = 1
+            if self.searchList.isEmpty {
+                setSearchEmpty(true)
+                self.searchEmptyLabel.text = I18N.Search.noSearchData
+            } else {
+                setSearchEmpty(false)
+            }
         } else {
-            self.searchTableView.alpha = 0
+            setSearchEmpty(true)
+            self.searchEmptyLabel.text = I18N.Search.enterSearch
         }
     }
 }
