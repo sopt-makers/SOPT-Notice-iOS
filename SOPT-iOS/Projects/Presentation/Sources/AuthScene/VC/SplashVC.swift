@@ -80,8 +80,8 @@ extension SplashVC {
     
     private func setDelay() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            let settingVC = self.factory.makeSettingVC()
-            self.navigationController?.pushViewController(settingVC, animated: true)
+            let authSignUpVC = self.factory.makeAuthSignUpVC()
+            self.navigationController?.pushViewController(authSignUpVC, animated: true)
         }
     }
 }
