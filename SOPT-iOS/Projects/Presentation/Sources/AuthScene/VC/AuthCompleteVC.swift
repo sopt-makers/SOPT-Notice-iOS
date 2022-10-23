@@ -15,6 +15,7 @@ import Then
 public class AuthCompleteVC: UIViewController {
     
     // MARK: - Properties
+    
     public var factory: ModuleFactoryInterface!
   
     // MARK: - UI Components

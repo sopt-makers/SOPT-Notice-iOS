@@ -60,6 +60,8 @@ public class PushAlarmSettingViewModel: ViewModelType {
     }
 }
 
+// MARK: - Extensions
+
 extension PushAlarmSettingViewModel {
     public func transform(from input: Input, cancelBag: Set<AnyCancellable>) -> Output {
         let output = Output()

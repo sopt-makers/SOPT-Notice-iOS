@@ -16,6 +16,7 @@ import Then
 public class AuthSignUpVC: UIViewController {
         
     // MARK: - Properties
+    
     public var factory: ModuleFactoryInterface!
     public var viewModel: AuthSignUpViewModel!
     private var cancelBag = Set<AnyCancellable>()
