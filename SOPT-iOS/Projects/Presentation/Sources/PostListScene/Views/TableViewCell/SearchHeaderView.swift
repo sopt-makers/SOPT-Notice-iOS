@@ -13,9 +13,11 @@ import SnapKit
 import Core
 import DSKit
 
-class SearchHeaderView: UITableViewHeaderFooterView {
+class SearchHeaderView: UITableViewHeaderFooterView, UITableViewHeaderFooterRegisterable {
     
     // MARK: - Properties
+    
+    static var isFromNib: Bool = false
     
     // MARK: - UI Components
     

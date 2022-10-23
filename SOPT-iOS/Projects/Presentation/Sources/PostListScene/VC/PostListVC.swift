@@ -179,7 +179,7 @@ extension PostListVC {
     
     private func setRegister() {
         PostListTableViewCell.register(target: self.searchTableView)
-        self.searchTableView.register(SearchHeaderView.self, forHeaderFooterViewReuseIdentifier: SearchHeaderView.className)
+        SearchHeaderView.register(target: self.searchTableView)
     }
     
     private func setTableView() {
