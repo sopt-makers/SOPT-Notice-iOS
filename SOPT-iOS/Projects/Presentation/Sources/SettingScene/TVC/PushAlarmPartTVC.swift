@@ -29,7 +29,6 @@ class PushAlarmPartTVC: UITableViewCell {
         $0.setImage(DSKitAsset.Assets.icStateOn.image.withRenderingMode(.alwaysOriginal), for: .selected)
         $0.contentMode = .scaleAspectFill
         $0.addTarget(self, action: #selector(stateButtonDidTap), for: .touchUpInside)
-
     }
     
     private let dividerView = UIView().then {
