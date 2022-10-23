@@ -40,6 +40,18 @@ extension ModuleFactory: ModuleFactoryInterface {
         return authSignUpVC
     }
     
+    public func makeAuthWaitingVC() -> Presentation.AuthWaitingVC {
+        let authWaitingVC = AuthWaitingVC()
+        authWaitingVC.factory = self
+        return authWaitingVC
+    }
+    
+    public func makeAuthCompleteVC() -> Presentation.AuthCompleteVC {
+        let authCompleteVC = AuthCompleteVC()
+        authCompleteVC.factory = self
+        return authCompleteVC
+    }
+    
     public func makeAuthPushAlarmVC() -> Presentation.AuthPushAlarmVC {
         let repository = AuthPushAlarmRepository(service: alertService)
         let useCase = DefaultAuthPushAlarmUseCase(repository: repository)
