@@ -30,7 +30,7 @@ public class AuthPushAlarmVC: UIViewController {
         $0.setTypoStyle(.h2)
         let attributedString = NSMutableAttributedString(string: "푸시알림 ", attributes: [NSAttributedString.Key.foregroundColor: DSKitAsset.Colors.blue500.color])
         attributedString.append(NSAttributedString(string: "받을 파트를\n선택해 주세요.",
-                                                   attributes: [.foregroundColor: DSKitAsset.Colors.black.color]))
+                                                   attributes: [.foregroundColor: DSKitAsset.Colors.gray900.color]))
         $0.attributedText = attributedString
         $0.numberOfLines = 2
     }
@@ -43,6 +43,7 @@ public class AuthPushAlarmVC: UIViewController {
         $0.textColor = DSKitAsset.Colors.gray500.color
         $0.textAlignment = .left
         $0.setTypoStyle(.body1)
+        $0.setLineSpacing(lineSpacing: 4)
         $0.numberOfLines = 2
     }
     
@@ -70,6 +71,7 @@ public class AuthPushAlarmVC: UIViewController {
         self.bindViewModels()
         self.setUI()
         self.setLayout()
+        self.setNaviAction()
         self.setDelegate()
         self.registerCells()
     }
@@ -131,6 +133,12 @@ extension AuthPushAlarmVC {
     
     private func registerCells() {
         self.partListTableView.register(AuthPushAlarmTVC.self, forCellReuseIdentifier: AuthPushAlarmTVC.className)
+    }
+    
+    private func setNaviAction() {
+        naviBar.rightButtonAction {
+            print("navi button did tap")
+        }
     }
     
     @objc private func putOffButtonDidTap() {

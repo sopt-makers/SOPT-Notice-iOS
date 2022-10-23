@@ -42,6 +42,7 @@ public class AuthSignUpVC: UIViewController {
         $0.textColor = DSKitAsset.Colors.gray500.color
         $0.textAlignment = .left
         $0.setTypoStyle(.body1)
+        $0.setLineSpacing(lineSpacing: 4)
         $0.numberOfLines = 2
     }
     
@@ -103,7 +104,7 @@ extension AuthSignUpVC {
         }
         
         subtitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(4)
+            make.top.equalTo(titleLabel.snp.bottom).offset(10)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
         }
         

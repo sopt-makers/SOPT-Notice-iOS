@@ -59,8 +59,8 @@ extension SplashVC {
         
         logoImage.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(140)
-            make.height.equalTo(49).multipliedBy(1.87)
+            make.width.equalTo(92.adjusted)
+            make.height.equalTo(49.adjustedH)
         }
         
         titleLabel.snp.makeConstraints { make in
