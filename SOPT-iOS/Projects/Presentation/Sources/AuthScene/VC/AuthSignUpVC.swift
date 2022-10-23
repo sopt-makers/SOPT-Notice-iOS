@@ -14,9 +14,7 @@ import SnapKit
 import Then
 
 public class AuthSignUpVC: UIViewController {
-    
-    // MARK: - Properties
-    
+        
     // MARK: - Properties
     public var factory: ModuleFactoryInterface!
     public var viewModel: AuthSignUpViewModel!
