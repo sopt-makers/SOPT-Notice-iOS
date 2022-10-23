@@ -15,7 +15,7 @@ import Then
 public class AuthPushAlarmVC: UIViewController {
     
     // MARK: - Properties
-    
+    public var factory: ModuleFactoryInterface!
     public var viewModel: AuthPushAlarmViewModel!
     private var cancelBag = Set<AnyCancellable>()
   

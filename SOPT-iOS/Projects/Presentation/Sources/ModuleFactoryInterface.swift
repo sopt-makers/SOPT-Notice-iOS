@@ -11,6 +11,7 @@ import Foundation
 public protocol ModuleFactoryInterface {
     func makeSplashVC() -> SplashVC
     func makeAuthSignUpVC() -> AuthSignUpVC
+    func makeAuthPushAlarmVC() -> AuthPushAlarmVC
     func makePostListVC() -> PostListVC
     func makePostDetailVC() -> PostDetailVC
     func makeSettingVC() -> SettingVC
