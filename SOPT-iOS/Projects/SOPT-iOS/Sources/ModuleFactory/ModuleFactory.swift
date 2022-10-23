@@ -30,6 +30,16 @@ extension ModuleFactory: ModuleFactoryInterface {
         return splashVC
     }
     
+    public func makeAuthSignUpVC() -> Presentation.AuthSignUpVC {
+        let repository = AuthSignUpRepository(service: alertService)
+        let useCase = DefaultAuthSignUpUseCase(repository: repository)
+        let viewModel = AuthSignUpViewModel(useCase: useCase)
+        let authSignUpVC = AuthSignUpVC()
+        authSignUpVC.factory = self
+        authSignUpVC.viewModel = viewModel
+        return authSignUpVC
+    }
+    
     public func makePostListVC() -> Presentation.PostListVC {
         let repository = PostListRepository(service: alertService)
         let useCase = DefaultPostListUseCase(repository: repository)
