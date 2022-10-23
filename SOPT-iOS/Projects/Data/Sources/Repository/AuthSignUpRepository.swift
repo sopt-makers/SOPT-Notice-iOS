@@ -13,10 +13,10 @@ import Network
 
 public class AuthSignUpRepository {
     
-    private let networkService: AuthService
+    private let networkService: AuthSignUpServiceType
     private let cancelBag = Set<AnyCancellable>()
     
-    public init(service: AuthService) {
+    public init(service: AuthSignUpServiceType) {
         self.networkService = service
     }
 }
