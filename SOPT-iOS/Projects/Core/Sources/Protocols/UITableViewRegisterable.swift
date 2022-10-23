@@ -16,12 +16,27 @@ public protocol UITableViewRegisterable {
     static func register(target: UITableView)
 }
 
+public protocol UITableViewHeaderFooterRegisterable {
+    static var isFromNib: Bool { get }
+    static func register(target: UITableView)
+}
+
 extension UITableViewRegisterable where Self: UITableViewCell {
     public static func register(target: UITableView) {
         if self.isFromNib {
             target.register(UINib(nibName: Self.className, bundle: nil), forCellReuseIdentifier: Self.className)
         } else {
             target.register(Self.self, forCellReuseIdentifier: Self.className)
+        }
+    }
+}
+
+extension UITableViewHeaderFooterRegisterable where Self: UITableViewHeaderFooterView {
+    public static func register(target: UITableView) {
+        if self.isFromNib {
+            target.register(UINib(nibName: Self.className, bundle: nil), forHeaderFooterViewReuseIdentifier: Self.className)
+        } else {
+            target.register(Self.self, forHeaderFooterViewReuseIdentifier: Self.className)
         }
     }
 }
