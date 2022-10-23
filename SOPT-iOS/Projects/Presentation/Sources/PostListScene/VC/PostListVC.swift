@@ -283,7 +283,6 @@ extension PostListVC {
 // MARK: - UITextFieldDelegate
 
 extension PostListVC: UITextFieldDelegate {
-    // 텍스트 변화가 생기면 다른 컬렉션뷰 띄우고, 상단 바꾸기
     
 }
 
