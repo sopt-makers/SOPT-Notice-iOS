@@ -9,7 +9,9 @@
 import Foundation
 
 public struct UserDefaultKeyList{
-    public struct Sample {
-        public static let sample = "sample"
+    public struct Auth {
+        @UserDefaultWrapper<String>(key: "deviceToken") public static var deviceToken
+        
+        @UserDefaultWrapper<String>(key: "endpointArnForSNS") public static var endpointArnForSNS
     }
 }

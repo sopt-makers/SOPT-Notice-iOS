@@ -14,6 +14,6 @@ import Network
 extension PostListEntity {
 
     public func toDomain() -> PostListModel {
-        return PostListModel.init()
+        return PostListModel.init(isNew: false, title: "-", writer: "-", date: "-")
     }
 }
