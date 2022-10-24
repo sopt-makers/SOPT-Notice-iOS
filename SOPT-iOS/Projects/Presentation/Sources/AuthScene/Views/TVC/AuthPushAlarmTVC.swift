@@ -28,6 +28,10 @@ class AuthPushAlarmTVC: UITableViewCell {
         $0.addTarget(self, action: #selector(stateButtonDidTap), for: .touchUpInside)
     }
     
+    let horizontalLine = UIView().then {
+        $0.backgroundColor = DSKitAsset.Colors.gray100.color
+    }
+    
     // MARK: - Initialization
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -45,12 +49,16 @@ class AuthPushAlarmTVC: UITableViewCell {
 
 extension AuthPushAlarmTVC {
     
+    func initCell(_ indexPath: Int) {
+        horizontalLine.isHidden = (indexPath != 0)
+    }
+    
     private func setUI() {
         self.backgroundColor = .white
     }
     
     private func setLayout() {
-        addSubviews(titleLabel)
+        addSubviews(titleLabel, horizontalLine)
         contentView.addSubview(stateButton)
         
         titleLabel.snp.makeConstraints { make in
@@ -62,6 +70,12 @@ extension AuthPushAlarmTVC {
             make.trailing.equalToSuperview().inset(16)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(40)
+        }
+        
+        horizontalLine.snp.makeConstraints { make in
+            make.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(1)
         }
     }
     
