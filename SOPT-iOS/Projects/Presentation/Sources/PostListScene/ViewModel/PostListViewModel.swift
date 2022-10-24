@@ -39,14 +39,12 @@ extension PostListViewModel {
     public func transform(from input: Input, cancelBag: Set<AnyCancellable>) -> Output {
         let output = Output()
         self.bindOutput(output: output, cancelBag: cancelBag)
-        print("")
         
         input.textChanged
             .filter { $0 != nil && $0 != ""}
             .sink(receiveCompletion: { event in
                 print("PostListViewModel - completion: \(event)")
             }, receiveValue: { [weak self] str in
-                // TODO: - usecase에 전달
                 guard let self = self else { return }
                 self.useCase.getSearch(query: str!)
             })
@@ -59,7 +57,7 @@ extension PostListViewModel {
         let searchResult = useCase.searchList
         
         searchResult.sink(receiveCompletion: { event in
-            print("completion: \(event)")
+            print("PostListViewModel - completion: \(event)")
         }, receiveValue: { value in
             output.searchList.send(value)
         })

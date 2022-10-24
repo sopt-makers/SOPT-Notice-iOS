@@ -185,15 +185,12 @@ extension PostListVC {
     private func bindViewModels() {
         let input = PostListViewModel.Input(textChanged: textChanged.eraseToAnyPublisher())
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
-        print("input: \(input)")
         
         output.searchList
             .sink(receiveCompletion: { event in
                 print("event: \(event)")
             }, receiveValue: { value in
                 self.searchResultList = value
-                print("📍 value: \(value)")
-                
                 if self.searchResultList.isEmpty {
                     self.setSearchEmpty(true)
                     self.searchEmptyLabel.text = I18N.Search.noSearchData
@@ -281,17 +278,6 @@ extension PostListVC {
     
     @objc
     private func textFieldChanged() {
-//        if self.searchTextField.hasText {
-//            if self.searchResultList.isEmpty {
-//                setSearchEmpty(true)
-//                self.searchEmptyLabel.text = I18N.Search.noSearchData
-//            } else {
-//                setSearchEmpty(false)
-//            }
-//        } else {
-//            setSearchEmpty(true)
-//            self.searchEmptyLabel.text = I18N.Search.enterSearch
-//        }
         if self.searchTextField.isEmpty {
             setSearchEmpty(true)
             self.searchEmptyLabel.text = I18N.Search.enterSearch
