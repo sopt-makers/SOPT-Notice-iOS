@@ -1,6 +1,6 @@
 //
 //  PushAlarmSettingUseCase.swift
-//  Presentation
+//  Domain
 //
 //  Created by devxsby on 2022/10/17.
 //  Copyright © 2022 SOPT-iOS. All rights reserved.
