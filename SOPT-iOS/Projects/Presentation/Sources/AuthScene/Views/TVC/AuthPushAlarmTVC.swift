@@ -13,15 +13,17 @@ class AuthPushAlarmTVC: UITableViewCell {
     
     // MARK: - Properties
     
+    var viewModel: AuthPushAlarmViewModel!
+    
     // MARK: - UI Components
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.setTypoStyle(.body1)
         $0.textColor = DSKitAsset.Colors.gray800.color
         $0.textAlignment = .left
     }
     
-    lazy var stateButton = UIButton(type: .custom).then {
+    private lazy var stateButton = UIButton(type: .custom).then {
         $0.setImage(DSKitAsset.Assets.icAlarmOff.image.withRenderingMode(.alwaysOriginal), for: .normal)
         $0.setImage(DSKitAsset.Assets.icAlarmOn.image.withRenderingMode(.alwaysOriginal), for: .selected)
         $0.contentMode = .scaleAspectFill
@@ -49,7 +51,8 @@ class AuthPushAlarmTVC: UITableViewCell {
 
 extension AuthPushAlarmTVC {
     
-    func initCell(_ indexPath: Int) {
+    func initCell(_ indexPath: Int, cellType: AuthPushAlarmViewModel.PartList) {
+        titleLabel.text = cellType.title
         horizontalLine.isHidden = (indexPath != 0)
     }
     

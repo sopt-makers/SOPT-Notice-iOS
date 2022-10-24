@@ -169,10 +169,10 @@ extension AuthPushAlarmVC: UITableViewDataSource {
             withIdentifier: AuthPushAlarmTVC.className, for: indexPath)
                 as? AuthPushAlarmTVC else { return UITableViewCell() }
         cell.selectionStyle = .none
-        cell.initCell(indexPath.item)
         
         let cellType = AuthPushAlarmViewModel.PartList.allCases[indexPath.item]
-        cell.titleLabel.text = cellType.title
+        cell.initCell(indexPath.item, cellType: cellType)
+        
         return cell
     }
 }
