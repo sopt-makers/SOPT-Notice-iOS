@@ -8,6 +8,8 @@
 
 import Combine
 
+import Network
+
 public protocol PostListRepositoryInterface {
-  
+    func getSearchResult(str: String) -> AnyPublisher<[PostListModel]?, Error>
 }
