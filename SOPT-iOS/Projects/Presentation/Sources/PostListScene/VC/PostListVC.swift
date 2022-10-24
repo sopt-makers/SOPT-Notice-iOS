@@ -22,12 +22,9 @@ public class PostListVC: UIViewController {
     
     public var viewModel: PostListViewModel!
     private var cancelBag = Set<AnyCancellable>()
-    private var searchList: [PostListModel] = [
-        PostListModel(isNew: false, title: "31th SOPT OT 공지", writer: "관리", date: "2000-1-1"),
-        PostListModel(isNew: false, title: "안녕2", writer: "관리", date: "2000-1-1"),
-        PostListModel(isNew: false, title: "안녕3", writer: "관리", date: "2000-1-1"),
-        PostListModel(isNew: false, title: "안녕4", writer: "관리", date: "2000-1-1")
-    ]
+    private var textChanged = PassthroughSubject<String?, Error>()
+    
+    private var searchResultList: [PostListModel] = []
     let partList = ["전체", "기획", "디자인", "iOS", "Android", "Server", "Web"]
     
     // MARK: - UI Components
@@ -186,8 +183,27 @@ extension PostListVC {
 
 extension PostListVC {
     private func bindViewModels() {
-        let input = PostListViewModel.Input()
+        let input = PostListViewModel.Input(textChanged: textChanged.eraseToAnyPublisher())
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
+        print("input: \(input)")
+        
+        output.searchList
+            .sink(receiveCompletion: { event in
+                print("event: \(event)")
+            }, receiveValue: { value in
+                self.searchResultList = value
+                print("📍 value: \(value)")
+                
+                if self.searchResultList.isEmpty {
+                    self.setSearchEmpty(true)
+                    self.searchEmptyLabel.text = I18N.Search.noSearchData
+                } else {
+                    self.setSearchEmpty(false)
+                    self.applySnapshot()
+                }
+                
+            })
+            .store(in: &cancelBag)
     }
     
     private func setDelegate() {
@@ -203,7 +219,7 @@ extension PostListVC {
     private func setTableView() {
         self.diffableDataSource = UITableViewDiffableDataSource<Int, PostListModel>(tableView: self.searchTableView) {(tableView, indexPath, itemIdentifier) -> UITableViewCell? in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PostListTableViewCell.className, for: indexPath) as? PostListTableViewCell else { return UITableViewCell() }
-            let data = self.searchList[indexPath.row]
+            let data = self.searchResultList[indexPath.row]
             cell.selectionStyle = .none
             cell.initCell(isNew: data.isNew, title: data.title, writer: data.writer, date: data.date)
             return cell
@@ -225,7 +241,7 @@ extension PostListVC {
     private func applySnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<Int, PostListModel>()
         snapshot.appendSections([0])
-        snapshot.appendItems(searchList)
+        snapshot.appendItems(searchResultList)
         
         self.diffableDataSource?.apply(snapshot, animatingDifferences: true)
     }
@@ -265,17 +281,23 @@ extension PostListVC {
     
     @objc
     private func textFieldChanged() {
-        applySnapshot()
-        if self.searchTextField.hasText {
-            if self.searchList.isEmpty {
-                setSearchEmpty(true)
-                self.searchEmptyLabel.text = I18N.Search.noSearchData
-            } else {
-                setSearchEmpty(false)
-            }
-        } else {
+//        if self.searchTextField.hasText {
+//            if self.searchResultList.isEmpty {
+//                setSearchEmpty(true)
+//                self.searchEmptyLabel.text = I18N.Search.noSearchData
+//            } else {
+//                setSearchEmpty(false)
+//            }
+//        } else {
+//            setSearchEmpty(true)
+//            self.searchEmptyLabel.text = I18N.Search.enterSearch
+//        }
+        if self.searchTextField.isEmpty {
             setSearchEmpty(true)
             self.searchEmptyLabel.text = I18N.Search.enterSearch
+        } else {
+            setSearchEmpty(false)
+            textChanged.send(self.searchTextField.text)
         }
     }
 }
@@ -297,7 +319,7 @@ extension PostListVC: UITableViewDelegate {
     }
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerView = searchTableView.dequeueReusableHeaderFooterView(withIdentifier: SearchHeaderView.className) as? SearchHeaderView else { return UIView() }
-        headerView.initCell(searchList.count)
+        headerView.initCell(searchResultList.count)
         return headerView
     }
 }
