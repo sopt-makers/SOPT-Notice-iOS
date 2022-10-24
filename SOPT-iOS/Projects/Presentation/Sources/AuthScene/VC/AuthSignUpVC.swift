@@ -24,7 +24,11 @@ public class AuthSignUpVC: UIViewController {
     // MARK: - UI Components
     
     private lazy var naviBar = CustomNavigationBar(self, type: .onlyRightButton)
-           .setRightButtonTitle("인증하기")
+        .setRightButtonTitle("인증하기")
+        .rightButtonAction { 
+            let authPushAlarmVC = self.factory.makeAuthPushAlarmVC()
+            self.navigationController?.pushViewController(authPushAlarmVC, animated: true)
+        }
     
     private let titleLabel = UILabel().then {
         $0.setTypoStyle(.h2)
@@ -79,7 +83,6 @@ public class AuthSignUpVC: UIViewController {
         self.bindViewModels()
         self.setUI()
         self.setLayout()
-        self.setNaviAction()
     }
 }
 
@@ -141,13 +144,6 @@ extension AuthSignUpVC {
     private func bindViewModels() {
         let input = AuthSignUpViewModel.Input()
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
-    }
-    
-    private func setNaviAction() {
-        naviBar.rightButtonAction {
-            let authPushAlarmVC = self.factory.makeAuthPushAlarmVC()
-            self.navigationController?.pushViewController(authPushAlarmVC, animated: true)
-        }
     }
     
     @objc private func guestButtonDidTap() {

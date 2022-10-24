@@ -25,6 +25,9 @@ public class AuthPushAlarmVC: UIViewController {
     
     private lazy var naviBar = CustomNavigationBar(self, type: .onlyRightButton)
            .setRightButtonTitle("확인")
+           .rightButtonAction {
+               print("navi button did tap")
+           }
     
     private let titleLabel = UILabel().then {
         $0.setTypoStyle(.h2)
@@ -71,7 +74,6 @@ public class AuthPushAlarmVC: UIViewController {
         self.bindViewModels()
         self.setUI()
         self.setLayout()
-        self.setNaviAction()
         self.setDelegate()
         self.registerCells()
     }
@@ -133,12 +135,6 @@ extension AuthPushAlarmVC {
     
     private func registerCells() {
         self.partListTableView.register(AuthPushAlarmTVC.self, forCellReuseIdentifier: AuthPushAlarmTVC.className)
-    }
-    
-    private func setNaviAction() {
-        naviBar.rightButtonAction {
-            print("navi button did tap")
-        }
     }
     
     @objc private func putOffButtonDidTap() {
