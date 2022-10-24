@@ -62,7 +62,7 @@ public class AuthSignUpVC: UIViewController {
         $0.clearButtonMode = .whileEditing
     }
     
-    private let verticalLine = UIView().then {
+    private let horizontalLine = UIView().then {
         $0.backgroundColor = DSKitAsset.Colors.gray500.color
     }
     
@@ -92,7 +92,7 @@ extension AuthSignUpVC {
     }
     
     private func setLayout() {
-        self.view.addSubviews(naviBar, titleLabel, subtitleLabel, guestButton, emailTextField, verticalLine, captionLabel)
+        self.view.addSubviews(naviBar, titleLabel, subtitleLabel, guestButton, emailTextField, horizontalLine, captionLabel)
         
         naviBar.snp.makeConstraints { make in
             make.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
@@ -121,14 +121,14 @@ extension AuthSignUpVC {
             make.height.equalTo(24)
         }
         
-        verticalLine.snp.makeConstraints { make in
+        horizontalLine.snp.makeConstraints { make in
             make.top.equalTo(emailTextField.snp.bottom).offset(4)
             make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(1)
         }
         
         captionLabel.snp.makeConstraints { make in
-            make.top.equalTo(verticalLine.snp.bottom).offset(16)
+            make.top.equalTo(horizontalLine.snp.bottom).offset(16)
             make.trailing.equalToSuperview().inset(16)
         }
     }
