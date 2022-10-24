@@ -21,7 +21,7 @@ public class PushAlarmSettingViewModel: ViewModelType {
         var title: String {
             switch self {
             case .FullNotice:
-                return "전체"
+                return "전체 공지"
             case .PM:
                 return "기획"
             case .Design:

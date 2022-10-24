@@ -39,6 +39,7 @@ public class PushAlarmSettingVC: UIViewController {
         $0.setTypoStyle(.caption)
         $0.textColor = DSKitAsset.Colors.gray600.color
         $0.numberOfLines = 2
+        $0.setLineSpacing(lineSpacing: 4)
         $0.textAlignment = .left
     }
   
