@@ -60,7 +60,6 @@ final class PostDetailImagesCVC: UICollectionViewCell, UICollectionViewRegistera
     }
 }
 
-
 // MARK: - UI Components
 
 extension PostDetailImagesCVC {

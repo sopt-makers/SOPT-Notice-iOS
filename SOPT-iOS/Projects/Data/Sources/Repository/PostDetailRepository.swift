@@ -12,7 +12,6 @@ import Domain
 import Network
 
 public class PostDetailRepository {
-    
     private let networkService: NoticeService
     private var cancelBag = Set<AnyCancellable>()
     
