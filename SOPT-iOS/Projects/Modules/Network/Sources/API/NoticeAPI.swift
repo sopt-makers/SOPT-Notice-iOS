@@ -84,7 +84,7 @@ extension NoticeAPI: BaseAPI {
 
 extension NoticeAPI {
     var noticeSampleContent: String {
-        return
+        let sample1 =
     """
     안녕하세요! 함께하게 된 여러분 환영합니다!
     
@@ -130,18 +130,36 @@ extension NoticeAPI {
     원활한 OT 진행을 위한 유의사항들이니 꼭 확인해주시면 감사하겠습니다!🙏🏼
     내일 OT에서 뵙겠습니다〰
     """
+        let sample2 = ""
+        let sample3 = "안녕하세요!"
+        
+        var sampleArray: [String] = []
+        sampleArray.append(contentsOf: [sample1, sample2, sample3])
+        
+        return sampleArray.randomElement()!
     }
     
     var noticeSampleImages: [String] {
-        let scale:Int = Int(UIScreen.main.scale)
-        let height:Int = Int(812) * scale
-        let width:Int = Int(375) * scale
+        let scale: Int = Int(UIScreen.main.scale)
+        let height: Int = Int(812) * scale
+        let width: Int = Int(375) * scale
         
-        return ["https://dummyimage.com/\(width)x\(height)/09a/fff.png&text=Image+1", "https://dummyimage.com/\(600)x\(600)/09b/fff.png&text=Image+2",
-                "https://dummyimage.com/\(width)x\(height)/09c/fff.png&text=Image+3",
-                "https://dummyimage.com/\(600)x\(600)/09d/fff.png&text=Image+4",
-                "https://dummyimage.com/\(width)x\(height)/09e/fff.png&text=Image+5",
-                "https://dummyimage.com/\(width)x\(height)/09f/fff.png&text=Image+6"
-        ]
+        let sample1 = ["https://dummyimage.com/\(width)x\(height)/09a/fff.png&text=Image+1", "https://dummyimage.com/\(600)x\(600)/09b/fff.png&text=Image+2",
+                       "https://dummyimage.com/\(width)x\(height)/09c/fff.png&text=Image+3",
+                       "https://dummyimage.com/\(600)x\(600)/09d/fff.png&text=Image+4",
+                       "https://dummyimage.com/\(width)x\(height)/09e/fff.png&text=Image+5",
+                       "https://dummyimage.com/\(width)x\(height)/09f/fff.png&text=Image+6"]
+        
+        let sample2 = ["https://dummyimage.com/\(width)x\(height)/09e/fff.png&text=Image+1",
+                       "https://dummyimage.com/\(width)x\(height)/09f/fff.png&text=Image+2"]
+        
+        let sample3 = ["https://dummyimage.com/\(width)x\(height)/09e/fff.png&text=Image+1"]
+        
+        let sample4: [String] = []
+        
+        var sampleArray: [[String]] = []
+        sampleArray.append(contentsOf: [sample1, sample2, sample3, sample4])
+        
+        return sampleArray.randomElement()!
     }
 }
