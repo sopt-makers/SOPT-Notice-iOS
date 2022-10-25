@@ -22,12 +22,9 @@ public class PostDetailRepository {
 }
 
 extension PostDetailRepository: PostDetailRepositoryInterface {
-    public func fetchPostDetail() {
-        networkService.fetchNotcieDetail(noticeId: 3)
-            .sink { error in
-                print(error, "에러 발생")
-            } receiveValue: { entity in
-                if let entity { print(entity, "성공") }
-            }.store(in: &cancelBag)
+    public func fetchPostDetail(noticeId: Int) -> AnyPublisher<PostDetailModel, Error> {
+        networkService.fetchNotcieDetail(noticeId: noticeId)
+            .compactMap { $0?.toDomain() }
+            .eraseToAnyPublisher()
     }
 }
