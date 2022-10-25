@@ -19,13 +19,13 @@ public class PostListViewModel: ViewModelType {
     // MARK: - Inputs
     
     public struct Input {
-    
+        let textChanged: AnyPublisher<String?, Error>
     }
     
     // MARK: - Outputs
     
     public struct Output {
-    
+        var searchList = PassthroughSubject<[PostListModel], Error>()
     }
     
     // MARK: - init
@@ -39,12 +39,28 @@ extension PostListViewModel {
     public func transform(from input: Input, cancelBag: Set<AnyCancellable>) -> Output {
         let output = Output()
         self.bindOutput(output: output, cancelBag: cancelBag)
-        // input,output 상관관계 작성
+        
+        input.textChanged
+            .filter { $0 != nil && $0 != ""}
+            .sink(receiveCompletion: { event in
+                print("PostListViewModel - completion: \(event)")
+            }, receiveValue: { [weak self] str in
+                guard let self = self else { return }
+                self.useCase.getSearch(query: str!)
+            })
+            .store(in: &self.cancelBag)
     
         return output
     }
   
     private func bindOutput(output: Output, cancelBag: Set<AnyCancellable>) {
-    
+        let searchResult = useCase.searchList
+        
+        searchResult.sink(receiveCompletion: { event in
+            print("PostListViewModel - completion: \(event)")
+        }, receiveValue: { value in
+            output.searchList.send(value)
+        })
+        .store(in: &self.cancelBag)
     }
 }

@@ -8,6 +8,9 @@
 
 import Foundation
 
-public struct PostListEntity {
+public struct PostListEntity: Codable {
     
+    public init() {
+        
+    }
 }
