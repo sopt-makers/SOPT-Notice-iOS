@@ -10,6 +10,7 @@ import UIKit
 import Combine
 
 import Core
+import Domain
 
 import ImageSlideShow
 import SnapKit
@@ -23,9 +24,8 @@ public class PostDetailVC: UIViewController {
     private var cancelBag = CancelBag()
     
     lazy var dataSource: UICollectionViewDiffableDataSource<Section, AnyHashable>! = nil
+    private let imageViewTapped = PassthroughSubject<Void, Never>()
     
-    var sampleImages:[Image] = []
-  
     // MARK: - UI Components
     
     private lazy var naviBar = CustomNavigationBar(self, type: .leftTitleWithLeftButton)
@@ -49,7 +49,6 @@ public class PostDetailVC: UIViewController {
         self.registerCells()
         self.bindViewModels()
         self.setDataSource()
-        self.generateImages()
     }
 }
 
@@ -92,37 +91,29 @@ extension PostDetailVC {
 // MARK: - Bind
 
 extension PostDetailVC {
-  
     private func bindViewModels() {
-        let input = PostDetailViewModel.Input()
         let input = PostDetailViewModel.Input(viewDidLoad: Driver.just(()),
+                                              imageViewTapped: imageViewTapped.asDriver())
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
+        
         output.$postDetailModel
             .compactMap { $0 }
             .sink { model in
                 self.applySnapshot(item: model)
             }.store(in: self.cancelBag)
+        
+        output.$presentImageSlide
+            .compactMap { $0 }
+            .sink { model in
+                self.presentImageSlide(images: model)
+            }.store(in: self.cancelBag)
     }
-
-    private func presentImageSlide() {
-        ImageSlideShowViewController.presentByCustomTransitionFrom(self){ [weak self] controller in
+    
+    private func presentImageSlide(images: [ImageSlideShowImages]) {
+        ImageSlideShowViewController.presentByCustomTransitionFrom(self) { [weak self] controller in
             controller.dismissOnPanGesture = false
-            controller.slides = self?.sampleImages
+            controller.slides = images
             controller.enableZoom = true
-            controller.controllerDidDismiss = {
-                debugPrint("Controller Dismissed")
-
-                debugPrint("last index viewed: \(controller.currentIndex)")
-            }
-            controller.slideShowViewDidLoad = {
-                debugPrint("Did Load")
-            }
-            controller.slideShowViewWillAppear = { animated in
-                debugPrint("Will Appear Animated: \(animated)")
-            }
-            controller.slideShowViewDidAppear = { animated in
-                debugPrint("Did Appear Animated: \(animated)")
-            }
         }
     }
 }
@@ -131,7 +122,6 @@ extension PostDetailVC {
 
 extension PostDetailVC {
     private func setDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<Section, Int>(collectionView: postDetailCollectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
         dataSource = UICollectionViewDiffableDataSource(collectionView: postDetailCollectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
             switch Section.type(indexPath.section) {
             case .title:
@@ -148,9 +138,8 @@ extension PostDetailVC {
                         print(error)
                     } receiveValue: { [weak self] in
                         guard let self = self else { return }
-                        self.presentImageSlide()
-                    }.store(in: &self.cancelBag)
-
+                        self.imageViewTapped.send()
+                    }.store(in: self.cancelBag)
                 imagesCell.setData(model: model)
                 return imagesCell
                 
@@ -190,51 +179,5 @@ extension PostDetailVC: UIViewControllerTransitioningDelegate {
     
     public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return ImageSlideShowViewController.dismissLikePush
-    }
-}
-
-extension PostDetailVC {
-    fileprivate func generateImages()
-    {
-        let scale:Int = Int(UIScreen.main.scale)
-        let height:Int = Int(view.frame.size.height) * scale
-        let width:Int = Int(view.frame.size.width) * scale
-        
-        sampleImages = [
-            Image(title: "Image 1", url: URL(string: "https://dummyimage.com/\(width)x\(height)/09a/fff.png&text=Image+1")!),
-            Image(title: "Image 2", url: URL(string: "https://dummyimage.com/\(600)x\(600)/09b/fff.png&text=Image+2")!),
-            Image(title: "Image 3", url: URL(string: "https://dummyimage.com/\(width)x\(height)/09c/fff.png&text=Image+3")!),
-            Image(title: "Image 4", url: URL(string: "https://dummyimage.com/\(600)x\(600)/09d/fff.png&text=Image+4")!),
-            Image(title: "Image 5", url: URL(string: "https://dummyimage.com/\(width)x\(height)/09e/fff.png&text=Image+5")!),
-            Image(title: "Image 6", url: URL(string: "https://dummyimage.com/\(width)x\(height)/09f/fff.png&text=Image+6")!),
-        ]
-    }
-}
-
-class Image: NSObject, ImageSlideShowProtocol
-{
-    private let url: URL
-    let title: String?
-    
-    init(title: String, url: URL) {
-        self.title = title
-        self.url = url
-    }
-    
-    func slideIdentifier() -> String {
-        return String(describing: url)
-    }
-    
-    func image(completion: @escaping (_ image: UIImage?, _ error: Error?) -> Void) {
-        let session = URLSession(configuration: URLSessionConfiguration.default)
-        session.dataTask(with: self.url) { data, response, error in
-            if let data = data,
-               error == nil {
-                let image = UIImage(data: data)
-                completion(image, nil)
-            } else {
-                completion(nil, error)
-            }
-        }.resume()
     }
 }

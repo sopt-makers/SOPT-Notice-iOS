@@ -6,7 +6,7 @@
 //  Copyright © 2022 SOPT-iOS. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 import ImageSlideShow
 
@@ -53,32 +53,5 @@ extension PostDetailModel {
         public init(content: String) {
             self.content = content
         }
-    }
-}
-
-public class ImageSlideShowImages: NSObject, ImageSlideShowProtocol {
-    private let url: URL
-    public let title: String?
-    
-    public init(title: String, url: URL) {
-        self.title = title
-        self.url = url
-    }
-    
-    public func slideIdentifier() -> String {
-        return String(describing: url)
-    }
-    
-    public func image(completion: @escaping (_ image: UIImage?, _ error: Error?) -> Void) {
-        let session = URLSession(configuration: URLSessionConfiguration.default)
-        session.dataTask(with: self.url) { data, response, error in
-            if let data = data,
-               error == nil {
-                let image = UIImage(data: data)
-                completion(image, nil)
-            } else {
-                completion(nil, error)
-            }
-        }.resume()
     }
 }

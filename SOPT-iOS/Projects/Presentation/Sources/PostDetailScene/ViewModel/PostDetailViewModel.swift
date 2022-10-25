@@ -22,18 +22,17 @@ public class PostDetailViewModel: ViewModelTypeWithCancelBag {
     
     public struct Input {
         let viewDidLoad: Driver<Void>
+        let imageViewTapped: Driver<Void>
     }
     
     // MARK: - Outputs
     
-    public struct Output {
-    
     public class Output {
         @Published var postDetailModel: PostDetailModel?
+        @Published var presentImageSlide: [ImageSlideShowImages]?
     }
     
     // MARK: - init
-  
     
     public init(useCase: PostDetailUseCase, noticeId: Int) {
         self.useCase = useCase
@@ -49,6 +48,11 @@ extension PostDetailViewModel {
         input.viewDidLoad
             .sink {
                 self.useCase.fetchPostDetail(noticeId: self.noticeId)
+            }.store(in: cancelBag)
+        
+        input.imageViewTapped
+            .sink {
+                output.presentImageSlide = self.useCase.imageSlideImages.value
             }.store(in: cancelBag)
         
         return output

@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-extension UIImageView {
+public extension UIImageView {
     func setImage(with urlString: String, placeholder: String? = nil, completion: ((UIImage?) -> Void)? = nil) {
         let cache = ImageCache.default
         if urlString == "" {
