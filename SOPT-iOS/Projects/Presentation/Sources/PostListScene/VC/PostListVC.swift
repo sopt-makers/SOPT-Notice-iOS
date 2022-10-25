@@ -24,6 +24,8 @@ public class PostListVC: UIViewController {
     private var cancelBag = Set<AnyCancellable>()
     private var textChanged = PassthroughSubject<String?, Error>()
     
+    public var factory: ModuleFactoryInterface!
+    
     private var searchResultList: [PostListModel] = []
     let partList = ["전체", "기획", "디자인", "iOS", "Android", "Server", "Web"]
     
@@ -307,5 +309,10 @@ extension PostListVC: UITableViewDelegate {
         guard let headerView = searchTableView.dequeueReusableHeaderFooterView(withIdentifier: SearchHeaderView.className) as? SearchHeaderView else { return UIView() }
         headerView.initCell(searchResultList.count)
         return headerView
+    }
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = factory.makePostDetailVC(noticeId: 3)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }
