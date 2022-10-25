@@ -23,6 +23,45 @@ public class ModuleFactory {
 }
 
 extension ModuleFactory: ModuleFactoryInterface {
+    
+    public func makeSplashVC() -> Presentation.SplashVC {
+        let splashVC = SplashVC()
+        splashVC.factory = self
+        return splashVC
+    }
+    
+    public func makeAuthSignUpVC() -> Presentation.AuthSignUpVC {
+        let repository = AuthSignUpRepository(service: alertService)
+        let useCase = DefaultAuthSignUpUseCase(repository: repository)
+        let viewModel = AuthSignUpViewModel(useCase: useCase)
+        let authSignUpVC = AuthSignUpVC()
+        authSignUpVC.factory = self
+        authSignUpVC.viewModel = viewModel
+        return authSignUpVC
+    }
+    
+    public func makeAuthWaitingVC() -> Presentation.AuthWaitingVC {
+        let authWaitingVC = AuthWaitingVC()
+        authWaitingVC.factory = self
+        return authWaitingVC
+    }
+    
+    public func makeAuthCompleteVC() -> Presentation.AuthCompleteVC {
+        let authCompleteVC = AuthCompleteVC()
+        authCompleteVC.factory = self
+        return authCompleteVC
+    }
+    
+    public func makeAuthPushAlarmVC() -> Presentation.AuthPushAlarmVC {
+        let repository = AuthPushAlarmRepository(service: alertService)
+        let useCase = DefaultAuthPushAlarmUseCase(repository: repository)
+        let viewModel = AuthPushAlarmViewModel(useCase: useCase)
+        let authPushAlarmVC = AuthPushAlarmVC()
+        authPushAlarmVC.factory = self
+        authPushAlarmVC.viewModel = viewModel
+        return authPushAlarmVC
+    }
+    
     public func makePostListVC() -> Presentation.PostListVC {
         let repository = PostListRepository(service: alertService)
         let useCase = DefaultPostListUseCase(repository: repository)

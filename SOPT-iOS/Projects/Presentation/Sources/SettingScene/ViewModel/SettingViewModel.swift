@@ -34,6 +34,8 @@ public class SettingViewModel {
     }
 }
 
+// MARK: - Extensions
+
 extension SettingViewModel {
     
     func getSettingCellCount() -> Int {

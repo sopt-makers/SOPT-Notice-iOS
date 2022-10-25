@@ -1,38 +1,37 @@
 //
-//  PushAlarmPartTVC.swift
+//  AuthPushAlarmTVC.swift
 //  Presentation
 //
-//  Created by devxsby on 2022/10/20.
+//  Created by devxsby on 2022/10/23.
 //  Copyright © 2022 SOPT-iOS. All rights reserved.
 //
 
 import UIKit
 import DSKit
 
-import SnapKit
-import Then
-
-class PushAlarmPartTVC: UITableViewCell {
+class AuthPushAlarmTVC: UITableViewCell {
     
     // MARK: - Properties
     
+    var viewModel: AuthPushAlarmViewModel!
+    
     // MARK: - UI Components
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.setTypoStyle(.body1)
-        $0.textColor = DSKitAsset.Colors.gray900.color
+        $0.textColor = DSKitAsset.Colors.gray800.color
         $0.textAlignment = .left
     }
     
-    lazy var stateButton = UIButton(type: .custom).then {
-        $0.setImage(DSKitAsset.Assets.icStateOff.image.withRenderingMode(.alwaysOriginal), for: .normal)
-        $0.setImage(DSKitAsset.Assets.icStateOn.image.withRenderingMode(.alwaysOriginal), for: .selected)
+    private lazy var stateButton = UIButton(type: .custom).then {
+        $0.setImage(DSKitAsset.Assets.icAlarmOff.image.withRenderingMode(.alwaysOriginal), for: .normal)
+        $0.setImage(DSKitAsset.Assets.icAlarmOn.image.withRenderingMode(.alwaysOriginal), for: .selected)
         $0.contentMode = .scaleAspectFill
         $0.addTarget(self, action: #selector(stateButtonDidTap), for: .touchUpInside)
     }
     
-    private let dividerView = UIView().then {
-        $0.backgroundColor = DSKitAsset.Colors.gray200.color
+    let horizontalLine = UIView().then {
+        $0.backgroundColor = DSKitAsset.Colors.gray100.color
     }
     
     // MARK: - Initialization
@@ -50,14 +49,19 @@ class PushAlarmPartTVC: UITableViewCell {
 
 // MARK: - Methods
 
-extension PushAlarmPartTVC {
+extension AuthPushAlarmTVC {
+    
+    func initCell(_ indexPath: Int, cellType: AuthPushAlarmViewModel.PartList) {
+        titleLabel.text = cellType.title
+        horizontalLine.isHidden = (indexPath != 0)
+    }
     
     private func setUI() {
         self.backgroundColor = .white
     }
     
     private func setLayout() {
-        addSubviews(titleLabel, dividerView)
+        addSubviews(titleLabel, horizontalLine)
         contentView.addSubview(stateButton)
         
         titleLabel.snp.makeConstraints { make in
@@ -68,11 +72,12 @@ extension PushAlarmPartTVC {
         stateButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(16)
             make.centerY.equalToSuperview()
+            make.width.height.equalTo(40)
         }
         
-        dividerView.snp.makeConstraints { make in
+        horizontalLine.snp.makeConstraints { make in
+            make.bottom.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(16)
-            make.bottom.equalToSuperview().offset(1)
             make.height.equalTo(1)
         }
     }

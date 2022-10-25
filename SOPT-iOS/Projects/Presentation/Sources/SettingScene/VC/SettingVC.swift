@@ -23,6 +23,7 @@ public class SettingVC: UIViewController {
        let tableView = UITableView()
         tableView.backgroundColor = .white
         tableView.showsVerticalScrollIndicator = false
+        tableView.isScrollEnabled = false
         tableView.separatorStyle = .none
         return tableView
     }()
@@ -52,6 +53,11 @@ extension SettingVC {
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
+}
+
+// MARK: - Methods
+
+extension SettingVC {
     
     private func setDelegate() {
         self.settingListTableView.delegate = self
@@ -62,8 +68,6 @@ extension SettingVC {
         self.settingListTableView.register(SettingTVC.self, forCellReuseIdentifier: SettingTVC.className)
     }
 }
-
-// MARK: - Methods
 
 // MARK: - UITableViewDelegate
 

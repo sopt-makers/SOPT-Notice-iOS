@@ -1,8 +1,8 @@
 //
-//  PushAlarmSettingViewModel.swift
+//  AuthPushAlarmViewModel.swift
 //  Presentation
 //
-//  Created by devxsby on 2022/10/17.
+//  Created by devxsby on 2022/10/23.
 //  Copyright © 2022 SOPT-iOS. All rights reserved.
 //
 
@@ -11,8 +11,8 @@ import Combine
 import Core
 import Domain
 
-public class PushAlarmSettingViewModel: ViewModelType {
-
+public class AuthPushAlarmViewModel: ViewModelType {
+    
     // MARK: - Properties
 
     enum PartList: CaseIterable {
@@ -21,7 +21,7 @@ public class PushAlarmSettingViewModel: ViewModelType {
         var title: String {
             switch self {
             case .FullNotice:
-                return "전체 공지"
+                return "SOPT 전체 공지"
             case .PM:
                 return "기획"
             case .Design:
@@ -37,8 +37,8 @@ public class PushAlarmSettingViewModel: ViewModelType {
             }
         }
     }
-    
-    private let useCase: PushAlarmSettingUseCase
+
+    private let useCase: AuthPushAlarmUseCase
     private var cancelBag = Set<AnyCancellable>()
   
     // MARK: - Inputs
@@ -55,14 +55,14 @@ public class PushAlarmSettingViewModel: ViewModelType {
     
     // MARK: - init
   
-    public init(useCase: PushAlarmSettingUseCase) {
+    public init(useCase: AuthPushAlarmUseCase) {
         self.useCase = useCase
     }
 }
 
 // MARK: - Extensions
 
-extension PushAlarmSettingViewModel {
+extension AuthPushAlarmViewModel {
     public func transform(from input: Input, cancelBag: Set<AnyCancellable>) -> Output {
         let output = Output()
         self.bindOutput(output: output, cancelBag: cancelBag)
@@ -76,7 +76,11 @@ extension PushAlarmSettingViewModel {
     }
 }
 
-extension PushAlarmSettingViewModel {
+
+// MARK: - Extensions
+
+extension AuthPushAlarmViewModel {
+    
     func getPartListCount() -> Int {
         return PartList.allCases.count
     }
