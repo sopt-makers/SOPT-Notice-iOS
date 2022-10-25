@@ -9,10 +9,10 @@
 import Foundation
 
 public struct PostDetailEntity: Codable {
-    let noticeID: Int
-    let title, creator, createdAt: String
-    let images: [String]
-    let content, part, scope: String
+    public let noticeID: Int
+    public let title, creator, createdAt: String
+    public let images: [String]
+    public let content, part, scope: String
 
     enum CodingKeys: String, CodingKey {
         case noticeID = "notice_id"
