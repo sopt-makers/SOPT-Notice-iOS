@@ -13,10 +13,10 @@ import Network
 
 public class AuthPushAlarmRepository {
     
-    private let networkService: AuthPushAlarmServiceType
+    private let networkService: AuthService
     private let cancelBag = Set<AnyCancellable>()
     
-    public init(service: AuthPushAlarmServiceType) {
+    public init(service: AuthService) {
         self.networkService = service
     }
 }

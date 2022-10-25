@@ -13,14 +13,21 @@ import Network
 
 public class PostDetailRepository {
     
-    private let networkService: AlertService
-    private let cancelBag = Set<AnyCancellable>()
+    private let networkService: NoticeService
+    private var cancelBag = Set<AnyCancellable>()
     
-    public init(service: AlertService) {
+    public init(service: NoticeService) {
         self.networkService = service
     }
 }
 
 extension PostDetailRepository: PostDetailRepositoryInterface {
-    
+    public func fetchPostDetail() {
+        networkService.fetchNotcieDetail(noticeId: 3)
+            .sink { error in
+                print(error, "에러 발생")
+            } receiveValue: { entity in
+                if let entity { print(entity, "성공") }
+            }.store(in: &cancelBag)
+    }
 }

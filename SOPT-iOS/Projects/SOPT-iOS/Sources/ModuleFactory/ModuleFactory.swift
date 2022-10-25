@@ -31,7 +31,7 @@ extension ModuleFactory: ModuleFactoryInterface {
     }
     
     public func makeAuthSignUpVC() -> Presentation.AuthSignUpVC {
-        let repository = AuthSignUpRepository(service: alertService)
+        let repository = AuthSignUpRepository(service: authService)
         let useCase = DefaultAuthSignUpUseCase(repository: repository)
         let viewModel = AuthSignUpViewModel(useCase: useCase)
         let authSignUpVC = AuthSignUpVC()
@@ -53,7 +53,7 @@ extension ModuleFactory: ModuleFactoryInterface {
     }
     
     public func makeAuthPushAlarmVC() -> Presentation.AuthPushAlarmVC {
-        let repository = AuthPushAlarmRepository(service: alertService)
+        let repository = AuthPushAlarmRepository(service: authService)
         let useCase = DefaultAuthPushAlarmUseCase(repository: repository)
         let viewModel = AuthPushAlarmViewModel(useCase: useCase)
         let authPushAlarmVC = AuthPushAlarmVC()
@@ -63,7 +63,7 @@ extension ModuleFactory: ModuleFactoryInterface {
     }
     
     public func makePostListVC() -> Presentation.PostListVC {
-        let repository = PostListRepository(service: alertService)
+        let repository = PostListRepository(service: noticeService)
         let useCase = DefaultPostListUseCase(repository: repository)
         let viewModel = PostListViewModel(useCase: useCase)
         let postListVC = PostListVC()
@@ -72,7 +72,8 @@ extension ModuleFactory: ModuleFactoryInterface {
     }
     
     public func makePostDetailVC() -> Presentation.PostDetailVC {
-        let repository = PostDetailRepository(service: alertService)
+        let repository = PostDetailRepository(service: noticeService)
+        repository.fetchPostDetail()
         let useCase = DefaultPostDetailUseCase(repository: repository)
         let viewModel = PostDetailViewModel(useCase: useCase)
         let PostDetailVC = PostDetailVC()

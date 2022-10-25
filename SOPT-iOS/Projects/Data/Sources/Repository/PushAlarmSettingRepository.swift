@@ -13,10 +13,10 @@ import Network
 
 public class PushAlarmSettingRepository {
     
-    private let networkService: PushAlarmSettingServiceType
+    private let networkService: AlertService
     private let cancelBag = Set<AnyCancellable>()
     
-    public init(service: PushAlarmSettingServiceType) {
+    public init(service: AlertService) {
         self.networkService = service
     }
 }

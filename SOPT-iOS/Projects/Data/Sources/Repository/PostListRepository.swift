@@ -13,10 +13,10 @@ import Network
 
 public class PostListRepository {
     
-    private let networkService: PostListServiceType
+    private let networkService: NoticeService
     private var cancelBag = Set<AnyCancellable>()
     
-    public init(service: PostListServiceType) {
+    public init(service: NoticeService) {
         self.networkService = service
     }
 }
