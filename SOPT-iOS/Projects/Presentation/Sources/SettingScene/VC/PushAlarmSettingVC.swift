@@ -31,7 +31,7 @@ public class PushAlarmSettingVC: UIViewController {
         return tableView
     }()
     
-    private let captionabel = UILabel().then {
+    private let captionLabel = UILabel().then {
         $0.text = """
                   알림이 오지 않는다면 [기기 내 설정 > 알림]에서
                   알림 설정을 확인해주세요.
@@ -39,6 +39,7 @@ public class PushAlarmSettingVC: UIViewController {
         $0.setTypoStyle(.caption)
         $0.textColor = DSKitAsset.Colors.gray600.color
         $0.numberOfLines = 2
+        $0.setLineSpacing(lineSpacing: 4)
         $0.textAlignment = .left
     }
   
@@ -63,14 +64,14 @@ extension PushAlarmSettingVC {
     }
     
     private func setLayout() {
-        self.view.addSubviews(partListTableView, captionabel)
+        self.view.addSubviews(partListTableView, captionLabel)
         
         partListTableView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(56 * 7 + 1)
         }
         
-        captionabel.snp.makeConstraints { make in
+        captionLabel.snp.makeConstraints { make in
             make.top.equalTo(partListTableView.snp.bottom).offset(8)
             make.leading.equalToSuperview().inset(16)
         }
