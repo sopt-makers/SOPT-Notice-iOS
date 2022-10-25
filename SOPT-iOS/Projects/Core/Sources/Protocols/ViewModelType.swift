@@ -17,3 +17,9 @@ public protocol ViewModelType{
     func transform(from input: Input, cancelBag: Set<AnyCancellable>) -> Output
 }
 
+public protocol ViewModelTypeWithCancelBag {
+    associatedtype Input
+    associatedtype Output
+    
+    func transform(from input: Input, cancelBag: CancelBag) -> Output
+}
