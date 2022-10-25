@@ -73,9 +73,8 @@ extension ModuleFactory: ModuleFactoryInterface {
     
     public func makePostDetailVC() -> Presentation.PostDetailVC {
         let repository = PostDetailRepository(service: noticeService)
-        repository.fetchPostDetail()
         let useCase = DefaultPostDetailUseCase(repository: repository)
-        let viewModel = PostDetailViewModel(useCase: useCase)
+        let viewModel = PostDetailViewModel(useCase: useCase, noticeId: 3)
         let PostDetailVC = PostDetailVC()
         PostDetailVC.viewModel = viewModel
         return PostDetailVC

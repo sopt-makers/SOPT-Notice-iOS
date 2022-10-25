@@ -10,6 +10,7 @@ import UIKit
 import Combine
 
 import Core
+import Domain
 
 import SnapKit
 
@@ -26,7 +27,6 @@ final class PostDetailImagesCVC: UICollectionViewCell, UICollectionViewRegistera
     private let contentImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
-        iv.backgroundColor = .gray
         iv.isUserInteractionEnabled = true
         return iv
     }()
@@ -96,6 +96,22 @@ extension PostDetailImagesCVC {
     private func setGesture() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(imageViewSender))
         self.contentImageView.addGestureRecognizer(tap)
+    }
+    
+    public func setData(model: [PostDetailModel.Image]) {
+        self.contentImageView.setImage(with: model.first!.imageURL)
+        
+        let countText: String? = {
+            if model.count > 1 { return "+ \(model.count)" }
+            else { return nil }
+        }()
+        
+        guard countText != nil else {
+            self.imageNumberView.isHidden = true
+            return
+        }
+        
+        self.imageNumberLabel.text = countText
     }
     
     @objc

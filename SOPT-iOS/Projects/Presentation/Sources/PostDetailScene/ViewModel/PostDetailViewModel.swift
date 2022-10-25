@@ -11,40 +11,55 @@ import Combine
 import Core
 import Domain
 
-public class PostDetailViewModel: ViewModelType {
-
+public class PostDetailViewModel: ViewModelTypeWithCancelBag {
+    
     private let useCase: PostDetailUseCase
     private var cancelBag = Set<AnyCancellable>()
-  
+    
+    private let noticeId: Int
+    
     // MARK: - Inputs
     
     public struct Input {
-    
+        let viewDidLoad: Driver<Void>
     }
     
     // MARK: - Outputs
     
     public struct Output {
     
+    public class Output {
+        @Published var postDetailModel: PostDetailModel?
     }
     
     // MARK: - init
   
-    public init(useCase: PostDetailUseCase) {
+    
+    public init(useCase: PostDetailUseCase, noticeId: Int) {
         self.useCase = useCase
+        self.noticeId = noticeId
     }
 }
 
 extension PostDetailViewModel {
-    public func transform(from input: Input, cancelBag: Set<AnyCancellable>) -> Output {
+    public func transform(from input: Input, cancelBag: CancelBag) -> Output {
         let output = Output()
         self.bindOutput(output: output, cancelBag: cancelBag)
-        // input,output 상관관계 작성
-    
+        
+        input.viewDidLoad
+            .sink {
+                self.useCase.fetchPostDetail(noticeId: self.noticeId)
+            }.store(in: cancelBag)
+        
         return output
     }
-  
-    private func bindOutput(output: Output, cancelBag: Set<AnyCancellable>) {
     
+    private func bindOutput(output: Output, cancelBag: CancelBag) {
+        let postDetailModel = self.useCase.postDetailModel
+        
+        postDetailModel.asDriver()
+            .compactMap { $0 }
+            .assign(to: \.postDetailModel, on: output)
+            .store(in: cancelBag)
     }
 }

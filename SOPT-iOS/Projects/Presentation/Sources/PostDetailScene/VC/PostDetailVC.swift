@@ -20,9 +20,10 @@ public class PostDetailVC: UIViewController {
     // MARK: - Properties
     
     public var viewModel: PostDetailViewModel!
-    private var cancelBag = Set<AnyCancellable>()
+    private var cancelBag = CancelBag()
     
-    lazy var dataSource: UICollectionViewDiffableDataSource<Section, Int>! = nil
+    lazy var dataSource: UICollectionViewDiffableDataSource<Section, AnyHashable>! = nil
+    
     var sampleImages:[Image] = []
   
     // MARK: - UI Components
@@ -37,7 +38,7 @@ public class PostDetailVC: UIViewController {
         cv.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         return cv
     }()
-  
+    
     // MARK: - View Life Cycle
     
     public override func viewDidLoad() {
@@ -48,7 +49,6 @@ public class PostDetailVC: UIViewController {
         self.registerCells()
         self.bindViewModels()
         self.setDataSource()
-        self.applySnapshot()
         self.generateImages()
     }
 }
@@ -78,7 +78,6 @@ extension PostDetailVC {
 // MARK: - Methods
 
 extension PostDetailVC {
-    
     private func setDelegate() {
         postDetailCollectionView.delegate = self
     }
@@ -96,7 +95,13 @@ extension PostDetailVC {
   
     private func bindViewModels() {
         let input = PostDetailViewModel.Input()
+        let input = PostDetailViewModel.Input(viewDidLoad: Driver.just(()),
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
+        output.$postDetailModel
+            .compactMap { $0 }
+            .sink { model in
+                self.applySnapshot(item: model)
+            }.store(in: self.cancelBag)
     }
 
     private func presentImageSlide() {
@@ -127,13 +132,17 @@ extension PostDetailVC {
 extension PostDetailVC {
     private func setDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Section, Int>(collectionView: postDetailCollectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+        dataSource = UICollectionViewDiffableDataSource(collectionView: postDetailCollectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
             switch Section.type(indexPath.section) {
             case .title:
-                guard let titleCell = collectionView.dequeueReusableCell(withReuseIdentifier: PostDetailTitleCVC.className, for: indexPath) as? PostDetailTitleCVC else { return UICollectionViewCell() }
+                guard let titleCell = collectionView.dequeueReusableCell(withReuseIdentifier: PostDetailTitleCVC.className, for: indexPath) as? PostDetailTitleCVC,
+                      let model = itemIdentifier as? PostDetailModel.Title else { return UICollectionViewCell() }
+                titleCell.setData(model: model)
                 return titleCell
                 
             case .images:
-                guard let imagesCell = collectionView.dequeueReusableCell(withReuseIdentifier: PostDetailImagesCVC.className, for: indexPath) as? PostDetailImagesCVC else { return UICollectionViewCell() }
+                guard let imagesCell = collectionView.dequeueReusableCell(withReuseIdentifier: PostDetailImagesCVC.className, for: indexPath) as? PostDetailImagesCVC,
+                      let model = itemIdentifier as? [PostDetailModel.Image] else { return UICollectionViewCell() }
                 imagesCell.imageViewTapped
                     .sink { error in
                         print(error)
@@ -142,23 +151,26 @@ extension PostDetailVC {
                         self.presentImageSlide()
                     }.store(in: &self.cancelBag)
 
+                imagesCell.setData(model: model)
                 return imagesCell
                 
             case .content:
-                guard let contentCell = collectionView.dequeueReusableCell(withReuseIdentifier: PostDetailContentCVC.className, for: indexPath) as? PostDetailContentCVC else { return UICollectionViewCell() }
+                guard let contentCell = collectionView.dequeueReusableCell(withReuseIdentifier: PostDetailContentCVC.className, for: indexPath) as? PostDetailContentCVC,
+                      let model = itemIdentifier as? PostDetailModel.Content else { return UICollectionViewCell() }
+                contentCell.setData(model: model)
                 return contentCell
             }
         })
     }
     
-    // TODO: - image 수에 따라 데이터 받고 appendItems 분기처리하기
-    
-    func applySnapshot() {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Int>()
+    func applySnapshot(item: PostDetailModel) {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, AnyHashable>()
         snapshot.appendSections([.title, .images, .content])
-        snapshot.appendItems([1],toSection: .title)
-        snapshot.appendItems([2],toSection: .images)
-        snapshot.appendItems([3],toSection: .content)
+        snapshot.appendItems([item.title], toSection: .title)
+        if !item.images.isEmpty {
+            snapshot.appendItems([item.images], toSection: .images)
+        }
+        snapshot.appendItems([item.content], toSection: .content)
         dataSource.apply(snapshot, animatingDifferences: false)
         self.view.setNeedsLayout()
     }
@@ -167,7 +179,7 @@ extension PostDetailVC {
 // MARK: - UICollectionViewDelegate
 
 extension PostDetailVC: UICollectionViewDelegate {
-
+    
 }
 
 extension PostDetailVC: UIViewControllerTransitioningDelegate {
