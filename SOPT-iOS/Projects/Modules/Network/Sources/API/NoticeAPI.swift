@@ -12,7 +12,7 @@ import Alamofire
 import Moya
 
 public enum NoticeAPI {
-    case sample(provider: String)
+    case fetchNotcieDetail(noticeId: Int)
 }
 
 extension NoticeAPI: BaseAPI {
@@ -22,7 +22,7 @@ extension NoticeAPI: BaseAPI {
     // MARK: - Path
     public var path: String {
         switch self {
-        case .sample:
+        default:
             return ""
         }
     }
@@ -30,8 +30,8 @@ extension NoticeAPI: BaseAPI {
     // MARK: - Method
     public var method: Moya.Method {
         switch self {
-        case .sample:
-            return .post
+        default:
+            return .get
         }
     }
     
@@ -39,29 +39,44 @@ extension NoticeAPI: BaseAPI {
     private var bodyParameters: Parameters? {
         var params: Parameters = [:]
         switch self {
-        case .sample(let provider):
-            params["platform"] = provider
+        case .fetchNotcieDetail(let noticeId):
+            params["notice_id"] = noticeId
         }
         return params
     }
     
-    /// - note :
     private var parameterEncoding : ParameterEncoding{
         switch self {
-        case .sample:
+        case .fetchNotcieDetail:
             return URLEncoding.init(destination: .queryString, arrayEncoding: .noBrackets, boolEncoding: .literal)
         default :
             return JSONEncoding.default
         }
     }
     
-    /// - note :
     public var task: Task {
         switch self {
-        case .sample:
-            return .requestParameters(parameters: bodyParameters ?? [:], encoding: parameterEncoding)
         default:
             return .requestPlain
+        }
+    }
+    
+    public var sampleData: Data {
+        switch self {
+        case .fetchNotcieDetail(let noticeId):
+            let entity = PostDetailEntity.init(noticeID: noticeId,
+                                               title: "샘플 제목",
+                                               creator: "이준호",
+                                               createdAt: "22.05.31",
+                                               images: [],
+                                               content: "샘플 컨텐트",
+                                               part: "iOS",
+                                               scope: "iOS")
+            if let data = try? JSONEncoder().encode(entity) {
+                return data
+            } else {
+                return Data()
+            }
         }
     }
 }

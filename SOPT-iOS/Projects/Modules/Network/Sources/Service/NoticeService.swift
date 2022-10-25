@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Combine
 
 import Alamofire
 import Moya
@@ -14,9 +15,11 @@ import Moya
 public typealias DefaultNoticeService = BaseService<NoticeAPI>
 
 public protocol NoticeService {
-    
+    func fetchNotcieDetail(noticeId: Int) -> AnyPublisher<PostDetailEntity?, Error>
 }
 
-extension DefaultAlertService: NoticeService {
-    
+extension DefaultNoticeService: NoticeService {
+    public func fetchNotcieDetail(noticeId: Int) -> AnyPublisher<PostDetailEntity?, Error> {
+        return test.requestObjectInCombine(.fetchNotcieDetail(noticeId: noticeId))
+    }
 }
