@@ -40,6 +40,11 @@ extension DefaultAuthPushAlarmUseCase: AuthPushAlarmUseCase {
             self.postEmptyList()
         } else {
             self.repository.postPartList(list: partList)
+                .sink {
+                    debugPrint($0)
+                } receiveValue: { statusCode in
+                    print(statusCode)
+                }.store(in: self.cancelBag)
         }
     }
     
