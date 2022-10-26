@@ -13,6 +13,8 @@ import Combine
 import SnapKit
 import Then
 
+import Core
+
 public class PushAlarmSettingVC: UIViewController {
     
     // MARK: - Properties
@@ -21,6 +23,17 @@ public class PushAlarmSettingVC: UIViewController {
     private var cancelBag = Set<AnyCancellable>()
   
     // MARK: - UI Components
+    
+    private lazy var naviBar = CustomNavigationBar(self, type: .leftTitleWithLeftButton)
+        .setTitle(I18N.Setting.pushSetting)
+        .setRightButtonTitle(I18N.Setting.check)
+        .rightButtonAction {
+            print("확인 누름")
+        }
+    
+    private let dividerView = UIView().then {
+        $0.backgroundColor = DSKitAsset.Colors.gray200.color
+    }
     
     private lazy var partListTableView: UITableView = {
        let tableView = UITableView()
@@ -64,10 +77,21 @@ extension PushAlarmSettingVC {
     }
     
     private func setLayout() {
-        self.view.addSubviews(partListTableView, captionLabel)
+        self.view.addSubviews(naviBar, dividerView, partListTableView, captionLabel)
+        
+        naviBar.snp.makeConstraints { make in
+            make.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        dividerView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(naviBar.snp.bottom).offset(8)
+            make.height.equalTo(1)
+        }
         
         partListTableView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(dividerView.snp.bottom)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(56 * 7 + 1)
         }
         

@@ -28,5 +28,7 @@ public struct I18N {
     
     public struct Setting {
         public static let setting = "설정"
+        public static let pushSetting = "푸시 알림 설정"
+        public static let check = "확인"
     }
 }
