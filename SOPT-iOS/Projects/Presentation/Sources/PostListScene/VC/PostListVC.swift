@@ -20,6 +20,7 @@ public class PostListVC: UIViewController {
     
     // MARK: - Properties
     
+    public var factory: ModuleFactoryInterface!
     public var viewModel: PostListViewModel!
     private var cancelBag = Set<AnyCancellable>()
     private var textChanged = PassthroughSubject<String?, Error>()
@@ -32,7 +33,8 @@ public class PostListVC: UIViewController {
     private lazy var naviBar = CustomNavigationBar(self, type: .leftTitle)
         .setTitle(I18N.Navi.post)
         .rightButtonAction {
-            print("rightButtonAction")
+            let settingVC = self.factory.makeSettingVC()
+            self.navigationController?.pushViewController(settingVC, animated: true)
         }
         .otherRightButtonAction {
             self.hideSearchView(false)

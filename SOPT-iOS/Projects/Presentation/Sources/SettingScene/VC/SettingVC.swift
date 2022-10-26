@@ -11,6 +11,9 @@ import UIKit
 import SnapKit
 import Then
 
+import Core
+import DSKit
+
 public class SettingVC: UIViewController {
     
     // MARK: - Properties
@@ -18,6 +21,9 @@ public class SettingVC: UIViewController {
     public var viewModel: SettingViewModel!
   
     // MARK: - UI Components
+    
+    private lazy var naviBar = CustomNavigationBar(self, type: .leftTitleWithLeftButton)
+        .setTitle(I18N.Setting.setting)
     
     private lazy var settingListTableView: UITableView = {
        let tableView = UITableView()
@@ -27,6 +33,10 @@ public class SettingVC: UIViewController {
         tableView.separatorStyle = .none
         return tableView
     }()
+    
+    private let dividerView = UIView().then {
+        $0.backgroundColor = DSKitAsset.Colors.gray200.color
+    }
   
     // MARK: - View Life Cycle
     
@@ -48,9 +58,21 @@ extension SettingVC {
     }
     
     private func setLayout() {
-        self.view.addSubview(settingListTableView)
+        self.view.addSubviews(naviBar, dividerView, settingListTableView)
+        
+        naviBar.snp.makeConstraints { make in
+            make.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        dividerView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(naviBar.snp.bottom).offset(8)
+            make.height.equalTo(1)
+        }
+        
         settingListTableView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(dividerView.snp.bottom)
+            make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
 }

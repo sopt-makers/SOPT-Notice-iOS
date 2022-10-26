@@ -67,6 +67,7 @@ extension ModuleFactory: ModuleFactoryInterface {
         let useCase = DefaultPostListUseCase(repository: repository)
         let viewModel = PostListViewModel(useCase: useCase)
         let postListVC = PostListVC()
+        postListVC.factory = self
         postListVC.viewModel = viewModel
         return postListVC
     }
