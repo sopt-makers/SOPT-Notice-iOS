@@ -14,6 +14,16 @@ import Network
 extension PushAlarmSettingEntity {
     
     public func toDomain() -> PushAlarmSettingModel {
-        return PushAlarmSettingModel.init()
+        var alert: [PartCategory: Bool] = [:]
+        self.alerts.forEach {
+            alert.updateValue($0.isAlert, forKey: $0.part)
+        }
+        return PushAlarmSettingModel.init(all: alert[PartCategory.fullNotice] ?? false,
+                                          plan: alert[PartCategory.plan] ?? false,
+                                          design: alert[PartCategory.design] ?? false,
+                                          ios: alert[PartCategory.ios] ?? false,
+                                          android: alert[PartCategory.android] ?? false,
+                                          web: alert[PartCategory.web] ?? false,
+                                          server: alert[PartCategory.server] ?? false)
     }
 }
