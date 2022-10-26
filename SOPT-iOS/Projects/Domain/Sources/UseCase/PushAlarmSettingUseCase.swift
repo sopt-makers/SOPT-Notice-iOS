@@ -8,6 +8,8 @@
 
 import Combine
 
+import Core
+
 public protocol PushAlarmSettingUseCase {
 
 }
@@ -15,7 +17,7 @@ public protocol PushAlarmSettingUseCase {
 public class DefaultPushAlarmSettingUseCase {
   
     private let repository: PushAlarmSettingRepositoryInterface
-    private var cancelBag = Set<AnyCancellable>()
+    private var cancelBag = CancelBag()
   
     public init(repository: PushAlarmSettingRepositoryInterface) {
         self.repository = repository

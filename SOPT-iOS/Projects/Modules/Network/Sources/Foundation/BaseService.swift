@@ -20,7 +20,7 @@ open class BaseService<Target: TargetType> {
     
     // MARK: - Properties
     
-    var cancelBag = Set<AnyCancellable>()
+    var cancelBag = CancelBag()
     
     private lazy var provider = self.defaultProvider
     
@@ -49,7 +49,7 @@ open class BaseService<Target: TargetType> {
     public init() {}
 }
 
-// MARK: - TestProvider
+// MARK: - Providers
 
 public extension BaseService {
     var `default`: BaseService {

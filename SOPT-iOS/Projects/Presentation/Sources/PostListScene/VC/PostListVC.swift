@@ -21,7 +21,7 @@ public class PostListVC: UIViewController {
     // MARK: - Properties
     
     public var viewModel: PostListViewModel!
-    private var cancelBag = Set<AnyCancellable>()
+    private var cancelBag = CancelBag()
     private var textChanged = PassthroughSubject<String?, Error>()
     
     public var factory: ModuleFactoryInterface!
@@ -202,7 +202,7 @@ extension PostListVC {
                 }
                 
             })
-            .store(in: &cancelBag)
+            .store(in: cancelBag)
     }
     
     private func setDelegate() {

@@ -8,6 +8,7 @@
 
 import Combine
 
+import Core
 import Network
 
 public protocol PostListUseCase {
@@ -18,7 +19,7 @@ public protocol PostListUseCase {
 public class DefaultPostListUseCase {
   
     private let repository: PostListRepositoryInterface
-    private var cancelBag = Set<AnyCancellable>()
+    private var cancelBag = CancelBag()
     public var searchList = PassthroughSubject<[PostListModel], Error>()
   
     public init(repository: PostListRepositoryInterface) {
@@ -35,6 +36,6 @@ extension DefaultPostListUseCase: PostListUseCase {
                 guard let entity = entity else { return }
                 self.searchList.send(entity)
             })
-            .store(in: &cancelBag)
+            .store(in: cancelBag)
     }
 }

@@ -11,10 +11,10 @@ import Combine
 import Core
 import Domain
 
-public class PostDetailViewModel: ViewModelTypeWithCancelBag {
+public class PostDetailViewModel: ViewModelType {
     
     private let useCase: PostDetailUseCase
-    private var cancelBag = Set<AnyCancellable>()
+    private var cancelBag = CancelBag()
     
     private let noticeId: Int
     

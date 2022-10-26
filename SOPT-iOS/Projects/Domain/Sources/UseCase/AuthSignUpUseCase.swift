@@ -8,6 +8,8 @@
 
 import Combine
 
+import Core
+
 public protocol AuthSignUpUseCase {
 
 }
@@ -15,7 +17,7 @@ public protocol AuthSignUpUseCase {
 public class DefaultAuthSignUpUseCase {
   
     private let repository: AuthSignUpRepositoryInterface
-    private var cancelBag = Set<AnyCancellable>()
+    private var cancelBag = CancelBag()
   
     public init(repository: AuthSignUpRepositoryInterface) {
         self.repository = repository

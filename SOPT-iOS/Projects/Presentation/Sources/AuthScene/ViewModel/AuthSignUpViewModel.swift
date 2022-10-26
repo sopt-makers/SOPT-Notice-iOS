@@ -14,7 +14,7 @@ import Domain
 public class AuthSignUpViewModel: ViewModelType {
 
     private let useCase: AuthSignUpUseCase
-    private var cancelBag = Set<AnyCancellable>()
+    private var cancelBag = CancelBag()
   
     // MARK: - Inputs
     
@@ -36,7 +36,7 @@ public class AuthSignUpViewModel: ViewModelType {
 }
 
 extension AuthSignUpViewModel {
-    public func transform(from input: Input, cancelBag: Set<AnyCancellable>) -> Output {
+    public func transform(from input: Input, cancelBag: CancelBag) -> Output {
         let output = Output()
         self.bindOutput(output: output, cancelBag: cancelBag)
         // input,output 상관관계 작성
@@ -44,7 +44,7 @@ extension AuthSignUpViewModel {
         return output
     }
   
-    private func bindOutput(output: Output, cancelBag: Set<AnyCancellable>) {
+    private func bindOutput(output: Output, cancelBag: CancelBag) {
     
     }
 }

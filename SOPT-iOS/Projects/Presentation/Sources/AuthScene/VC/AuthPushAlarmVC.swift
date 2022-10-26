@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Core
 import DSKit
 
 import Combine
@@ -19,7 +20,7 @@ public class AuthPushAlarmVC: UIViewController {
     
     public var factory: ModuleFactoryInterface!
     public var viewModel: AuthPushAlarmViewModel!
-    private var cancelBag = Set<AnyCancellable>()
+    private var cancelBag = CancelBag()
   
     // MARK: - UI Components
     

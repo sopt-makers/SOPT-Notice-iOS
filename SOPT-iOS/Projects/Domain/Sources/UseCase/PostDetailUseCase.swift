@@ -8,6 +8,8 @@
 
 import Combine
 
+import Core
+
 public protocol PostDetailUseCase {
     func fetchPostDetail(noticeId: Int)
     var postDetailModel: PassthroughSubject<PostDetailModel, Error> { get set }
@@ -16,7 +18,7 @@ public protocol PostDetailUseCase {
 
 public class DefaultPostDetailUseCase {
     private let repository: PostDetailRepositoryInterface
-    private var cancelBag = Set<AnyCancellable>()
+    private var cancelBag = CancelBag()
     public var postDetailModel = PassthroughSubject<PostDetailModel, Error>()
     public var imageSlideImages = CurrentValueSubject<[ImageSlideShowImages]?, Never>.init(nil)
   
@@ -36,7 +38,7 @@ extension DefaultPostDetailUseCase: PostDetailUseCase {
                 guard !entity.images.isEmpty else { return }
                 self.fetchImages(title: entity.title.title, model: entity.images)
             })
-            .store(in: &cancelBag)
+            .store(in: cancelBag)
     }
     
     private func fetchImages(title: String, model: [PostDetailModel.Image]) {

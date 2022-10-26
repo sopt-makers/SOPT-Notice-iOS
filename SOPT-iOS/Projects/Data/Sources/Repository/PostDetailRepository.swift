@@ -8,12 +8,13 @@
 
 import Combine
 
+import Core
 import Domain
 import Network
 
 public class PostDetailRepository {
     private let networkService: NoticeService
-    private var cancelBag = Set<AnyCancellable>()
+    private var cancelBag = CancelBag()
     
     public init(service: NoticeService) {
         self.networkService = service

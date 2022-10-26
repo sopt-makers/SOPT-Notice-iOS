@@ -9,13 +9,14 @@
 import UIKit
 import Combine
 
+import Core
 import DSKit
 
 class ViewPager: UIView {
     
     // MARK: - Properties
     
-    private var cancelBag: Set<AnyCancellable> = []
+    private var cancelBag = CancelBag()
     
     public let sizeConfiguration: TabbedView.SizeConfiguration
     
@@ -83,6 +84,6 @@ extension ViewPager {
     private func bind() {
         tabbedView.selectedTabIndex.sink {
             self.pagedView.moveToPage(at: $0)
-        }.store(in: &self.cancelBag)
+        }.store(in: self.cancelBag)
     }
 }
