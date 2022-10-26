@@ -39,7 +39,7 @@ public class AuthPushAlarmViewModel: ViewModelType {
     }
 
     private let useCase: AuthPushAlarmUseCase
-    private var cancelBag = Set<AnyCancellable>()
+    private var cancelBag = CancelBag()
   
     // MARK: - Inputs
     
@@ -63,7 +63,7 @@ public class AuthPushAlarmViewModel: ViewModelType {
 // MARK: - Extensions
 
 extension AuthPushAlarmViewModel {
-    public func transform(from input: Input, cancelBag: Set<AnyCancellable>) -> Output {
+    public func transform(from input: Input, cancelBag: CancelBag) -> Output {
         let output = Output()
         self.bindOutput(output: output, cancelBag: cancelBag)
         // input,output 상관관계 작성
@@ -71,7 +71,7 @@ extension AuthPushAlarmViewModel {
         return output
     }
   
-    private func bindOutput(output: Output, cancelBag: Set<AnyCancellable>) {
+    private func bindOutput(output: Output, cancelBag: CancelBag) {
     
     }
 }

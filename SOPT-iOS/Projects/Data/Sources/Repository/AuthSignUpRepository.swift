@@ -8,15 +8,16 @@
 
 import Combine
 
+import Core
 import Domain
 import Network
 
 public class AuthSignUpRepository {
     
-    private let networkService: AuthSignUpServiceType
-    private let cancelBag = Set<AnyCancellable>()
+    private let networkService: AuthService
+    private let cancelBag = CancelBag()
     
-    public init(service: AuthSignUpServiceType) {
+    public init(service: AuthService) {
         self.networkService = service
     }
 }

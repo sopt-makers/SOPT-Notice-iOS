@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Core
 import DSKit
 
 import Combine
@@ -20,7 +21,7 @@ public class PushAlarmSettingVC: UIViewController {
     // MARK: - Properties
     
     public var viewModel: PushAlarmSettingViewModel!
-    private var cancelBag = Set<AnyCancellable>()
+    private var cancelBag = CancelBag()
   
     // MARK: - UI Components
     

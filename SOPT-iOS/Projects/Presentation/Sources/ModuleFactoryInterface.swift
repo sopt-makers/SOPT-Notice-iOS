@@ -15,7 +15,7 @@ public protocol ModuleFactoryInterface {
     func makeAuthCompleteVC() -> AuthCompleteVC
     func makeAuthPushAlarmVC() -> AuthPushAlarmVC
     func makePostListVC() -> PostListVC
-    func makePostDetailVC() -> PostDetailVC
+    func makePostDetailVC(noticeId: Int) -> PostDetailVC
     func makeSettingVC() -> SettingVC
     func makePushAlarmSettingVC() -> PushAlarmSettingVC
 }

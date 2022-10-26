@@ -9,5 +9,5 @@
 import Combine
 
 public protocol PostDetailRepositoryInterface {
-  
+    func fetchPostDetail(noticeId: Int) -> AnyPublisher<PostDetailModel, Error>
 }

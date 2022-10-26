@@ -8,19 +8,23 @@
 
 import Combine
 
+import Core
 import Domain
 import Network
 
 public class PostDetailRepository {
+    private let networkService: NoticeService
+    private var cancelBag = CancelBag()
     
-    private let networkService: AlertService
-    private let cancelBag = Set<AnyCancellable>()
-    
-    public init(service: AlertService) {
+    public init(service: NoticeService) {
         self.networkService = service
     }
 }
 
 extension PostDetailRepository: PostDetailRepositoryInterface {
-    
+    public func fetchPostDetail(noticeId: Int) -> AnyPublisher<PostDetailModel, Error> {
+        networkService.fetchNotcieDetail(noticeId: noticeId)
+            .compactMap { $0?.toDomain() }
+            .eraseToAnyPublisher()
+    }
 }

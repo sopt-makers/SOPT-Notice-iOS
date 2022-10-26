@@ -9,6 +9,7 @@
 import UIKit
 
 import Core
+import Domain
 
 import SnapKit
 
@@ -97,5 +98,10 @@ extension PostDetailTitleCVC {
             make.height.equalTo(1)
             make.bottom.equalToSuperview()
         }
+    }
+    
+    public func setData(model: PostDetailModel.Title) {
+        self.titleLabel.text = model.title
+        self.writerAndDateLabel.text = "\(model.writer)·\(model.date)"
     }
 }

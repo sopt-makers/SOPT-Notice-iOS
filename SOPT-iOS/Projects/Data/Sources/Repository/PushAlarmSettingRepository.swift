@@ -8,15 +8,16 @@
 
 import Combine
 
+import Core
 import Domain
 import Network
 
 public class PushAlarmSettingRepository {
     
-    private let networkService: PushAlarmSettingServiceType
-    private let cancelBag = Set<AnyCancellable>()
+    private let networkService: AlertService
+    private let cancelBag = CancelBag()
     
-    public init(service: PushAlarmSettingServiceType) {
+    public init(service: AlertService) {
         self.networkService = service
     }
 }

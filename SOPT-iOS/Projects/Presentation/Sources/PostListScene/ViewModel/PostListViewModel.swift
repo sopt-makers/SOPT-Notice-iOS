@@ -14,7 +14,7 @@ import Domain
 public class PostListViewModel: ViewModelType {
 
     private let useCase: PostListUseCase
-    private var cancelBag = Set<AnyCancellable>()
+    private var cancelBag = CancelBag()
   
     // MARK: - Inputs
     
@@ -36,7 +36,7 @@ public class PostListViewModel: ViewModelType {
 }
 
 extension PostListViewModel {
-    public func transform(from input: Input, cancelBag: Set<AnyCancellable>) -> Output {
+    public func transform(from input: Input, cancelBag: CancelBag) -> Output {
         let output = Output()
         self.bindOutput(output: output, cancelBag: cancelBag)
         
@@ -48,12 +48,12 @@ extension PostListViewModel {
                 guard let self = self else { return }
                 self.useCase.getSearch(query: str!)
             })
-            .store(in: &self.cancelBag)
+            .store(in: cancelBag)
     
         return output
     }
   
-    private func bindOutput(output: Output, cancelBag: Set<AnyCancellable>) {
+    private func bindOutput(output: Output, cancelBag: CancelBag) {
         let searchResult = useCase.searchList
         
         searchResult.sink(receiveCompletion: { event in
@@ -61,6 +61,6 @@ extension PostListViewModel {
         }, receiveValue: { value in
             output.searchList.send(value)
         })
-        .store(in: &self.cancelBag)
+        .store(in: cancelBag)
     }
 }
