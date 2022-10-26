@@ -31,7 +31,7 @@ extension ModuleFactory: ModuleFactoryInterface {
     }
     
     public func makeAuthSignUpVC() -> Presentation.AuthSignUpVC {
-        let repository = AuthSignUpRepository(service: alertService)
+        let repository = AuthSignUpRepository(service: authService)
         let useCase = DefaultAuthSignUpUseCase(repository: repository)
         let viewModel = AuthSignUpViewModel(useCase: useCase)
         let authSignUpVC = AuthSignUpVC()
@@ -53,7 +53,7 @@ extension ModuleFactory: ModuleFactoryInterface {
     }
     
     public func makeAuthPushAlarmVC() -> Presentation.AuthPushAlarmVC {
-        let repository = AuthPushAlarmRepository(service: alertService)
+        let repository = AuthPushAlarmRepository(service: authService)
         let useCase = DefaultAuthPushAlarmUseCase(repository: repository)
         let viewModel = AuthPushAlarmViewModel(useCase: useCase)
         let authPushAlarmVC = AuthPushAlarmVC()
@@ -63,18 +63,19 @@ extension ModuleFactory: ModuleFactoryInterface {
     }
     
     public func makePostListVC() -> Presentation.PostListVC {
-        let repository = PostListRepository(service: alertService)
+        let repository = PostListRepository(service: noticeService)
         let useCase = DefaultPostListUseCase(repository: repository)
         let viewModel = PostListViewModel(useCase: useCase)
         let postListVC = PostListVC()
+        postListVC.factory = self
         postListVC.viewModel = viewModel
         return postListVC
     }
     
-    public func makePostDetailVC() -> Presentation.PostDetailVC {
-        let repository = PostDetailRepository(service: alertService)
+    public func makePostDetailVC(noticeId: Int) -> Presentation.PostDetailVC {
+        let repository = PostDetailRepository(service: noticeService)
         let useCase = DefaultPostDetailUseCase(repository: repository)
-        let viewModel = PostDetailViewModel(useCase: useCase)
+        let viewModel = PostDetailViewModel(useCase: useCase, noticeId: noticeId)
         let PostDetailVC = PostDetailVC()
         PostDetailVC.viewModel = viewModel
         return PostDetailVC

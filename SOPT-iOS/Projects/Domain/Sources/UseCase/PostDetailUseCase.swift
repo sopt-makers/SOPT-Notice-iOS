@@ -8,14 +8,19 @@
 
 import Combine
 
-public protocol PostDetailUseCase {
+import Core
 
+public protocol PostDetailUseCase {
+    func fetchPostDetail(noticeId: Int)
+    var postDetailModel: PassthroughSubject<PostDetailModel, Error> { get set }
+    var imageSlideImages: CurrentValueSubject<[ImageSlideShowImages]?, Never> { get set }
 }
 
 public class DefaultPostDetailUseCase {
-  
     private let repository: PostDetailRepositoryInterface
-    private var cancelBag = Set<AnyCancellable>()
+    private var cancelBag = CancelBag()
+    public var postDetailModel = PassthroughSubject<PostDetailModel, Error>()
+    public var imageSlideImages = CurrentValueSubject<[ImageSlideShowImages]?, Never>.init(nil)
   
     public init(repository: PostDetailRepositoryInterface) {
         self.repository = repository
@@ -23,5 +28,24 @@ public class DefaultPostDetailUseCase {
 }
 
 extension DefaultPostDetailUseCase: PostDetailUseCase {
-  
+    public func fetchPostDetail(noticeId: Int) {
+        repository.fetchPostDetail(noticeId: noticeId)
+            .sink(receiveCompletion: { event in
+                print("completion: \(event)")
+            }, receiveValue: { entity in
+                self.postDetailModel.send(entity)
+                
+                guard !entity.images.isEmpty else { return }
+                self.fetchImages(title: entity.title.title, model: entity.images)
+            })
+            .store(in: cancelBag)
+    }
+    
+    private func fetchImages(title: String, model: [PostDetailModel.Image]) {
+        let imageSlideImages = model.compactMap {
+            ImageSlideShowImages.init(title: title, url: $0.imageURL)
+        }
+        
+        self.imageSlideImages.send(imageSlideImages)
+    }
 }

@@ -8,6 +8,8 @@
 
 import Combine
 
+import Core
+
 public protocol AuthPushAlarmUseCase {
 
 }
@@ -15,7 +17,7 @@ public protocol AuthPushAlarmUseCase {
 public class DefaultAuthPushAlarmUseCase {
   
     private let repository: AuthPushAlarmRepositoryInterface
-    private var cancelBag = Set<AnyCancellable>()
+    private var cancelBag = CancelBag()
   
     public init(repository: AuthPushAlarmRepositoryInterface) {
         self.repository = repository
