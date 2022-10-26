@@ -10,6 +10,7 @@ import UIKit
 
 import SnapKit
 
+import Core
 import DSKit
 
 @frozen
@@ -33,6 +34,11 @@ class CustomNavigationBar: UIView {
     
     private var rightButtonClosure: (() -> Void)?
     private var otherRightButtonClosure: (() -> Void)?
+    public var rightButtonTapped: Driver<Void> {
+        rightButton.publisher(for: .touchUpInside)
+            .map { _ in () }
+            .asDriver()
+    }
     
     // MARK: - Initialize
     

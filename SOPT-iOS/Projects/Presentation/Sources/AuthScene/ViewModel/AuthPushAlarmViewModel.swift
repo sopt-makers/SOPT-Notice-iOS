@@ -45,6 +45,8 @@ public class AuthPushAlarmViewModel: ViewModelType {
     
     public struct Input {
         let partButtonsSelected: Driver<(Int, Bool)>
+        let putOffButtonTapped: Driver<Void>
+        let checkButtonTapped: Driver<Void>
     }
     
     // MARK: - Outputs
@@ -70,6 +72,16 @@ extension AuthPushAlarmViewModel {
         input.partButtonsSelected
             .sink {
                 self.useCase.updatePartList(indexWithStatus: $0)
+            }.store(in: cancelBag)
+        
+        input.putOffButtonTapped
+            .sink { _ in
+                
+            }.store(in: cancelBag)
+        
+        input.checkButtonTapped
+            .sink { _ in
+                
             }.store(in: cancelBag)
     
         return output

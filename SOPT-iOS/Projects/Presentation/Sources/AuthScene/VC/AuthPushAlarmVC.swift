@@ -126,7 +126,14 @@ extension AuthPushAlarmVC {
 extension AuthPushAlarmVC {
   
     private func bindViewModels() {
-        let input = AuthPushAlarmViewModel.Input(partButtonsSelected: self.partButtonsTapped.asDriver())
+        let putOffButtonTapped = putOffButton
+            .publisher(for: .touchUpInside)
+            .map { _ in () }
+            .asDriver()
+        
+        let input = AuthPushAlarmViewModel.Input(partButtonsSelected: self.partButtonsTapped.asDriver(),
+                                                 putOffButtonTapped: putOffButtonTapped,
+                                                 checkButtonTapped: naviBar.rightButtonTapped)
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
     }
     
