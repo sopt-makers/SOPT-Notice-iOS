@@ -21,6 +21,7 @@ public class AuthPushAlarmVC: UIViewController {
     public var factory: ModuleFactoryInterface!
     public var viewModel: AuthPushAlarmViewModel!
     private var cancelBag = CancelBag()
+    private let partButtonsTapped = PassthroughSubject<(Int, Bool), Never>()
   
     // MARK: - UI Components
     
@@ -125,7 +126,7 @@ extension AuthPushAlarmVC {
 extension AuthPushAlarmVC {
   
     private func bindViewModels() {
-        let input = AuthPushAlarmViewModel.Input()
+        let input = AuthPushAlarmViewModel.Input(partButtonsSelected: self.partButtonsTapped.asDriver())
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
     }
     
@@ -169,6 +170,9 @@ extension AuthPushAlarmVC: UITableViewDataSource {
         
         let cellType = AuthPushAlarmViewModel.PartList.allCases[indexPath.item]
         cell.initCell(indexPath.item, cellType: cellType)
+        cell.partButtonTapped.sink { indexSelected in
+            self.partButtonsTapped.send(indexSelected)
+        }.store(in: self.cancelBag)
         
         return cell
     }

@@ -7,13 +7,24 @@
 //
 
 import UIKit
+import Combine
+
+import Core
 import DSKit
 
 class AuthPushAlarmTVC: UITableViewCell {
     
     // MARK: - Properties
     
-    var viewModel: AuthPushAlarmViewModel!
+    public var index: Int?
+    public lazy var partButtonTapped: Driver<(Int, Bool)> = {
+        return self.stateButton.publisher(for: .touchUpInside)
+            .map {
+                self.stateButton.isSelected.toggle()
+                return (self.index!, $0.isSelected)
+            }
+            .asDriver()
+    }()
     
     // MARK: - UI Components
     
@@ -27,7 +38,6 @@ class AuthPushAlarmTVC: UITableViewCell {
         $0.setImage(DSKitAsset.Assets.icAlarmOff.image.withRenderingMode(.alwaysOriginal), for: .normal)
         $0.setImage(DSKitAsset.Assets.icAlarmOn.image.withRenderingMode(.alwaysOriginal), for: .selected)
         $0.contentMode = .scaleAspectFill
-        $0.addTarget(self, action: #selector(stateButtonDidTap), for: .touchUpInside)
     }
     
     let horizontalLine = UIView().then {
@@ -54,6 +64,7 @@ extension AuthPushAlarmTVC {
     func initCell(_ indexPath: Int, cellType: AuthPushAlarmViewModel.PartList) {
         titleLabel.text = cellType.title
         horizontalLine.isHidden = (indexPath != 0)
+        index = indexPath
     }
     
     private func setUI() {
@@ -80,10 +91,5 @@ extension AuthPushAlarmTVC {
             make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(1)
         }
-    }
-    
-    @objc private func stateButtonDidTap() {
-        print("\(titleLabel.text!) state button did tap")
-        stateButton.isSelected.toggle()
     }
 }
