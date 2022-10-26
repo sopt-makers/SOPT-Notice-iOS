@@ -9,5 +9,6 @@
 import Combine
 
 public protocol AuthPushAlarmRepositoryInterface {
-  
+    func postPartList(list: [String])
+    func postEmptyList()
 }

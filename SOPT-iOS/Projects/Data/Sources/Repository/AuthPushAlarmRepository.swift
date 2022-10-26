@@ -23,5 +23,11 @@ public class AuthPushAlarmRepository {
 }
 
 extension AuthPushAlarmRepository: AuthPushAlarmRepositoryInterface {
+    public func postPartList(list: [String]) {
+        print("레포지토리 성공")
+    }
     
+    public func postEmptyList() {
+        print("레포지토리 엠프티 성공")
+    }
 }

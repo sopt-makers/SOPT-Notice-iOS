@@ -76,12 +76,12 @@ extension AuthPushAlarmViewModel {
         
         input.putOffButtonTapped
             .sink { _ in
-                
+                self.useCase.postEmptyList()
             }.store(in: cancelBag)
         
         input.checkButtonTapped
             .sink { _ in
-                
+                self.useCase.postPartList()
             }.store(in: cancelBag)
     
         return output

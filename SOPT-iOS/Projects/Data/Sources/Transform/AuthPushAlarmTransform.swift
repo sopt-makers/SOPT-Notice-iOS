@@ -12,8 +12,5 @@ import Domain
 import Network
 
 extension AuthPushAlarmEntity {
-
-    public func toDomain() -> AuthPushAlarmModel {
-        return AuthPushAlarmModel.init()
-    }
+    
 }
