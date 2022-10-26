@@ -23,5 +23,9 @@ public class PushAlarmSettingRepository {
 }
 
 extension PushAlarmSettingRepository: PushAlarmSettingRepositoryInterface {
-    
+    public func fetchPushListSetting() -> AnyPublisher<PushAlarmSettingModel, Error> {
+        networkService.fetchPushSettingList()
+            .compactMap { $0?.toDomain() }
+            .eraseToAnyPublisher()
+    }
 }
