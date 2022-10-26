@@ -25,8 +25,6 @@ public class PostListVC: UIViewController {
     private var cancelBag = CancelBag()
     private var textChanged = PassthroughSubject<String?, Error>()
     
-    public var factory: ModuleFactoryInterface!
-    
     private var searchResultList: [PostListModel] = []
     let partList = ["전체", "기획", "디자인", "iOS", "Android", "Server", "Web"]
     

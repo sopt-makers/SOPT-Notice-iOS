@@ -44,13 +44,13 @@ public class PushAlarmSettingViewModel: ViewModelType {
     // MARK: - Inputs
     
     public struct Input {
-    
+        let viewDidLoad: Driver<Void>
     }
     
     // MARK: - Outputs
     
-    public struct Output {
-    
+    public class Output {
+        @Published var pushSettingList: PushAlarmSettingModel?
     }
     
     // MARK: - init
@@ -66,13 +66,22 @@ extension PushAlarmSettingViewModel {
     public func transform(from input: Input, cancelBag: CancelBag) -> Output {
         let output = Output()
         self.bindOutput(output: output, cancelBag: cancelBag)
-        // input,output 상관관계 작성
+        
+        input.viewDidLoad
+            .sink {
+                self.useCase.fetchPushSetting()
+            }.store(in: cancelBag)
     
         return output
     }
   
     private func bindOutput(output: Output, cancelBag: CancelBag) {
-    
+        let pushSetting = self.useCase.pushSetting
+        
+        pushSetting.asDriver()
+            .compactMap { $0 }
+            .assign(to: \.pushSettingList, on: output)
+            .store(in: cancelBag)
     }
 }
 

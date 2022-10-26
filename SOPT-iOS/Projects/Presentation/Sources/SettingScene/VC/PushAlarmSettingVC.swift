@@ -22,6 +22,7 @@ public class PushAlarmSettingVC: UIViewController {
     
     public var viewModel: PushAlarmSettingViewModel!
     private var cancelBag = CancelBag()
+    private var pushToggleList = Array(repeating: false, count: 7)
   
     // MARK: - UI Components
     
@@ -117,8 +118,19 @@ extension PushAlarmSettingVC {
 extension PushAlarmSettingVC {
   
     private func bindViewModels() {
-        let input = PushAlarmSettingViewModel.Input()
+        let input = PushAlarmSettingViewModel.Input(viewDidLoad: Driver.just(()))
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
+        
+        output.$pushSettingList
+            .compactMap { $0 }
+            .sink { model in
+                self.pushToggleList = model.pushSettingList
+                self.partListTableView.reloadData()
+            }.store(in: self.cancelBag)
+    }
+    
+    private func setToggleList(_ model: PushAlarmSettingViewModel) {
+        
     }
 }
 
@@ -147,7 +159,8 @@ extension PushAlarmSettingVC: UITableViewDataSource {
         cell.selectionStyle = .none
         
         let cellType = PushAlarmSettingViewModel.PartList.allCases[indexPath.item]
-        cell.titleLabel.text = cellType.title
+        let isOn = pushToggleList[indexPath.item]
+        cell.initCell(title: cellType.title, isOn: isOn)
         return cell
     }
 }
