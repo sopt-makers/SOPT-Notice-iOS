@@ -14,6 +14,7 @@ import Moya
 public enum AlertAPI {
     case sample(provider: String)
     case restaurant
+    case fetchPushSetting
 }
 
 extension AlertAPI: BaseAPI {
@@ -25,7 +26,7 @@ extension AlertAPI: BaseAPI {
         switch self {
         case .sample:
             return ""
-        case .restaurant:
+        default:
             return ""
         }
     }
@@ -35,7 +36,7 @@ extension AlertAPI: BaseAPI {
         switch self {
         case .sample:
             return .post
-        case .restaurant:
+        default:
             return .get
         }
     }
@@ -57,7 +58,8 @@ extension AlertAPI: BaseAPI {
             params["longitude"] = 126.95153705076048
             params["zoom"] = 10000000.0
             params["latitude"] = 37.504551862886466
-        default: return nil
+        default:
+            return nil
         }
         return params
     }
@@ -87,6 +89,29 @@ extension AlertAPI: BaseAPI {
             return .requestParameters(parameters: bodyParameters ?? [:], encoding: parameterEncoding)
         default:
             return .requestPlain
+        }
+    }
+    
+    public var sampleData: Data {
+        switch self {
+        case .fetchPushSetting:
+            let entity = PushAlarmSettingEntity(alerts: [
+                Alert(part: .fullNotice, isAlert: true),
+                Alert(part: .plan, isAlert: false),
+                Alert(part: .design, isAlert: false),
+                Alert(part: .ios, isAlert: true),
+                Alert(part: .android, isAlert: false),
+                Alert(part: .web, isAlert: false),
+                Alert(part: .server, isAlert: false)
+            ])
+            
+            if let data = try? JSONEncoder().encode(entity) {
+                return data
+            } else {
+                return Data()
+            }
+        default:
+            return Data()
         }
     }
 }

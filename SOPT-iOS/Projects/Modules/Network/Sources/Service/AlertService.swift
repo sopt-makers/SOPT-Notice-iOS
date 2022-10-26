@@ -17,6 +17,7 @@ public typealias DefaultAlertService = BaseService<AlertAPI>
 public protocol AlertService {
 //    func getRestaurant() -> AnyPublisher<[MainMapEntity]?, Error>
 //    func commonRestaurant(completion: @escaping (Result<[MainMapEntity]?, Error>) -> Void)
+    func fetchPushSettingList() -> AnyPublisher<PushAlarmSettingEntity?, Error>
 }
 
 extension DefaultAlertService: AlertService {
@@ -27,4 +28,7 @@ extension DefaultAlertService: AlertService {
 //    public func commonRestaurant(completion: @escaping (Result<[MainMapEntity]?, Error>) -> Void) {
 //        return requestObject(.restaurant, completion: completion)
 //    }
+    public func fetchPushSettingList() -> AnyPublisher<PushAlarmSettingEntity?, Error> {
+        return test.requestObjectInCombine(.fetchPushSetting)
+    }
 }
