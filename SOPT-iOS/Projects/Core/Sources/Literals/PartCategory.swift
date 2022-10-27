@@ -17,3 +17,26 @@ public enum PartCategory: String, Codable {
     case web = "web"
     case server = "server"
 }
+
+extension PartCategory {
+    public static var allCases: [PartCategory] = [.fullNotice, .plan, .design, .ios, .android, .web, .server]
+    
+    public var title: String {
+        switch self {
+        case .fullNotice:
+            return "전체 공지"
+        case .plan:
+            return "기획"
+        case .design:
+            return "디자인"
+        case .ios:
+            return "iOS"
+        case .android:
+            return "Android"
+        case .web:
+            return "Web"
+        case .server:
+            return "Server"
+        }
+    }
+}
