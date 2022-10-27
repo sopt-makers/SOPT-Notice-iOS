@@ -10,33 +10,57 @@ import Combine
 
 import Core
 import Domain
+import Network
+
+extension PartCategory {
+    public static var allCases: [PartCategory] = [.fullNotice, .plan, .design, .ios, .android, .web, .server]
+    
+    var title: String {
+        switch self {
+        case .fullNotice:
+            return "전체 공지"
+        case .plan:
+            return "기획"
+        case .design:
+            return "디자인"
+        case .ios:
+            return "iOS"
+        case .android:
+            return "Android"
+        case .web:
+            return "Web"
+        case .server:
+            return "Server"
+        }
+    }
+}
 
 public class PushAlarmSettingViewModel: ViewModelType {
 
     // MARK: - Properties
 
-    enum PartList: CaseIterable {
-        case FullNotice, PM, Design, iOS, Android, Server, Web
-        
-        var title: String {
-            switch self {
-            case .FullNotice:
-                return "전체 공지"
-            case .PM:
-                return "기획"
-            case .Design:
-                return "디자인"
-            case .iOS:
-                return "iOS"
-            case .Android:
-                return "Android"
-            case .Server:
-                return "Server"
-            case .Web:
-                return "Web"
-            }
-        }
-    }
+//    enum PartList: CaseIterable {
+//        case FullNotice, PM, Design, iOS, Android, Server, Web
+//
+//        var title: String {
+//            switch self {
+//            case .FullNotice:
+//                return "전체 공지"
+//            case .PM:
+//                return "기획"
+//            case .Design:
+//                return "디자인"
+//            case .iOS:
+//                return "iOS"
+//            case .Android:
+//                return "Android"
+//            case .Server:
+//                return "Server"
+//            case .Web:
+//                return "Web"
+//            }
+//        }
+//    }
     
     private let useCase: PushAlarmSettingUseCase
     private var cancelBag = CancelBag()
@@ -87,6 +111,6 @@ extension PushAlarmSettingViewModel {
 
 extension PushAlarmSettingViewModel {
     func getPartListCount() -> Int {
-        return PartList.allCases.count
+        return PartCategory.allCases.count
     }
 }

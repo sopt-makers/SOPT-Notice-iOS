@@ -14,8 +14,6 @@ import Combine
 import SnapKit
 import Then
 
-import Core
-
 public class PushAlarmSettingVC: UIViewController {
     
     // MARK: - Properties
@@ -128,10 +126,6 @@ extension PushAlarmSettingVC {
                 self.partListTableView.reloadData()
             }.store(in: self.cancelBag)
     }
-    
-    private func setToggleList(_ model: PushAlarmSettingViewModel) {
-        
-    }
 }
 
 // MARK: - UITableViewDelegate
@@ -158,7 +152,7 @@ extension PushAlarmSettingVC: UITableViewDataSource {
                 as? PushAlarmPartTVC else { return UITableViewCell() }
         cell.selectionStyle = .none
         
-        let cellType = PushAlarmSettingViewModel.PartList.allCases[indexPath.item]
+        let cellType = PartCategory.allCases[indexPath.item]
         let isOn = pushToggleList[indexPath.item]
         cell.initCell(title: cellType.title, isOn: isOn)
         return cell
