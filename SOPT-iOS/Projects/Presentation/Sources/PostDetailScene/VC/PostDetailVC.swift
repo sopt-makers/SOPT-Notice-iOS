@@ -114,6 +114,7 @@ extension PostDetailVC {
             controller.dismissOnPanGesture = false
             controller.slides = images
             controller.enableZoom = true
+            controller.statusBarStyle = .lightContent
         }
     }
 }
