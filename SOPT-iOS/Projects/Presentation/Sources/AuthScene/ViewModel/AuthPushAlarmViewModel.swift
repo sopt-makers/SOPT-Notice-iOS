@@ -44,7 +44,9 @@ public class AuthPushAlarmViewModel: ViewModelType {
     // MARK: - Inputs
     
     public struct Input {
-    
+        let partButtonsSelected: Driver<(Int, Bool)>
+        let putOffButtonTapped: Driver<Void>
+        let checkButtonTapped: Driver<Void>
     }
     
     // MARK: - Outputs
@@ -66,7 +68,21 @@ extension AuthPushAlarmViewModel {
     public func transform(from input: Input, cancelBag: CancelBag) -> Output {
         let output = Output()
         self.bindOutput(output: output, cancelBag: cancelBag)
-        // input,output 상관관계 작성
+        
+        input.partButtonsSelected
+            .sink {
+                self.useCase.updatePartList(indexWithStatus: $0)
+            }.store(in: cancelBag)
+        
+        input.putOffButtonTapped
+            .sink { _ in
+                self.useCase.postEmptyList()
+            }.store(in: cancelBag)
+        
+        input.checkButtonTapped
+            .sink { _ in
+                self.useCase.postPartList()
+            }.store(in: cancelBag)
     
         return output
     }
@@ -75,7 +91,6 @@ extension AuthPushAlarmViewModel {
     
     }
 }
-
 
 // MARK: - Extensions
 

@@ -86,7 +86,21 @@ extension BaseService {
             }
         }.eraseToAnyPublisher()
     }
-
+    
+    func requestObjectInCombineNoResult(_ target: API) -> AnyPublisher<Int, Error> {
+        return Future { promise in
+            self.provider.request(target) { response in
+                switch response {
+                case .success(let value):
+                    promise(.success(value.statusCode))
+                case .failure(let error):
+                    dump(error)
+                    promise(.failure(error))
+                }
+            }
+        }.eraseToAnyPublisher()
+    }
+    
     func requestObject<T: Decodable>(_ target: API, completion: @escaping (Result<T?, Error>) -> Void) {
         provider.request(target) { response in
             switch response {
