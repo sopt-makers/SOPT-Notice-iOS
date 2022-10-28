@@ -8,6 +8,7 @@
 
 import UIKit
 import Core
+import Domain
 import DSKit
 
 import Combine

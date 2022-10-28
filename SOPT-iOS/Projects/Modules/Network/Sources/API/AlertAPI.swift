@@ -87,13 +87,13 @@ extension AlertAPI: BaseAPI {
         switch self {
         case .fetchPushSetting:
             let entity = PushAlarmSettingEntity(alerts: [
-                Alert(part: .fullNotice, isAlert: true),
-                Alert(part: .plan, isAlert: false),
-                Alert(part: .design, isAlert: false),
-                Alert(part: .ios, isAlert: true),
-                Alert(part: .android, isAlert: false),
-                Alert(part: .web, isAlert: false),
-                Alert(part: .server, isAlert: false)
+                Alert(part: "all", isAlert: true),
+                Alert(part: "plan", isAlert: false),
+                Alert(part: "design", isAlert: false),
+                Alert(part: "ios", isAlert: true),
+                Alert(part: "android", isAlert: false),
+                Alert(part: "web", isAlert: false),
+                Alert(part: "server", isAlert: false)
             ])
             
             if let data = try? JSONEncoder().encode(entity) {
@@ -101,11 +101,6 @@ extension AlertAPI: BaseAPI {
             } else {
                 return Data()
             }
-        default:
-            return Data()
-    
-    public var sampleData: Data {
-        switch self {
         case .postUserPushPartList:
             let entity = 200
             if let data = try? JSONEncoder().encode(entity) {
@@ -113,8 +108,6 @@ extension AlertAPI: BaseAPI {
             } else {
                 return Data()
             }
-        }
-    }
         }
     }
 }
