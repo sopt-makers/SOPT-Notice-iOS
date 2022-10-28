@@ -10,6 +10,7 @@ import UIKit
 import Combine
 
 import Core
+import Domain
 import DSKit
 
 class ViewPager: UIView {
@@ -51,8 +52,11 @@ class ViewPager: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - UI & Layout
+}
+
+// MARK: - Methods
+
+extension ViewPager {
     
     private func setLayout() {
         self.addSubviews(tabbedView, dividerView, pagedView)
@@ -76,8 +80,12 @@ class ViewPager: UIView {
             make.top.equalTo(tabbedView.snp.bottom)
         }
     }
+    
+    func setData(partIndex: Int, data: [PostListModel]) {
+        guard let page = pagedView.pages[partIndex] as? PostListPageView else { return }
+        page.setData(data: data)
+    }
 }
-
 // MARK: - Bind
 
 extension ViewPager {

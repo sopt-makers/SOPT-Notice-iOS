@@ -82,8 +82,8 @@ public class PostListVC: UIViewController {
         self.setRegister()
         self.setDelegate()
         self.setTableView()
-        self.bindViewPager()
         self.bindViewModels()
+        self.bindViewPager()
     }
 }
 
@@ -100,7 +100,7 @@ extension PostListVC {
         searchButton.setImage(UIImage(asset: DSKitAsset.Assets.icSearch), for: .normal)
         searchImageView.image = UIImage(asset: DSKitAsset.Assets.icInfo)
         
-        searchTextField.attributedPlaceholder = NSAttributedString(string: I18N.Search.placeholder, attributes: [NSAttributedString.Key.foregroundColor : DSKitAsset.Colors.gray300.color, NSAttributedString.Key.font : UIFont.body1])
+        searchTextField.attributedPlaceholder = NSAttributedString(string: I18N.Search.placeholder, attributes: [NSAttributedString.Key.foregroundColor: DSKitAsset.Colors.gray300.color, NSAttributedString.Key.font: UIFont.body1])
         searchTextField.textColor = DSKitAsset.Colors.gray900.color
         searchTextField.font = .body1
         
@@ -188,13 +188,22 @@ extension PostListVC {
 extension PostListVC {
     private func bindViewPager() {
         postListViewPager.$selectedTabIndex.sink {
-            print($0)
+            self.selectedPartIndex.send($0)
         }.store(in: cancelBag)
     }
     
     private func bindViewModels() {
-        let input = PostListViewModel.Input(textChanged: textChanged.eraseToAnyPublisher())
+        let input = PostListViewModel.Input(selectedPartIndex: selectedPartIndex.eraseToAnyPublisher(), textChanged: textChanged.eraseToAnyPublisher())
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
+        
+        output.postList
+            .sink(receiveCompletion: { event in
+                print("event: \(event)")
+            }, receiveValue: { [weak self] value in
+                guard let self = self else { return }
+                self.postListViewPager.setData(partIndex: self.viewModel.partIndex, data: value)
+            })
+            .store(in: cancelBag)
         
         output.searchList
             .sink(receiveCompletion: { event in

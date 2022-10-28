@@ -150,7 +150,7 @@ extension TabbedView: UICollectionViewDataSource {
 extension TabbedView: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.moveToTab(at: indexPath.item)
         selectedTabIndex.send(indexPath.item)
+        self.moveToTab(at: indexPath.item)
     }
 }

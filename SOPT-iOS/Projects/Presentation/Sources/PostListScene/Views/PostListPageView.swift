@@ -8,11 +8,14 @@
 
 import UIKit
 
+import Domain
+
 final class PostListPageView: UIView {
     
     // MARK: - Properties
     
-    lazy var dataSource: UITableViewDiffableDataSource<Int, UUID>! = nil
+    lazy var diffableDataSource: UITableViewDiffableDataSource<Int, PostListModel>! = nil
+    private var postList: [PostListModel] = []
 
     // MARK: - UI Components
     
@@ -71,20 +74,28 @@ extension PostListPageView {
 
 extension PostListPageView {
     private func setDataSource() {
-        self.dataSource = UITableViewDiffableDataSource(tableView: postListTableView, cellProvider: { tableView, indexPath, itemIdentifier in
-            let cell = tableView.dequeueReusableCell(withIdentifier: PostListTableViewCell.className, for: indexPath)
+        self.diffableDataSource = UITableViewDiffableDataSource<Int, PostListModel>(tableView: postListTableView, cellProvider: { tableView, indexPath, itemIdentifier in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: PostListTableViewCell.className, for: indexPath)
+                    as? PostListTableViewCell else { return UITableViewCell() }
+            let data = self.postList[indexPath.row]
             cell.selectionStyle = .none
+            cell.initCell(isNew: data.isNew, title: data.title, writer: data.writer, date: data.date)
             return cell
         })
         
-        self.postListTableView.dataSource = self.dataSource
+        self.postListTableView.dataSource = self.diffableDataSource
     }
     
     func applySnapshot() {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, UUID>()
+        var snapshot = NSDiffableDataSourceSnapshot<Int, PostListModel>()
         snapshot.appendSections([0])
-        snapshot.appendItems([UUID(), UUID(), UUID(), UUID()])
-        self.dataSource.apply(snapshot)
+        snapshot.appendItems(postList)
+        self.diffableDataSource.apply(snapshot)
+    }
+    
+    func setData(data: [PostListModel]) {
+        self.postList = data
+        applySnapshot()
     }
 }
 
