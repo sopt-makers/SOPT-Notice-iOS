@@ -7,27 +7,22 @@
 //
 
 import Foundation
+import Combine
 
 import Alamofire
 import Moya
-import Combine
 
 public typealias DefaultAlertService = BaseService<AlertAPI>
 
 public protocol AlertService {
-//    func getRestaurant() -> AnyPublisher<[MainMapEntity]?, Error>
-//    func commonRestaurant(completion: @escaping (Result<[MainMapEntity]?, Error>) -> Void)
+    func postUserPushPartList(partList: [String]) -> AnyPublisher<Int, Error>
     func fetchPushSettingList() -> AnyPublisher<PushAlarmSettingEntity?, Error>
 }
 
 extension DefaultAlertService: AlertService {
-//    public func getRestaurant() -> AnyPublisher<[MainMapEntity]?, Error> {
-//        return requestObjectInCombine(.restaurant)
-//    }
-//
-//    public func commonRestaurant(completion: @escaping (Result<[MainMapEntity]?, Error>) -> Void) {
-//        return requestObject(.restaurant, completion: completion)
-//    }
+    public func postUserPushPartList(partList: [String]) -> AnyPublisher<Int, Error> {
+        test.requestObjectInCombineNoResult(.postUserPushPartList(partList: partList))
+    }
     public func fetchPushSettingList() -> AnyPublisher<PushAlarmSettingEntity?, Error> {
         return test.requestObjectInCombine(.fetchPushSetting)
     }

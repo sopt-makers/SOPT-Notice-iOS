@@ -12,9 +12,8 @@ import Alamofire
 import Moya
 
 public enum AlertAPI {
-    case sample(provider: String)
-    case restaurant
     case fetchPushSetting
+    case postUserPushPartList(partList: [String])
 }
 
 extension AlertAPI: BaseAPI {
@@ -24,17 +23,14 @@ extension AlertAPI: BaseAPI {
     // MARK: - Path
     public var path: String {
         switch self {
-        case .sample:
-            return ""
-        default:
-            return ""
+        default: return ""
         }
     }
     
     // MARK: - Method
     public var method: Moya.Method {
         switch self {
-        case .sample:
+        case .postUserPushPartList:
             return .post
         default:
             return .get
@@ -51,15 +47,9 @@ extension AlertAPI: BaseAPI {
     private var bodyParameters: Parameters? {
         var params: Parameters = [:]
         switch self {
-        case .sample(let provider):
-            params["platform"] = provider
-        case .restaurant:
-            params["category"] = ""
-            params["longitude"] = 126.95153705076048
-            params["zoom"] = 10000000.0
-            params["latitude"] = 37.504551862886466
-        default:
-            return nil
+        case .postUserPushPartList(let partList):
+            params["parts"] = partList
+        default: return nil
         }
         return params
     }
@@ -70,8 +60,8 @@ extension AlertAPI: BaseAPI {
     ///
     private var parameterEncoding : ParameterEncoding{
         switch self {
-        case .sample, .restaurant:
-            return URLEncoding.init(destination: .queryString, arrayEncoding: .noBrackets, boolEncoding: .literal)
+        case .postUserPushPartList:
+            return URLEncoding.init(destination: .httpBody, arrayEncoding: .brackets, boolEncoding: .literal)
         default :
             return JSONEncoding.default
         }
@@ -83,10 +73,11 @@ extension AlertAPI: BaseAPI {
     ///
     public var task: Task {
         switch self {
-        case .sample:
-            return .requestParameters(parameters: bodyParameters ?? [:], encoding: parameterEncoding)
-        case .restaurant:
-            return .requestParameters(parameters: bodyParameters ?? [:], encoding: parameterEncoding)
+        case .postUserPushPartList:
+            // TODO: - 추후 유저 아이디 받아오면 수정
+            var params: Parameters = [:]
+            params["user_id"] = 3
+            return .requestCompositeParameters(bodyParameters: bodyParameters ?? [:], bodyEncoding: parameterEncoding, urlParameters: params)
         default:
             return .requestPlain
         }
@@ -112,6 +103,18 @@ extension AlertAPI: BaseAPI {
             }
         default:
             return Data()
+    
+    public var sampleData: Data {
+        switch self {
+        case .postUserPushPartList:
+            let entity = 200
+            if let data = try? JSONEncoder().encode(entity) {
+                return data
+            } else {
+                return Data()
+            }
+        }
+    }
         }
     }
 }

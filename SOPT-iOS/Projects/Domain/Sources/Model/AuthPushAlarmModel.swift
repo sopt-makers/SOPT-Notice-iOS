@@ -9,8 +9,7 @@
 import Foundation
 
 public struct AuthPushAlarmModel {
-
-    public init() {
-        
-    }
+    static let indexToPart: [Int: String] = [0: "total", 1: "plan",
+                                             2: "design", 3: "iOS",
+                                             4: "android", 5: "server", 6: "web"]
 }

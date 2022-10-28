@@ -53,7 +53,7 @@ extension ModuleFactory: ModuleFactoryInterface {
     }
     
     public func makeAuthPushAlarmVC() -> Presentation.AuthPushAlarmVC {
-        let repository = AuthPushAlarmRepository(service: authService)
+        let repository = AuthPushAlarmRepository(service: alertService)
         let useCase = DefaultAuthPushAlarmUseCase(repository: repository)
         let viewModel = AuthPushAlarmViewModel(useCase: useCase)
         let authPushAlarmVC = AuthPushAlarmVC()
