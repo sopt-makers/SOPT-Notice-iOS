@@ -12,4 +12,5 @@ import Network
 
 public protocol PostListRepositoryInterface {
     func getSearchResult(str: String) -> AnyPublisher<[PostListModel]?, Error>
+    func getPostListResult(partName: String) -> AnyPublisher<[PostListModel]?, Error>
 }
