@@ -23,6 +23,7 @@ public class PostListVC: UIViewController {
     public var viewModel: PostListViewModel!
     private var cancelBag = CancelBag()
     private var textChanged = PassthroughSubject<String?, Error>()
+    private var selectedPartIndex = PassthroughSubject<Int, Error>()
     
     public var factory: ModuleFactoryInterface!
     
@@ -81,6 +82,7 @@ public class PostListVC: UIViewController {
         self.setRegister()
         self.setDelegate()
         self.setTableView()
+        self.bindViewPager()
         self.bindViewModels()
     }
 }
@@ -184,6 +186,12 @@ extension PostListVC {
 // MARK: - Methods
 
 extension PostListVC {
+    private func bindViewPager() {
+        postListViewPager.$selectedTabIndex.sink {
+            print($0)
+        }.store(in: cancelBag)
+    }
+    
     private func bindViewModels() {
         let input = PostListViewModel.Input(textChanged: textChanged.eraseToAnyPublisher())
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)

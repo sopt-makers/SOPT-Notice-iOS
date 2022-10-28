@@ -17,6 +17,7 @@ class ViewPager: UIView {
     // MARK: - Properties
     
     private var cancelBag = CancelBag()
+    @Published var selectedTabIndex = 0
     
     public let sizeConfiguration: TabbedView.SizeConfiguration
     
@@ -84,6 +85,7 @@ extension ViewPager {
     private func bind() {
         tabbedView.selectedTabIndex.sink {
             self.pagedView.moveToPage(at: $0)
+            self.selectedTabIndex = $0
         }.store(in: self.cancelBag)
     }
 }
