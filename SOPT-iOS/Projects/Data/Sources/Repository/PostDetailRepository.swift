@@ -23,7 +23,7 @@ public class PostDetailRepository {
 
 extension PostDetailRepository: PostDetailRepositoryInterface {
     public func fetchPostDetail(noticeId: Int) -> AnyPublisher<PostDetailModel, Error> {
-        networkService.fetchNotcieDetail(noticeId: noticeId)
+        networkService.fetchNoticeDetail(noticeId: noticeId)
             .compactMap { $0?.toDomain() }
             .eraseToAnyPublisher()
     }

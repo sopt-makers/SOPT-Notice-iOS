@@ -15,11 +15,18 @@ import Moya
 public typealias DefaultNoticeService = BaseService<NoticeAPI>
 
 public protocol NoticeService {
-    func fetchNotcieDetail(noticeId: Int) -> AnyPublisher<PostDetailEntity?, Error>
+    func fetchNoticeDetail(noticeId: Int) -> AnyPublisher<PostDetailEntity?, Error>
+    func fetchNoticeList(partName: String) ->
+        AnyPublisher<PostListEntity?, Error>
 }
 
 extension DefaultNoticeService: NoticeService {
-    public func fetchNotcieDetail(noticeId: Int) -> AnyPublisher<PostDetailEntity?, Error> {
-        return test.requestObjectInCombine(.fetchNotcieDetail(noticeId: noticeId))
+    public func fetchNoticeDetail(noticeId: Int) -> AnyPublisher<PostDetailEntity?, Error> {
+        return test.requestObjectInCombine(.fetchNoticeDetail(noticeId: noticeId))
+    }
+    
+    public func fetchNoticeList(partName: String) ->
+    AnyPublisher<PostListEntity?, Error> {
+        return test.requestObjectInCombine(.fetchNoticeList(partName: partName))
     }
 }

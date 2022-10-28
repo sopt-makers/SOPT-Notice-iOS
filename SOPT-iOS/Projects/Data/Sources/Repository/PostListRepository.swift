@@ -47,15 +47,9 @@ extension PostListRepository {
     }
     
     private func makeMokePostListResultEntity(partName: String) -> AnyPublisher<[PostListModel]?, Error> {
-        let mockPostListData = [
-            PostListData(noticeID: 1, title: "31th SOPT OT 공지 - \(partName)", creator: "관리", createdAt: "2022.5.13"),
-            PostListData(noticeID: 2, title: "31th SOPT 1차 행사 공지 - \(partName)", creator: "관리", createdAt: "2022.6.10"),
-            PostListData(noticeID: 4, title: "31th SOPT 앱잼 공지 - \(partName)", creator: "관리", createdAt: "2022.12.1")
-        ]
-        let mockSearch = PostListEntity(notices: mockPostListData)
-        let model = mockSearch.toDomain()
-        return Just(model)
-                    .setFailureType(to: Error.self)
-                    .eraseToAnyPublisher()
+
+        networkService.fetchNoticeList(partName: partName)
+            .compactMap { $0?.toDomain() }
+            .eraseToAnyPublisher()
     }
 }

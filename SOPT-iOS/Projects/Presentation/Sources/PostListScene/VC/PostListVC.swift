@@ -217,7 +217,6 @@ extension PostListVC {
                     self.setSearchEmpty(false)
                     self.applySnapshot()
                 }
-                
             })
             .store(in: cancelBag)
     }

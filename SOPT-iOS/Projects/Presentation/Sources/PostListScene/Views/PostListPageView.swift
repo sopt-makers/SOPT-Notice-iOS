@@ -90,7 +90,7 @@ extension PostListPageView {
         var snapshot = NSDiffableDataSourceSnapshot<Int, PostListModel>()
         snapshot.appendSections([0])
         snapshot.appendItems(postList)
-        self.diffableDataSource.apply(snapshot)
+        self.diffableDataSource.apply(snapshot, animatingDifferences: true)
     }
     
     func setData(data: [PostListModel]) {
