@@ -8,6 +8,7 @@
 
 import UIKit
 import Core
+import Domain
 import DSKit
 
 import Combine
@@ -20,8 +21,20 @@ public class PushAlarmSettingVC: UIViewController {
     
     public var viewModel: PushAlarmSettingViewModel!
     private var cancelBag = CancelBag()
+    private var pushToggleList = Array(repeating: false, count: 7)
   
     // MARK: - UI Components
+    
+    private lazy var naviBar = CustomNavigationBar(self, type: .leftTitleWithLeftButton)
+        .setTitle(I18N.Setting.pushSetting)
+        .setRightButtonTitle(I18N.Setting.check)
+        .rightButtonAction {
+            print("확인 누름")
+        }
+    
+    private let dividerView = UIView().then {
+        $0.backgroundColor = DSKitAsset.Colors.gray200.color
+    }
     
     private lazy var partListTableView: UITableView = {
        let tableView = UITableView()
@@ -65,10 +78,21 @@ extension PushAlarmSettingVC {
     }
     
     private func setLayout() {
-        self.view.addSubviews(partListTableView, captionLabel)
+        self.view.addSubviews(naviBar, dividerView, partListTableView, captionLabel)
+        
+        naviBar.snp.makeConstraints { make in
+            make.leading.top.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        dividerView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(naviBar.snp.bottom).offset(8)
+            make.height.equalTo(1)
+        }
         
         partListTableView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(dividerView.snp.bottom)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(56 * 7 + 1)
         }
         
@@ -93,8 +117,15 @@ extension PushAlarmSettingVC {
 extension PushAlarmSettingVC {
   
     private func bindViewModels() {
-        let input = PushAlarmSettingViewModel.Input()
+        let input = PushAlarmSettingViewModel.Input(viewDidLoad: Driver.just(()))
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
+        
+        output.$pushSettingList
+            .compactMap { $0 }
+            .sink { model in
+                self.pushToggleList = model.pushSettingList
+                self.partListTableView.reloadData()
+            }.store(in: self.cancelBag)
     }
 }
 
@@ -122,8 +153,9 @@ extension PushAlarmSettingVC: UITableViewDataSource {
                 as? PushAlarmPartTVC else { return UITableViewCell() }
         cell.selectionStyle = .none
         
-        let cellType = PushAlarmSettingViewModel.PartList.allCases[indexPath.item]
-        cell.titleLabel.text = cellType.title
+        let cellType = PartCategory.allCases[indexPath.item]
+        let isOn = pushToggleList[indexPath.item]
+        cell.initCell(title: cellType.title, isOn: isOn)
         return cell
     }
 }

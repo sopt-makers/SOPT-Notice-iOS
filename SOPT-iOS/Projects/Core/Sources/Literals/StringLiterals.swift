@@ -25,4 +25,10 @@ public struct I18N {
         public static let enterSearch = "검색어를 입력해 주세요."
         public static let noSearchData = "등록된 게시물이 없습니다"
     }
+    
+    public struct Setting {
+        public static let setting = "설정"
+        public static let pushSetting = "푸시 알림 설정"
+        public static let check = "확인"
+    }
 }

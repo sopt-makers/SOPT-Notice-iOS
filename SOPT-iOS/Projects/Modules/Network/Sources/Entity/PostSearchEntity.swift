@@ -17,7 +17,7 @@ public struct PostSearchEntity: Codable {
     }
 }
 
-// MARK: - Notice
+// MARK: - PostSearchData
 public struct PostSearchData: Codable {
     public let noticeID: Int
     public let title, creator, createdAt: String

@@ -16,10 +16,14 @@ public typealias DefaultAlertService = BaseService<AlertAPI>
 
 public protocol AlertService {
     func postUserPushPartList(partList: [String]) -> AnyPublisher<Int, Error>
+    func fetchPushSettingList() -> AnyPublisher<PushAlarmSettingEntity?, Error>
 }
 
 extension DefaultAlertService: AlertService {
     public func postUserPushPartList(partList: [String]) -> AnyPublisher<Int, Error> {
         test.requestObjectInCombineNoResult(.postUserPushPartList(partList: partList))
+    }
+    public func fetchPushSettingList() -> AnyPublisher<PushAlarmSettingEntity?, Error> {
+        return test.requestObjectInCombine(.fetchPushSetting)
     }
 }

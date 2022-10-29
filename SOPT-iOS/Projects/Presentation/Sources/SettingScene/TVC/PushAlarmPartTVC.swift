@@ -18,7 +18,7 @@ class PushAlarmPartTVC: UITableViewCell {
     
     // MARK: - UI Components
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.setTypoStyle(.body1)
         $0.textColor = DSKitAsset.Colors.gray900.color
         $0.textAlignment = .left
@@ -51,6 +51,11 @@ class PushAlarmPartTVC: UITableViewCell {
 // MARK: - Methods
 
 extension PushAlarmPartTVC {
+    
+    func initCell(title: String, isOn: Bool) {
+        self.titleLabel.text = title
+        if isOn { self.stateButton.isSelected.toggle() }
+    }
     
     private func setUI() {
         self.backgroundColor = .white
