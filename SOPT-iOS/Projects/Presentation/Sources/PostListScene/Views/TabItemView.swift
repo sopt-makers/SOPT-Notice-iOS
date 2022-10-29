@@ -49,7 +49,7 @@ final class TabItemView: UIView {
     // MARK: - UI & Layout
     
     private func setUI() {
-        self.backgroundColor = .white
+        self.backgroundColor = .clear
     }
     
     private func setLayout() {

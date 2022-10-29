@@ -66,7 +66,7 @@ extension ViewPager {
             make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(sizeConfiguration.height)
         }
-        
+        self.sendSubviewToBack(dividerView)
         dividerView.snp.makeConstraints { make in
             make.height.equalTo(1)
             make.top.equalTo(tabbedView.snp.bottom).inset(1)
