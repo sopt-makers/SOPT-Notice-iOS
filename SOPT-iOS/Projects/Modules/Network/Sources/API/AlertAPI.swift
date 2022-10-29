@@ -12,6 +12,7 @@ import Alamofire
 import Moya
 
 public enum AlertAPI {
+    case fetchPushSetting
     case postUserPushPartList(partList: [String])
 }
 
@@ -31,7 +32,8 @@ extension AlertAPI: BaseAPI {
         switch self {
         case .postUserPushPartList:
             return .post
-        default: return .get
+        default:
+            return .get
         }
     }
     
@@ -83,6 +85,22 @@ extension AlertAPI: BaseAPI {
     
     public var sampleData: Data {
         switch self {
+        case .fetchPushSetting:
+            let entity = PushAlarmSettingEntity(alerts: [
+                Alert(part: "all", isAlert: true),
+                Alert(part: "plan", isAlert: false),
+                Alert(part: "design", isAlert: false),
+                Alert(part: "ios", isAlert: true),
+                Alert(part: "android", isAlert: false),
+                Alert(part: "web", isAlert: false),
+                Alert(part: "server", isAlert: false)
+            ])
+            
+            if let data = try? JSONEncoder().encode(entity) {
+                return data
+            } else {
+                return Data()
+            }
         case .postUserPushPartList:
             let entity = 200
             if let data = try? JSONEncoder().encode(entity) {

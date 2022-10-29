@@ -9,8 +9,10 @@
 import Foundation
 
 public struct PushAlarmSettingModel {
+    
+    public let pushSettingList: [Bool]
 
-    public init() {
-        
+    public init(settingList: [Bool]) {
+        self.pushSettingList = settingList
     }
 }

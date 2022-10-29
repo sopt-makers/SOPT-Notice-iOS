@@ -9,5 +9,5 @@
 import Combine
 
 public protocol PushAlarmSettingRepositoryInterface {
-  
+    func fetchPushListSetting() -> AnyPublisher<PushAlarmSettingModel, Error>
 }
