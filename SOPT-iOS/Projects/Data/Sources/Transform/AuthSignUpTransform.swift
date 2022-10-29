@@ -14,6 +14,6 @@ import Network
 extension AuthSignUpEntity {
 
     public func toDomain() -> AuthSignUpModel {
-        return AuthSignUpModel.init()
+        return AuthSignUpModel.init(userId: self.userID)
     }
 }
