@@ -27,7 +27,6 @@ public class PostListVC: UIViewController {
     private var selectedPartIndex = PassthroughSubject<Int, Error>()
     
     private var searchResultList: [PostListModel] = []
-    let partList = ["전체", "기획", "디자인", "iOS", "Android", "Server", "Web"]
     
     // MARK: - UI Components
     
@@ -61,8 +60,8 @@ public class PostListVC: UIViewController {
     private lazy var postListViewPager: ViewPager = {
         let viewPager = ViewPager(tabSizeConfiguration: .fixed(width: 72, height: 32))
         
-        let tabs = partList.map { TabItemView(title: $0) }
-        let pages = partList.map { _ in PostListPageView() }
+        let tabs = PartCategory.allCases.map { TabItemView(title: $0.title) }
+        let pages = PartCategory.allCases.map { _ in PostListPageView() }
         
         viewPager.tabbedView.tabs = tabs
         

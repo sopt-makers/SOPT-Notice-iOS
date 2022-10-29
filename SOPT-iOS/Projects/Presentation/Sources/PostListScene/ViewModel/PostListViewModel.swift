@@ -13,8 +13,6 @@ import Domain
 
 public class PostListViewModel: ViewModelType {
     
-    // 파트 리스트 임시로 ViewModel이 소유 (수정 예정)
-    let partList: [String] = ["ALL", "PLAN", "DESIGN", "iOS", "ANDROID", "SERVER", "WEB"]
     var partIndex: Int = 0
     private let useCase: PostListUseCase
     private var cancelBag = CancelBag()
@@ -51,7 +49,7 @@ extension PostListViewModel {
             }, receiveValue: { [weak self] idx in
                 guard let self = self else { return }
                 self.partIndex = idx
-                self.useCase.getPostList(partName: self.partList[idx])
+                self.useCase.getPostList(partName: PartCategory.allCases[idx].upperCasedTitle)
             })
             .store(in: cancelBag)
         
