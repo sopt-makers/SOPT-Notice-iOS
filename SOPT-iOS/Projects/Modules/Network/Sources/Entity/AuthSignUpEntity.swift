@@ -9,7 +9,7 @@
 import Foundation
 
 public struct AuthSignUpEntity: Codable {
-    public let userID: String
+    public let userID: Int
     
     enum CodingKeys: String, CodingKey {
         case userID = "user_id"
