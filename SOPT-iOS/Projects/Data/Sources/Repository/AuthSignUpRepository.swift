@@ -1,6 +1,6 @@
 //
 //  AuthSignUpRepository.swift
-//  Presentation
+//  Data
 //
 //  Created by devxsby on 2022/10/23.
 //  Copyright © 2022 SOPT-iOS. All rights reserved.
@@ -23,5 +23,17 @@ public class AuthSignUpRepository {
 }
 
 extension AuthSignUpRepository: AuthSignUpRepositoryInterface {
-    
+    public func postAuthEmail(email: String) -> AnyPublisher<AuthSignUpModel?, Error> {
+        return makeMockAuthEmailEntity()
+    }
+}
+
+extension AuthSignUpRepository {
+    private func makeMockAuthEmailEntity() -> AnyPublisher<AuthSignUpModel?, Error> {
+        let mockAuthEmail = AuthSignUpEntity(userId: 12345)
+        let model = mockAuthEmail.toDomain()
+        return Just(model)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+    }
 }
