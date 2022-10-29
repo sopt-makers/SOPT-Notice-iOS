@@ -12,7 +12,7 @@ public enum PartCategory: String, Codable {
     case fullNotice = "all"
     case plan = "plan"
     case design = "design"
-    case ios = "iOS"
+    case ios = "ios"
     case android = "android"
     case web = "web"
     case server = "server"
