@@ -77,6 +77,7 @@ extension AuthCompleteVC {
 extension AuthCompleteVC {
     
     @objc private func startButtonDidTap() {
-        print("start Button Did Tap")
+        let authPushAlarmVC = factory.makeAuthPushAlarmVC()
+        self.navigationController?.pushViewController(authPushAlarmVC, animated: true)
     }
 }
