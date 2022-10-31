@@ -30,7 +30,7 @@ extension AuthSignUpRepository: AuthSignUpRepositoryInterface {
 
 extension AuthSignUpRepository {
     private func makeMockAuthEmailEntity() -> AnyPublisher<AuthSignUpModel?, Error> {
-        let mockAuthEmail = AuthSignUpEntity(userId: 12345)
+        let mockAuthEmail = AuthSignUpEntity(userId: 12345, message: nil)
         let model = mockAuthEmail.toDomain()
         return Just(model)
             .setFailureType(to: Error.self)

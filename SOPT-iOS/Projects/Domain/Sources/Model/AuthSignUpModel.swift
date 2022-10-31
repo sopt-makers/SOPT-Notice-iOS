@@ -9,9 +9,11 @@
 import Foundation
 
 public struct AuthSignUpModel: Hashable {
-    public let userId: Int
+    public let userId: Int?
+    public let message: String?
 
-    public init(userId: Int) {
+    public init(userId: Int?, message: String?) {
         self.userId = userId
+        self.message = message
     }
 }
