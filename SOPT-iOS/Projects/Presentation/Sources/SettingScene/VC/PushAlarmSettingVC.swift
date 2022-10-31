@@ -126,6 +126,16 @@ extension PushAlarmSettingVC {
                 self.pushToggleList = model.pushSettingList
                 self.partListTableView.reloadData()
             }.store(in: self.cancelBag)
+        
+        output.$editSettingStatusCode
+            .compactMap { $0 }
+            .sink { value in
+                if value == 200 {
+                    print("정상적으로 설정 완료")
+                } else {
+                    print("설정 실패")
+                }
+            }.store(in: self.cancelBag)
     }
 }
 

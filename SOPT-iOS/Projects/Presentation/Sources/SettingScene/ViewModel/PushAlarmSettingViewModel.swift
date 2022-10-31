@@ -32,6 +32,7 @@ public class PushAlarmSettingViewModel: ViewModelType {
     
     public class Output {
         @Published var pushSettingList: PushAlarmSettingModel?
+        @Published var editSettingStatusCode: Int?
     }
     
     // MARK: - init
@@ -55,7 +56,7 @@ extension PushAlarmSettingViewModel {
         
         input.confirmButtonTapped
             .sink {
-                print("tap")
+                self.useCase.editPushSetting(toggleList: self.pushToggleList)
             }.store(in: cancelBag)
         
         input.pushToggleList
@@ -68,10 +69,16 @@ extension PushAlarmSettingViewModel {
   
     private func bindOutput(output: Output, cancelBag: CancelBag) {
         let pushSetting = self.useCase.pushSetting
+        let editSettingStatusCode = self.useCase.editSettingStatusCode
         
         pushSetting.asDriver()
             .compactMap { $0 }
             .assign(to: \.pushSettingList, on: output)
+            .store(in: cancelBag)
+        
+        editSettingStatusCode.asDriver()
+            .compactMap { $0 }
+            .assign(to: \.editSettingStatusCode, on: output)
             .store(in: cancelBag)
     }
 }

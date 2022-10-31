@@ -12,7 +12,9 @@ import Core
 
 public protocol PushAlarmSettingUseCase {
     func fetchPushSetting()
+    func editPushSetting(toggleList: [Bool])
     var pushSetting: PassthroughSubject<PushAlarmSettingModel, Error> { get set }
+    var editSettingStatusCode: PassthroughSubject<Int, Error> { get set }
 }
 
 public class DefaultPushAlarmSettingUseCase {
@@ -20,6 +22,7 @@ public class DefaultPushAlarmSettingUseCase {
     private let repository: PushAlarmSettingRepositoryInterface
     private var cancelBag = CancelBag()
     public var pushSetting = PassthroughSubject<PushAlarmSettingModel, Error>()
+    public var editSettingStatusCode = PassthroughSubject<Int, Error>()
   
     public init(repository: PushAlarmSettingRepositoryInterface) {
         self.repository = repository
@@ -35,5 +38,20 @@ extension DefaultPushAlarmSettingUseCase: PushAlarmSettingUseCase {
                 self.pushSetting.send(value)
             })
             .store(in: cancelBag)
+    }
+    
+    public func editPushSetting(toggleList: [Bool]) {
+        let partList = toggleList.enumerated().filter {
+            $0.1 == true
+        }.map { (index, _) in
+            PartCategory.allCases[index].rawValue
+        }
+        
+        repository.editPushListSetting(partList: partList)
+            .sink { event in
+                print("completion: \(event)")
+            } receiveValue: { value in
+                self.editSettingStatusCode.send(value)
+            }.store(in: cancelBag)
     }
 }
