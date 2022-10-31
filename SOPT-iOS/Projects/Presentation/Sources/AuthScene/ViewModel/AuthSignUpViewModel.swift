@@ -27,7 +27,8 @@ public class AuthSignUpViewModel: ViewModelType {
     // MARK: - Outputs
     
     public struct Output {
-        var authSignUpModel = PassthroughSubject<AuthSignUpModel, Error>()
+        var isValidUser = PassthroughSubject<Bool, Error>()
+        var message = PassthroughSubject<String?, Error>()
     }
     
     // MARK: - init
@@ -55,7 +56,6 @@ extension AuthSignUpViewModel {
                 print("AuthSignUpViewModel - completion: \(event)")
             } receiveValue: { value in
                 self.emailText = value
-                print(value)
             }.store(in: self.cancelBag)
         
         return output
@@ -65,7 +65,12 @@ extension AuthSignUpViewModel {
         useCase.authSignUpModel.sink { event in
             print("AuthSignUpViewModel - completion: \(event)")
         } receiveValue: { value in
-            output.authSignUpModel.send(value)
+            if let _ = value.userId {
+                output.isValidUser.send(true)
+            } else {
+                output.isValidUser.send(false)
+                output.message.send(value.message)
+            }
         }.store(in: self.cancelBag)
     }
 }

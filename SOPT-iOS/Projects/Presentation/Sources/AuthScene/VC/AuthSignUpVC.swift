@@ -147,6 +147,22 @@ extension AuthSignUpVC {
     private func bindViewModels() {
         let input = AuthSignUpViewModel.Input(verifyButtonTapped: verifyButtonTapped, textChanged: textChanged)
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
+        
+        output.isValidUser.sink { event in
+            print("AuthSignUpVC - completion: \(event)")
+        } receiveValue: { value in
+            self.captionLabel.isHidden = value
+            if value {
+                let authWaitingVC = self.factory.makeAuthWaitingVC()
+                self.navigationController?.pushViewController(authWaitingVC, animated: true)
+            }
+        }.store(in: self.cancelBag)
+        
+        output.message.sink { event in
+            print("AuthSignUpVC - completion: \(event)")
+        } receiveValue: { value in
+            self.captionLabel.text = value
+        }.store(in: self.cancelBag)
     }
     
     @objc private func textFieldChanged() {
