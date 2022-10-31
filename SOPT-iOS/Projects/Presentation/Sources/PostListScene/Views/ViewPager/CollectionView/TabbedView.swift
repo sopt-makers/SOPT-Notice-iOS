@@ -50,7 +50,7 @@ final class TabbedView: UIView {
             frame: .zero,
             collectionViewLayout: layout
         )
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .clear
         collectionView.register(TabCollectionViewCell.self, forCellWithReuseIdentifier: TabCollectionViewCell.className)
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -66,7 +66,7 @@ final class TabbedView: UIView {
         self.sizeConfiguration = sizeConfiguration
         self.tabs = tabs
         super.init(frame: .zero)
-        
+        self.setUI()
         self.setLayout()
     }
     
@@ -75,6 +75,9 @@ final class TabbedView: UIView {
     }
     
     // MARK: - UI & Layout
+    private func setUI() {
+        self.backgroundColor = .clear
+    }
     
     private func setLayout() {
         self.addSubview(collectionView)
@@ -150,7 +153,7 @@ extension TabbedView: UICollectionViewDataSource {
 extension TabbedView: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.moveToTab(at: indexPath.item)
         selectedTabIndex.send(indexPath.item)
+        self.moveToTab(at: indexPath.item)
     }
 }

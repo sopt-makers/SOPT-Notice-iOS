@@ -26,12 +26,6 @@ final class TabItemView: UIView {
         return label
     }()
     
-    private let dividerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = DSKitAsset.Colors.gray300.color
-        return view
-    }()
-    
     private lazy var borderView: UIView = {
         let view = UIView()
         view.backgroundColor = DSKitAsset.Colors.blue500.color
@@ -55,19 +49,14 @@ final class TabItemView: UIView {
     // MARK: - UI & Layout
     
     private func setUI() {
-        self.backgroundColor = .white
+        self.backgroundColor = .clear
     }
     
     private func setLayout() {
-        self.addSubviews(titleLabel, dividerView)
+        self.addSubviews(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
-        }
-        
-        dividerView.snp.makeConstraints { make in
-            make.leading.bottom.trailing.equalToSuperview()
-            make.height.equalTo(1)
         }
     }
 }

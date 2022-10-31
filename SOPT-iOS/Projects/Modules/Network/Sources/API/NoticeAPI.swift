@@ -13,7 +13,8 @@ import Alamofire
 import Moya
 
 public enum NoticeAPI {
-    case fetchNotcieDetail(noticeId: Int)
+    case fetchNoticeDetail(noticeId: Int)
+    case fetchNoticeList(partName: String)
 }
 
 extension NoticeAPI: BaseAPI {
@@ -40,15 +41,17 @@ extension NoticeAPI: BaseAPI {
     private var bodyParameters: Parameters? {
         var params: Parameters = [:]
         switch self {
-        case .fetchNotcieDetail(let noticeId):
+        case .fetchNoticeDetail(let noticeId):
             params["notice_id"] = noticeId
+        case .fetchNoticeList(let partName):
+            params["part"] = partName
         }
         return params
     }
     
-    private var parameterEncoding : ParameterEncoding{
+    private var parameterEncoding: ParameterEncoding {
         switch self {
-        case .fetchNotcieDetail:
+        case .fetchNoticeDetail:
             return URLEncoding.init(destination: .queryString, arrayEncoding: .noBrackets, boolEncoding: .literal)
         default :
             return JSONEncoding.default
@@ -64,7 +67,7 @@ extension NoticeAPI: BaseAPI {
     
     public var sampleData: Data {
         switch self {
-        case .fetchNotcieDetail(let noticeId):
+        case .fetchNoticeDetail(let noticeId):
             let entity = PostDetailEntity.init(noticeID: noticeId,
                                                title: "샘플 제목",
                                                creator: "이준호",
@@ -74,6 +77,19 @@ extension NoticeAPI: BaseAPI {
                                                part: "iOS",
                                                scope: "iOS")
             if let data = try? JSONEncoder().encode(entity) {
+                return data
+            } else {
+                return Data()
+            }
+        case .fetchNoticeList(let partName):
+            let mockPostListData = [
+                PostListData(noticeID: 1, title: "31th SOPT OT 공지 - \(partName)", creator: "관리", createdAt: "2022.5.13"),
+                PostListData(noticeID: 2, title: "31th SOPT 1차 행사 공지 - \(partName)", creator: "관리", createdAt: "2022.6.10"),
+                PostListData(noticeID: 4, title: "31th SOPT 앱잼 공지 - \(partName)", creator: "관리", createdAt: "2022.12.1")
+            ]
+            let mockList = PostListEntity(notices: mockPostListData)
+            
+            if let data = try? JSONEncoder().encode(mockList) {
                 return data
             } else {
                 return Data()
