@@ -16,36 +16,16 @@ public class PushAlarmSettingViewModel: ViewModelType {
 
     // MARK: - Properties
 
-//    enum PartList: CaseIterable {
-//        case FullNotice, PM, Design, iOS, Android, Server, Web
-//
-//        var title: String {
-//            switch self {
-//            case .FullNotice:
-//                return "전체 공지"
-//            case .PM:
-//                return "기획"
-//            case .Design:
-//                return "디자인"
-//            case .iOS:
-//                return "iOS"
-//            case .Android:
-//                return "Android"
-//            case .Server:
-//                return "Server"
-//            case .Web:
-//                return "Web"
-//            }
-//        }
-//    }
-    
     private let useCase: PushAlarmSettingUseCase
     private var cancelBag = CancelBag()
+    private var pushToggleList = [Bool]()
   
     // MARK: - Inputs
     
     public struct Input {
         let viewDidLoad: Driver<Void>
+        let confirmButtonTapped: Driver<Void>
+        let pushToggleList: Published<[Bool]>.Publisher
     }
     
     // MARK: - Outputs
@@ -71,6 +51,16 @@ extension PushAlarmSettingViewModel {
         input.viewDidLoad
             .sink {
                 self.useCase.fetchPushSetting()
+            }.store(in: cancelBag)
+        
+        input.confirmButtonTapped
+            .sink {
+                print("tap")
+            }.store(in: cancelBag)
+        
+        input.pushToggleList
+            .sink {
+                self.pushToggleList = $0
             }.store(in: cancelBag)
     
         return output

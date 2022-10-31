@@ -21,7 +21,7 @@ public class PushAlarmSettingVC: UIViewController {
     
     public var viewModel: PushAlarmSettingViewModel!
     private var cancelBag = CancelBag()
-    private var pushToggleList = Array(repeating: false, count: 7)
+    @Published private var pushToggleList = Array(repeating: false, count: 7)
     private let cellIDs = (1...PartCategory.allCases.count).map({ _ in UUID() })
     private var cellBindBag: [UUID: AnyCancellable] = [:]
   
@@ -30,9 +30,6 @@ public class PushAlarmSettingVC: UIViewController {
     private lazy var naviBar = CustomNavigationBar(self, type: .leftTitleWithLeftButton)
         .setTitle(I18N.Setting.pushSetting)
         .setRightButtonTitle(I18N.Setting.check)
-        .rightButtonAction {
-            print("확인 누름")
-        }
     
     private let dividerView = UIView().then {
         $0.backgroundColor = DSKitAsset.Colors.gray200.color
@@ -119,7 +116,8 @@ extension PushAlarmSettingVC {
 extension PushAlarmSettingVC {
   
     private func bindViewModels() {
-        let input = PushAlarmSettingViewModel.Input(viewDidLoad: Driver.just(()))
+        
+        let input = PushAlarmSettingViewModel.Input(viewDidLoad: Driver.just(()), confirmButtonTapped: naviBar.rightButtonTapped, pushToggleList: $pushToggleList)
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
         
         output.$pushSettingList
