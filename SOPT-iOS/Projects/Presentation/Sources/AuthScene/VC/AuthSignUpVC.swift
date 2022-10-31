@@ -88,6 +88,7 @@ public class AuthSignUpVC: UIViewController {
         self.bindViewModels()
         self.setUI()
         self.setLayout()
+        self.disablePopGesture()
     }
 }
 
@@ -175,5 +176,8 @@ extension AuthSignUpVC {
     @objc private func guestButtonDidTap() {
         let postListVC = self.factory.makePostListVC()
         self.navigationController?.pushViewController(postListVC, animated: true)
+    }
+    
+    private func disablePopGesture() { self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
 }
