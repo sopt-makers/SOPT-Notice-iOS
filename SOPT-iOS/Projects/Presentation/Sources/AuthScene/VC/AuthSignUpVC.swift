@@ -21,14 +21,15 @@ public class AuthSignUpVC: UIViewController {
     public var factory: ModuleFactoryInterface!
     public var viewModel: AuthSignUpViewModel!
     private var cancelBag = CancelBag()
+    private var verifyButtonTapped = PassthroughSubject<Void, Error>()
+    private var textChanged = PassthroughSubject<String?, Error>()
   
     // MARK: - UI Components
     
     private lazy var naviBar = CustomNavigationBar(self, type: .onlyRightButton)
         .setRightButtonTitle("인증하기")
         .rightButtonAction { 
-            let authPushAlarmVC = self.factory.makeAuthPushAlarmVC()
-            self.navigationController?.pushViewController(authPushAlarmVC, animated: true)
+            self.verifyButtonTapped.send()
         }
     
     private let titleLabel = UILabel().then {
@@ -59,12 +60,13 @@ public class AuthSignUpVC: UIViewController {
         $0.addTarget(self, action: #selector(guestButtonDidTap), for: .touchUpInside)
     }
     
-    private let emailTextField = UITextField().then {
+    private lazy var emailTextField = UITextField().then {
         $0.font = .body1
         $0.tintColor = DSKitAsset.Colors.gray900.color
         $0.attributedPlaceholder = NSAttributedString(string: "이메일 입력", attributes: [NSAttributedString.Key.foregroundColor: DSKitAsset.Colors.gray300.color])
         $0.keyboardType = .emailAddress
         $0.clearButtonMode = .whileEditing
+        $0.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
     }
     
     private let horizontalLine = UIView().then {
@@ -143,8 +145,12 @@ extension AuthSignUpVC {
 extension AuthSignUpVC {
   
     private func bindViewModels() {
-        let input = AuthSignUpViewModel.Input()
+        let input = AuthSignUpViewModel.Input(verifyButtonTapped: verifyButtonTapped, textChanged: textChanged)
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
+    }
+    
+    @objc private func textFieldChanged() {
+        self.textChanged.send(emailTextField.text)
     }
     
     @objc private func guestButtonDidTap() {

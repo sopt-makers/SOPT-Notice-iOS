@@ -15,11 +15,13 @@ public class AuthSignUpViewModel: ViewModelType {
 
     private let useCase: AuthSignUpUseCase
     private var cancelBag = CancelBag()
+    private var emailText = ""
   
     // MARK: - Inputs
     
     public struct Input {
-    
+        let verifyButtonTapped: PassthroughSubject<Void, Error>
+        let textChanged: PassthroughSubject<String?, Error>
     }
     
     // MARK: - Outputs
@@ -39,8 +41,23 @@ extension AuthSignUpViewModel {
     public func transform(from input: Input, cancelBag: CancelBag) -> Output {
         let output = Output()
         self.bindOutput(output: output, cancelBag: cancelBag)
-        // input,output 상관관계 작성
-    
+        
+        input.verifyButtonTapped
+            .sink { event in
+                print("AuthSignUpViewModel - completion: \(event)")
+            } receiveValue: { _ in
+                self.useCase.postAuthEmail(email: self.emailText)
+            }.store(in: self.cancelBag)
+        
+        input.textChanged
+            .compactMap{ $0 }
+            .sink { event in
+                print("AuthSignUpViewModel - completion: \(event)")
+            } receiveValue: { value in
+                self.emailText = value
+                print(value)
+            }.store(in: self.cancelBag)
+        
         return output
     }
   
