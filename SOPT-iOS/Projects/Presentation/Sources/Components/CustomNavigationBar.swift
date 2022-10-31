@@ -131,6 +131,7 @@ extension CustomNavigationBar {
             otherRightButton.setImage(UIImage(asset: DSKitAsset.Assets.icSearch), for: .normal)
         case .leftTitleWithLeftButton, .onlyRightButton:
             rightButton.setTitleColor(DSKitAsset.Colors.blue500.color, for: .normal)
+            rightButton.setTitleColor(DSKitAsset.Colors.gray400.color, for: .disabled)
             rightButton.titleLabel?.setTypoStyle(.body1)
         }
     }
@@ -195,5 +196,10 @@ extension CustomNavigationBar {
             make.trailing.equalToSuperview().inset(16)
             make.height.equalTo(40)
         }
+    }
+    
+    public func changeRightButtonState(isEnabled: Bool) -> Self {
+        self.rightButton.isEnabled = isEnabled
+        return self
     }
 }

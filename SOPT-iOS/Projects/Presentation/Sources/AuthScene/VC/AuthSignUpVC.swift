@@ -28,6 +28,7 @@ public class AuthSignUpVC: UIViewController {
     
     private lazy var naviBar = CustomNavigationBar(self, type: .onlyRightButton)
         .setRightButtonTitle("인증하기")
+        .changeRightButtonState(isEnabled: false)
         .rightButtonAction { 
             self.verifyButtonTapped.send()
         }
@@ -77,6 +78,7 @@ public class AuthSignUpVC: UIViewController {
         $0.text = "등록되지 않은 메일입니다."
         $0.textColor = DSKitAsset.Colors.error.color
         $0.setTypoStyle(.caption)
+        $0.isHidden = true
     }
   
     // MARK: - View Life Cycle
@@ -167,9 +169,11 @@ extension AuthSignUpVC {
     
     @objc private func textFieldChanged() {
         self.textChanged.send(emailTextField.text)
+        self.naviBar = self.naviBar.changeRightButtonState(isEnabled: emailTextField.hasText)
     }
     
     @objc private func guestButtonDidTap() {
-        print("guest Button Did Tap")
+        let postListVC = self.factory.makePostListVC()
+        self.navigationController?.pushViewController(postListVC, animated: true)
     }
 }
