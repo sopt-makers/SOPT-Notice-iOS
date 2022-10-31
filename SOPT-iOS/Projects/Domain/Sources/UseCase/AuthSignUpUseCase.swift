@@ -13,6 +13,7 @@ import Network
 
 public protocol AuthSignUpUseCase {
     func postAuthEmail(email: String)
+    var authSignUpModel: PassthroughSubject<AuthSignUpModel, Error> { get set }
 }
 
 public class DefaultAuthSignUpUseCase {

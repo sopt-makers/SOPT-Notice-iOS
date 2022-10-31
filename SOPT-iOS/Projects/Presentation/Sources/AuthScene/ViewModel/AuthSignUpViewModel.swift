@@ -27,7 +27,7 @@ public class AuthSignUpViewModel: ViewModelType {
     // MARK: - Outputs
     
     public struct Output {
-    
+        var authSignUpModel = PassthroughSubject<AuthSignUpModel, Error>()
     }
     
     // MARK: - init
@@ -50,7 +50,7 @@ extension AuthSignUpViewModel {
             }.store(in: self.cancelBag)
         
         input.textChanged
-            .compactMap{ $0 }
+            .compactMap { $0 }
             .sink { event in
                 print("AuthSignUpViewModel - completion: \(event)")
             } receiveValue: { value in
@@ -62,6 +62,10 @@ extension AuthSignUpViewModel {
     }
   
     private func bindOutput(output: Output, cancelBag: CancelBag) {
-    
+        useCase.authSignUpModel.sink { event in
+            print("AuthSignUpViewModel - completion: \(event)")
+        } receiveValue: { value in
+            output.authSignUpModel.send(value)
+        }.store(in: self.cancelBag)
     }
 }
