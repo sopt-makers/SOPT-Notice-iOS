@@ -24,16 +24,14 @@ public class AuthSignUpRepository {
 
 extension AuthSignUpRepository: AuthSignUpRepositoryInterface {
     public func postAuthEmail(email: String) -> AnyPublisher<AuthSignUpModel?, Error> {
-        return makeMockAuthEmailEntity()
+        return makeMockAuthEmailEntity(email: email)
     }
 }
 
 extension AuthSignUpRepository {
-    private func makeMockAuthEmailEntity() -> AnyPublisher<AuthSignUpModel?, Error> {
-        let mockAuthEmail = AuthSignUpEntity(userId: 12345, message: nil)
-        let model = mockAuthEmail.toDomain()
-        return Just(model)
-            .setFailureType(to: Error.self)
+    private func makeMockAuthEmailEntity(email: String) -> AnyPublisher<AuthSignUpModel?, Error> {
+        networkService.postAuthEmail(email: email, token: "dummy-token")
+            .compactMap { $0?.toDomain() }
             .eraseToAnyPublisher()
     }
 }
