@@ -35,6 +35,10 @@ final class TabCollectionViewCell: UICollectionViewCell {
     
     // MARK: - UI & Layout
     
+    private func setUI() {
+        self.contentView.backgroundColor = .clear
+    }
+    
     private func setLayout() {
         guard let view = view else { return }
         

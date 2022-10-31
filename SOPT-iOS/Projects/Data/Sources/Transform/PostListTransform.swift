@@ -12,11 +12,10 @@ import Domain
 import Network
 
 extension PostListEntity {
-
-    public func toDomain() -> PostListModel {
-        return PostListModel.init(isNew: false,
-                                  title: "-",
-                                  writer: "-",
-                                  date: "-")
+    public func toDomain() -> [PostListModel] {
+        let noticeList = self.notices.map { entity in
+            return PostListModel.init(isNew: false, title: entity.title, writer: entity.creator, date: entity.createdAt)
+        }
+        return noticeList
     }
 }

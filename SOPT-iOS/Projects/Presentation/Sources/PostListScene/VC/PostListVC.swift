@@ -24,9 +24,9 @@ public class PostListVC: UIViewController {
     public var viewModel: PostListViewModel!
     private var cancelBag = CancelBag()
     private var textChanged = PassthroughSubject<String?, Error>()
+    private var selectedPartIndex = PassthroughSubject<Int, Error>()
     
     private var searchResultList: [PostListModel] = []
-    let partList = ["전체", "기획", "디자인", "iOS", "Android", "Server", "Web"]
     
     // MARK: - UI Components
     
@@ -60,8 +60,8 @@ public class PostListVC: UIViewController {
     private lazy var postListViewPager: ViewPager = {
         let viewPager = ViewPager(tabSizeConfiguration: .fixed(width: 72, height: 32))
         
-        let tabs = partList.map { TabItemView(title: $0) }
-        let pages = partList.map { _ in PostListPageView() }
+        let tabs = PartCategory.allCases.map { TabItemView(title: $0.title) }
+        let pages = PartCategory.allCases.map { _ in PostListPageView() }
         
         viewPager.tabbedView.tabs = tabs
         
@@ -82,6 +82,7 @@ public class PostListVC: UIViewController {
         self.setDelegate()
         self.setTableView()
         self.bindViewModels()
+        self.bindViewPager()
     }
 }
 
@@ -98,7 +99,7 @@ extension PostListVC {
         searchButton.setImage(UIImage(asset: DSKitAsset.Assets.icSearch), for: .normal)
         searchImageView.image = UIImage(asset: DSKitAsset.Assets.icInfo)
         
-        searchTextField.attributedPlaceholder = NSAttributedString(string: I18N.Search.placeholder, attributes: [NSAttributedString.Key.foregroundColor : DSKitAsset.Colors.gray300.color, NSAttributedString.Key.font : UIFont.body1])
+        searchTextField.attributedPlaceholder = NSAttributedString(string: I18N.Search.placeholder, attributes: [NSAttributedString.Key.foregroundColor: DSKitAsset.Colors.gray300.color, NSAttributedString.Key.font: UIFont.body1])
         searchTextField.textColor = DSKitAsset.Colors.gray900.color
         searchTextField.font = .body1
         
@@ -184,9 +185,24 @@ extension PostListVC {
 // MARK: - Methods
 
 extension PostListVC {
+    private func bindViewPager() {
+        postListViewPager.$selectedTabIndex.sink {
+            self.selectedPartIndex.send($0)
+        }.store(in: cancelBag)
+    }
+    
     private func bindViewModels() {
-        let input = PostListViewModel.Input(textChanged: textChanged.eraseToAnyPublisher())
+        let input = PostListViewModel.Input(selectedPartIndex: selectedPartIndex.eraseToAnyPublisher(), textChanged: textChanged.eraseToAnyPublisher())
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
+        
+        output.postList
+            .sink(receiveCompletion: { event in
+                print("event: \(event)")
+            }, receiveValue: { [weak self] value in
+                guard let self = self else { return }
+                self.postListViewPager.setData(partIndex: self.viewModel.partIndex, data: value)
+            })
+            .store(in: cancelBag)
         
         output.searchList
             .sink(receiveCompletion: { event in
@@ -200,7 +216,6 @@ extension PostListVC {
                     self.setSearchEmpty(false)
                     self.applySnapshot()
                 }
-                
             })
             .store(in: cancelBag)
     }

@@ -10,6 +10,7 @@ import UIKit
 import Combine
 
 import Core
+import Domain
 import DSKit
 
 class ViewPager: UIView {
@@ -17,6 +18,7 @@ class ViewPager: UIView {
     // MARK: - Properties
     
     private var cancelBag = CancelBag()
+    @Published var selectedTabIndex = 0
     
     public let sizeConfiguration: TabbedView.SizeConfiguration
     
@@ -50,8 +52,11 @@ class ViewPager: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - UI & Layout
+}
+
+// MARK: - Methods
+
+extension ViewPager {
     
     private func setLayout() {
         self.addSubviews(tabbedView, dividerView, pagedView)
@@ -61,7 +66,6 @@ class ViewPager: UIView {
             make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(sizeConfiguration.height)
         }
-        
         self.sendSubviewToBack(dividerView)
         dividerView.snp.makeConstraints { make in
             make.height.equalTo(1)
@@ -75,8 +79,12 @@ class ViewPager: UIView {
             make.top.equalTo(tabbedView.snp.bottom)
         }
     }
+    
+    func setData(partIndex: Int, data: [PostListModel]) {
+        guard let page = pagedView.pages[partIndex] as? PostListPageView else { return }
+        page.setData(data: data)
+    }
 }
-
 // MARK: - Bind
 
 extension ViewPager {
@@ -84,6 +92,7 @@ extension ViewPager {
     private func bind() {
         tabbedView.selectedTabIndex.sink {
             self.pagedView.moveToPage(at: $0)
+            self.selectedTabIndex = $0
         }.store(in: self.cancelBag)
     }
 }

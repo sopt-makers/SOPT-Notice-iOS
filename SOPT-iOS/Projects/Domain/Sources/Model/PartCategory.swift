@@ -39,4 +39,23 @@ extension PartCategory {
             return "Server"
         }
     }
+    
+    public var upperCasedTitle: String {
+        switch self {
+        case .fullNotice:
+            return "ALL"
+        case .plan:
+            return "PLAN"
+        case .design:
+            return "DESIGN"
+        case .ios:
+            return "iOS"
+        case .android:
+            return "ANDROID"
+        case .web:
+            return "WEB"
+        case .server:
+            return "SERVER"
+        }
+    }
 }

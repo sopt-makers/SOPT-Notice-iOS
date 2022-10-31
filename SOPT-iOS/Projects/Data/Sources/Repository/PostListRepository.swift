@@ -26,6 +26,10 @@ extension PostListRepository: PostListRepositoryInterface {
     public func getSearchResult(str: String) -> AnyPublisher<[PostListModel]?, Error> {
         return makeMockSearchResultEntity()
     }
+    
+    public func getPostListResult(partName: String) -> AnyPublisher<[PostListModel]?, Error> {
+        return makeMokePostListResultEntity(partName: partName)
+    }
 }
 
 extension PostListRepository {
@@ -40,5 +44,12 @@ extension PostListRepository {
         return Just(model)
                     .setFailureType(to: Error.self)
                     .eraseToAnyPublisher()
+    }
+    
+    private func makeMokePostListResultEntity(partName: String) -> AnyPublisher<[PostListModel]?, Error> {
+
+        networkService.fetchNoticeList(partName: partName)
+            .compactMap { $0?.toDomain() }
+            .eraseToAnyPublisher()
     }
 }
