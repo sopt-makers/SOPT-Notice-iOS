@@ -70,6 +70,11 @@ extension CustomNavigationBar {
         self.leftButton.addTarget(self, action: #selector(popToPreviousVC), for: .touchUpInside)
     }
     
+    public func changeRightButtonState(isEnabled: Bool) -> Self {
+        self.rightButton.isEnabled = isEnabled
+        return self
+    }
+    
     @discardableResult
     func setTitle(_ title: String) -> Self {
         self.titleLabel.text = title
@@ -131,6 +136,7 @@ extension CustomNavigationBar {
             otherRightButton.setImage(UIImage(asset: DSKitAsset.Assets.icSearch), for: .normal)
         case .leftTitleWithLeftButton, .onlyRightButton:
             rightButton.setTitleColor(DSKitAsset.Colors.blue500.color, for: .normal)
+            rightButton.setTitleColor(DSKitAsset.Colors.gray400.color, for: .disabled)
             rightButton.titleLabel?.setTypoStyle(.body1)
         }
     }

@@ -8,6 +8,17 @@
 
 import Foundation
 
-public struct AuthSignUpEntity {
+public struct AuthSignUpEntity: Codable {
+    public let userId: Int?
+    public let message: String?
     
+    enum CodingKeys: String, CodingKey {
+        case userId = "user_id"
+        case message
+    }
+    
+    public init(userId: Int?, message: String?) {
+        self.userId = userId
+        self.message = message
+    }
 }

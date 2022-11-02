@@ -9,5 +9,5 @@
 import Combine
 
 public protocol AuthSignUpRepositoryInterface {
-  
+    func postAuthEmail(email: String) -> AnyPublisher<AuthSignUpModel?, Error>
 }
