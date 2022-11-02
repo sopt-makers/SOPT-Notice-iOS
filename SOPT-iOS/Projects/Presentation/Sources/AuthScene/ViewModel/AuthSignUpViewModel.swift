@@ -20,7 +20,7 @@ public class AuthSignUpViewModel: ViewModelType {
     // MARK: - Inputs
     
     public struct Input {
-        let verifyButtonTapped: PassthroughSubject<Void, Error>
+        let verifyButtonTapped: Driver<Void>
         let textChanged: PassthroughSubject<String?, Error>
     }
     
@@ -44,11 +44,9 @@ extension AuthSignUpViewModel {
         self.bindOutput(output: output, cancelBag: cancelBag)
         
         input.verifyButtonTapped
-            .sink { event in
-                print("AuthSignUpViewModel - completion: \(event)")
-            } receiveValue: { _ in
+            .sink(receiveValue: { () in
                 self.useCase.postAuthEmail(email: self.emailText)
-            }.store(in: self.cancelBag)
+            }).store(in: self.cancelBag)
         
         input.textChanged
             .compactMap { $0 }

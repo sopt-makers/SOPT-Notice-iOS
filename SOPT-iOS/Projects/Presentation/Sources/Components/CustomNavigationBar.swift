@@ -70,6 +70,11 @@ extension CustomNavigationBar {
         self.leftButton.addTarget(self, action: #selector(popToPreviousVC), for: .touchUpInside)
     }
     
+    public func changeRightButtonState(isEnabled: Bool) -> Self {
+        self.rightButton.isEnabled = isEnabled
+        return self
+    }
+    
     @discardableResult
     func setTitle(_ title: String) -> Self {
         self.titleLabel.text = title
@@ -196,10 +201,5 @@ extension CustomNavigationBar {
             make.trailing.equalToSuperview().inset(16)
             make.height.equalTo(40)
         }
-    }
-    
-    public func changeRightButtonState(isEnabled: Bool) -> Self {
-        self.rightButton.isEnabled = isEnabled
-        return self
     }
 }

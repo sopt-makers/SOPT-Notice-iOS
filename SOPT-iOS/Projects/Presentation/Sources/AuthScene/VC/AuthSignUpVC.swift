@@ -21,7 +21,6 @@ public class AuthSignUpVC: UIViewController {
     public var factory: ModuleFactoryInterface!
     public var viewModel: AuthSignUpViewModel!
     private var cancelBag = CancelBag()
-    private var verifyButtonTapped = PassthroughSubject<Void, Error>()
     private var textChanged = PassthroughSubject<String?, Error>()
   
     // MARK: - UI Components
@@ -29,9 +28,6 @@ public class AuthSignUpVC: UIViewController {
     private lazy var naviBar = CustomNavigationBar(self, type: .onlyRightButton)
         .setRightButtonTitle("인증하기")
         .changeRightButtonState(isEnabled: false)
-        .rightButtonAction { 
-            self.verifyButtonTapped.send()
-        }
     
     private let titleLabel = UILabel().then {
         $0.setTypoStyle(.h2)
@@ -148,17 +144,16 @@ extension AuthSignUpVC {
 extension AuthSignUpVC {
   
     private func bindViewModels() {
-        let input = AuthSignUpViewModel.Input(verifyButtonTapped: verifyButtonTapped, textChanged: textChanged)
+        let input = AuthSignUpViewModel.Input(verifyButtonTapped: naviBar.rightButtonTapped, textChanged: textChanged)
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
         
         output.isValidUser.sink { event in
             print("AuthSignUpVC - completion: \(event)")
         } receiveValue: { value in
             self.captionLabel.isHidden = value
-            if value {
-                let authWaitingVC = self.factory.makeAuthWaitingVC()
-                self.navigationController?.pushViewController(authWaitingVC, animated: true)
-            }
+            guard value else { return }
+            let authWaitingVC = self.factory.makeAuthWaitingVC()
+            self.navigationController?.pushViewController(authWaitingVC, animated: true)
         }.store(in: self.cancelBag)
         
         output.message.sink { event in
@@ -168,16 +163,24 @@ extension AuthSignUpVC {
         }.store(in: self.cancelBag)
     }
     
-    @objc private func textFieldChanged() {
+    private func disablePopGesture() {
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+    }
+}
+
+// MARK: - @objc
+
+extension AuthSignUpVC {
+    
+    @objc
+    private func textFieldChanged() {
         self.textChanged.send(emailTextField.text)
         self.naviBar = self.naviBar.changeRightButtonState(isEnabled: emailTextField.hasText)
     }
     
-    @objc private func guestButtonDidTap() {
+    @objc
+    private func guestButtonDidTap() {
         let postListVC = self.factory.makePostListVC()
         self.navigationController?.pushViewController(postListVC, animated: true)
-    }
-    
-    private func disablePopGesture() { self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
 }
