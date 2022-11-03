@@ -15,9 +15,11 @@ import Moya
 public typealias DefaultAuthService = BaseService<AuthAPI>
 
 public protocol AuthService {
-    
+    func postAuthEmail(email: String, token: String) -> AnyPublisher<AuthSignUpEntity?, Error>
 }
 
 extension DefaultAuthService: AuthService {
-    
+    public func postAuthEmail(email: String, token: String) -> AnyPublisher<AuthSignUpEntity?, Error> {
+        return test.requestObjectInCombine(.postAuthEmail(email: email, token: token))
+    }
 }

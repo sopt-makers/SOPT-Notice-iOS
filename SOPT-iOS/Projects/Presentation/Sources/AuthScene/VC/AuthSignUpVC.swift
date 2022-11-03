@@ -21,15 +21,13 @@ public class AuthSignUpVC: UIViewController {
     public var factory: ModuleFactoryInterface!
     public var viewModel: AuthSignUpViewModel!
     private var cancelBag = CancelBag()
+    private var textChanged = PassthroughSubject<String?, Error>()
   
     // MARK: - UI Components
     
     private lazy var naviBar = CustomNavigationBar(self, type: .onlyRightButton)
         .setRightButtonTitle("인증하기")
-        .rightButtonAction { 
-            let authPushAlarmVC = self.factory.makeAuthPushAlarmVC()
-            self.navigationController?.pushViewController(authPushAlarmVC, animated: true)
-        }
+        .changeRightButtonState(isEnabled: false)
     
     private let titleLabel = UILabel().then {
         $0.setTypoStyle(.h2)
@@ -59,12 +57,13 @@ public class AuthSignUpVC: UIViewController {
         $0.addTarget(self, action: #selector(guestButtonDidTap), for: .touchUpInside)
     }
     
-    private let emailTextField = UITextField().then {
+    private lazy var emailTextField = UITextField().then {
         $0.font = .body1
         $0.tintColor = DSKitAsset.Colors.gray900.color
         $0.attributedPlaceholder = NSAttributedString(string: "이메일 입력", attributes: [NSAttributedString.Key.foregroundColor: DSKitAsset.Colors.gray300.color])
         $0.keyboardType = .emailAddress
         $0.clearButtonMode = .whileEditing
+        $0.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
     }
     
     private let horizontalLine = UIView().then {
@@ -75,6 +74,7 @@ public class AuthSignUpVC: UIViewController {
         $0.text = "등록되지 않은 메일입니다."
         $0.textColor = DSKitAsset.Colors.error.color
         $0.setTypoStyle(.caption)
+        $0.isHidden = true
     }
   
     // MARK: - View Life Cycle
@@ -84,6 +84,7 @@ public class AuthSignUpVC: UIViewController {
         self.bindViewModels()
         self.setUI()
         self.setLayout()
+        self.disablePopGesture()
     }
 }
 
@@ -143,11 +144,43 @@ extension AuthSignUpVC {
 extension AuthSignUpVC {
   
     private func bindViewModels() {
-        let input = AuthSignUpViewModel.Input()
+        let input = AuthSignUpViewModel.Input(verifyButtonTapped: naviBar.rightButtonTapped, textChanged: textChanged)
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
+        
+        output.isValidUser.sink { event in
+            print("AuthSignUpVC - completion: \(event)")
+        } receiveValue: { value in
+            self.captionLabel.isHidden = value
+            guard value else { return }
+            let authWaitingVC = self.factory.makeAuthWaitingVC()
+            self.navigationController?.pushViewController(authWaitingVC, animated: true)
+        }.store(in: self.cancelBag)
+        
+        output.message.sink { event in
+            print("AuthSignUpVC - completion: \(event)")
+        } receiveValue: { value in
+            self.captionLabel.text = value
+        }.store(in: self.cancelBag)
     }
     
-    @objc private func guestButtonDidTap() {
-        print("guest Button Did Tap")
+    private func disablePopGesture() {
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+    }
+}
+
+// MARK: - @objc
+
+extension AuthSignUpVC {
+    
+    @objc
+    private func textFieldChanged() {
+        self.textChanged.send(emailTextField.text)
+        self.naviBar = self.naviBar.changeRightButtonState(isEnabled: emailTextField.hasText)
+    }
+    
+    @objc
+    private func guestButtonDidTap() {
+        let postListVC = self.factory.makePostListVC()
+        self.navigationController?.pushViewController(postListVC, animated: true)
     }
 }
