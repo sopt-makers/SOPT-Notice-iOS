@@ -22,8 +22,6 @@ public class PushAlarmSettingVC: UIViewController {
     public var viewModel: PushAlarmSettingViewModel!
     private var cancelBag = CancelBag()
     @Published private var pushToggleList = Array(repeating: false, count: 7)
-    private let cellIDs = (1...PartCategory.allCases.count).map({ _ in UUID() })
-    private var cellBindBag: [UUID: AnyCancellable] = [:]
   
     // MARK: - UI Components
     
@@ -167,16 +165,13 @@ extension PushAlarmSettingVC: UITableViewDataSource {
         let isOn = pushToggleList[indexPath.item]
         cell.initCell(index: indexPath.item, title: cellType.title, isOn: isOn)
         
-        // VC와 Cell의 중복 바인딩 제거
-        let id = cellIDs[indexPath.item]
-        cellBindBag[id]?.cancel()
-        
-        cellBindBag[id] = cell.partButtonTapped
+        cell.partButtonTapped
             .receive(on: RunLoop.main)
             .sink { [weak self] indexSelected in
                 guard let self = self else { return }
+                print(indexSelected)
                 self.pushToggleList[indexSelected.0] = indexSelected.1
-            }
+            }.store(in: cell.cancelBag)
         
         return cell
     }

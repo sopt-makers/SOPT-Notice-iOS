@@ -17,6 +17,7 @@ import Then
 class PushAlarmPartTVC: UITableViewCell {
     
     // MARK: - Properties
+    var cancelBag = CancelBag()
     private var index: Int?
     public lazy var partButtonTapped: Driver<(Int, Bool)> = {
         return self.stateButton.publisher(for: .touchUpInside)
@@ -91,5 +92,9 @@ extension PushAlarmPartTVC {
             make.bottom.equalToSuperview().offset(1)
             make.height.equalTo(1)
         }
+    }
+    
+    override func prepareForReuse() {
+        self.cancelBag = CancelBag()
     }
 }
