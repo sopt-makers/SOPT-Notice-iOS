@@ -46,6 +46,7 @@ public class AuthWaitingVC: UIViewController {
         super.viewDidLoad()
         self.setUI()
         self.setLayout()
+        self.pushNextView()
     }
 }
 
@@ -68,6 +69,13 @@ extension AuthWaitingVC {
         subtitleLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(10)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
+        }
+    }
+    
+    private func pushNextView() {
+        DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+            let vc = self.factory.makeAuthPushAlarmVC()
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
 }
