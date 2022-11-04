@@ -9,12 +9,24 @@
 import UIKit
 import DSKit
 
+import Combine
+import Core
 import SnapKit
 import Then
 
 class PushAlarmPartTVC: UITableViewCell {
     
     // MARK: - Properties
+    var cancelBag = CancelBag()
+    private var index: Int?
+    public lazy var partButtonTapped: Driver<(Int, Bool)> = {
+        return self.stateButton.publisher(for: .touchUpInside)
+            .map {
+                self.stateButton.isSelected.toggle()
+                return (self.index!, $0.isSelected)
+            }
+            .asDriver()
+    }()
     
     // MARK: - UI Components
     
@@ -28,7 +40,6 @@ class PushAlarmPartTVC: UITableViewCell {
         $0.setImage(DSKitAsset.Assets.icStateOff.image.withRenderingMode(.alwaysOriginal), for: .normal)
         $0.setImage(DSKitAsset.Assets.icStateOn.image.withRenderingMode(.alwaysOriginal), for: .selected)
         $0.contentMode = .scaleAspectFill
-        $0.addTarget(self, action: #selector(stateButtonDidTap), for: .touchUpInside)
     }
     
     private let dividerView = UIView().then {
@@ -52,7 +63,8 @@ class PushAlarmPartTVC: UITableViewCell {
 
 extension PushAlarmPartTVC {
     
-    func initCell(title: String, isOn: Bool) {
+    func initCell(index: Int, title: String, isOn: Bool) {
+        self.index = index
         self.titleLabel.text = title
         if isOn { self.stateButton.isSelected.toggle() }
     }
@@ -82,8 +94,7 @@ extension PushAlarmPartTVC {
         }
     }
     
-    @objc private func stateButtonDidTap() {
-        print("\(titleLabel.text!) state button did tap")
-        stateButton.isSelected.toggle()
+    override func prepareForReuse() {
+        self.cancelBag = CancelBag()
     }
 }

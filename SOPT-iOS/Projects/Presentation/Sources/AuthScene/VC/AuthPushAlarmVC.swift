@@ -28,7 +28,8 @@ public class AuthPushAlarmVC: UIViewController {
     private lazy var naviBar = CustomNavigationBar(self, type: .onlyRightButton)
            .setRightButtonTitle("확인")
            .rightButtonAction {
-               print("navi button did tap")
+               let vc = self.factory.makePostListVC()
+               self.navigationController?.pushViewController(vc, animated: true)
            }
     
     private let titleLabel = UILabel().then {

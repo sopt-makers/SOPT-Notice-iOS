@@ -21,16 +21,13 @@ public class PushAlarmSettingVC: UIViewController {
     
     public var viewModel: PushAlarmSettingViewModel!
     private var cancelBag = CancelBag()
-    private var pushToggleList = Array(repeating: false, count: 7)
+    @Published private var pushToggleList = Array(repeating: false, count: 7)
   
     // MARK: - UI Components
     
     private lazy var naviBar = CustomNavigationBar(self, type: .leftTitleWithLeftButton)
         .setTitle(I18N.Setting.pushSetting)
         .setRightButtonTitle(I18N.Setting.check)
-        .rightButtonAction {
-            print("확인 누름")
-        }
     
     private let dividerView = UIView().then {
         $0.backgroundColor = DSKitAsset.Colors.gray200.color
@@ -117,7 +114,8 @@ extension PushAlarmSettingVC {
 extension PushAlarmSettingVC {
   
     private func bindViewModels() {
-        let input = PushAlarmSettingViewModel.Input(viewDidLoad: Driver.just(()))
+        
+        let input = PushAlarmSettingViewModel.Input(viewDidLoad: Driver.just(()), confirmButtonTapped: naviBar.rightButtonTapped, pushToggleList: $pushToggleList)
         let output = self.viewModel.transform(from: input, cancelBag: self.cancelBag)
         
         output.$pushSettingList
@@ -125,6 +123,16 @@ extension PushAlarmSettingVC {
             .sink { model in
                 self.pushToggleList = model.pushSettingList
                 self.partListTableView.reloadData()
+            }.store(in: self.cancelBag)
+        
+        output.$editSettingStatusCode
+            .compactMap { $0 }
+            .sink { value in
+                if value == 200 {
+                    print("정상적으로 설정 완료")
+                } else {
+                    print("설정 실패")
+                }
             }.store(in: self.cancelBag)
     }
 }
@@ -155,7 +163,16 @@ extension PushAlarmSettingVC: UITableViewDataSource {
         
         let cellType = PartCategory.allCases[indexPath.item]
         let isOn = pushToggleList[indexPath.item]
-        cell.initCell(title: cellType.title, isOn: isOn)
+        cell.initCell(index: indexPath.item, title: cellType.title, isOn: isOn)
+        
+        cell.partButtonTapped
+            .receive(on: RunLoop.main)
+            .sink { [weak self] indexSelected in
+                guard let self = self else { return }
+                print(indexSelected)
+                self.pushToggleList[indexSelected.0] = indexSelected.1
+            }.store(in: cell.cancelBag)
+        
         return cell
     }
 }
